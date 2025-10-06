@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Payment Successful - Gaurikeerthana Residency</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Payment Success Styles -->
+  <style>
+    .success-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .success-card {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      margin: 20px;
+    }
+    
+    .success-icon {
+      font-size: 4rem;
+      color: #28a745;
+      margin-bottom: 20px;
+      animation: bounce 0.6s ease-in-out;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+    
+    .booking-details {
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: left;
+    }
+    
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+    
+    .detail-label {
+      font-weight: 600;
+      color: #495057;
+    }
+    
+    .detail-value {
+      color: #007bff;
+    }
+    
+    .action-buttons {
+      margin-top: 30px;
+    }
+    
+    .btn-custom {
+      margin: 5px;
+      padding: 12px 24px;
+      border-radius: 25px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary-custom {
+      background: #007bff;
+      color: white;
+      border: 2px solid #007bff;
+    }
+    
+    .btn-primary-custom:hover {
+      background: #0056b3;
+      border-color: #0056b3;
+      color: white;
+      transform: translateY(-2px);
+    }
+    
+    .btn-outline-custom {
+      background: transparent;
+      color: #007bff;
+      border: 2px solid #007bff;
+    }
+    
+    .btn-outline-custom:hover {
+      background: #007bff;
+      color: white;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="success-container">
+    <div class="success-card">
+      <div class="success-icon">
+        <i class="bi bi-check-circle-fill"></i>
+      </div>
+      
+      <h1 class="text-success mb-3">Payment Successful!</h1>
+      <p class="lead mb-4">Your booking has been confirmed. Thank you for choosing Gaurikeerthana Residency!</p>
+      
+      <div class="booking-details" id="bookingDetails">
+        <!-- Booking details will be populated by JavaScript -->
+      </div>
+      
+      <div class="action-buttons">
+        <a href="#" class="btn-custom btn-primary-custom" onclick="downloadReceipt()">
+          <i class="bi bi-download me-2"></i>Download Receipt
+        </a>
+        <a href="index.html" class="btn-custom btn-outline-custom">
+          <i class="bi bi-house me-2"></i>Go to Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get booking data from localStorage (check both success and failure)
+      const confirmedBooking = JSON.parse(localStorage.getItem('confirmedBooking'));
+      const failedBooking = JSON.parse(localStorage.getItem('failedBooking'));
+      
+      if (confirmedBooking) {
+        displayBookingDetails(confirmedBooking, 'success');
+      } else if (failedBooking) {
+        displayBookingDetails(failedBooking, 'failure');
+      } else {
+        // If no booking data, redirect to home
+        window.location.href = 'index.html';
+      }
+    });
+
+    function displayBookingDetails(bookingData, status) {
+      const detailsContainer = document.getElementById('bookingDetails');
+      
+      // Update page title and content based on status
+      if (status === 'failure') {
+        document.querySelector('.success-icon').innerHTML = '<i class="bi bi-x-circle-fill text-danger"></i>';
+        document.querySelector('h1').textContent = 'Payment Failed!';
+        document.querySelector('h1').className = 'text-danger mb-3';
+        document.querySelector('.lead').textContent = 'Your payment could not be processed. Please try again.';
+        document.querySelector('.lead').className = 'lead mb-4 text-danger';
+      }
+      
+      detailsContainer.innerHTML = `
+        <h5 class="mb-3"><i class="bi bi-info-circle me-2"></i>Booking Details</h5>
+        <div class="detail-row">
+          <span class="detail-label">Booking ID:</span>
+          <span class="detail-value">${bookingData.bookingId}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Guest Name:</span>
+          <span class="detail-value">${bookingData.guestName}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Email:</span>
+          <span class="detail-value">${bookingData.email}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Phone:</span>
+          <span class="detail-value">${bookingData.phone}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Check-in:</span>
+          <span class="detail-value">${bookingData.arrivalDate}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Check-out:</span>
+          <span class="detail-value">${bookingData.departureDate}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Room Type:</span>
+          <span class="detail-value">${bookingData.roomTypeText}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Number of Rooms:</span>
+          <span class="detail-value">${bookingData.roomCount}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Payment Method:</span>
+          <span class="detail-value">${bookingData.paymentMethod}</span>
+        </div>
+        ${status === 'failure' ? `
+        <div class="detail-row">
+          <span class="detail-label">Failure Reason:</span>
+          <span class="detail-value text-danger">${bookingData.failureReason}</span>
+        </div>
+        ` : ''}
+        <div class="detail-row">
+          <span class="detail-label">Total Amount:</span>
+          <span class="detail-value"><strong>₹${bookingData.total.toLocaleString()}</strong></span>
+        </div>
+      `;
+      
+      // Update action buttons based on status
+      const actionButtons = document.querySelector('.action-buttons');
+      if (status === 'failure') {
+        actionButtons.innerHTML = `
+          <a href="#" class="btn-custom btn-primary-custom" onclick="retryPayment()">
+            <i class="bi bi-arrow-clockwise me-2"></i>Retry Payment
+          </a>
+          <a href="index.html" class="btn-custom btn-outline-custom">
+            <i class="bi bi-house me-2"></i>Go to Home
+          </a>
+        `;
+      }
+    }
+
+    function downloadReceipt() {
+      const bookingData = JSON.parse(localStorage.getItem('confirmedBooking'));
+      const receiptContent = generateReceiptContent(bookingData);
+      
+      // Create and download receipt
+      const blob = new Blob([receiptContent], { type: 'text/html' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `booking-receipt-${bookingData.bookingId}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }
+
+    function retryPayment() {
+      // Get the failed booking data
+      const failedBooking = JSON.parse(localStorage.getItem('failedBooking'));
+      
+      if (failedBooking) {
+        // Reset payment status
+        failedBooking.status = 'pending_payment';
+        failedBooking.paymentStatus = 'pending';
+        delete failedBooking.failureReason;
+        
+        // Store as current booking for retry
+        localStorage.setItem('currentBooking', JSON.stringify(failedBooking));
+        
+        // Remove failed booking
+        localStorage.removeItem('failedBooking');
+        
+        // Redirect back to booking confirmation
+        window.location.href = 'booking-confirmation.html';
+      }
+    }
+
+    function generateReceiptContent(bookingData) {
+      return `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Booking Receipt - ${bookingData.bookingId}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; line-height: 1.6; }
+            .header { text-align: center; border-bottom: 3px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }
+            .booking-details { background: #f8f9fa; padding: 25px; border-radius: 8px; margin: 20px 0; }
+            .total { background: #007bff; color: white; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0; }
+            .detail-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #dee2e6; }
+            .detail-row:last-child { border-bottom: none; }
+            .detail-label { font-weight: 600; color: #495057; }
+            .detail-value { color: #007bff; }
+            .footer { text-align: center; margin-top: 30px; color: #666; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1>Gaurikeerthana Residency</h1>
+            <h2>Booking Receipt</h2>
+            <p>Thank you for your booking!</p>
+          </div>
+          <div class="booking-details">
+            <h3>Booking Information</h3>
+            <div class="detail-row">
+              <span class="detail-label">Booking ID:</span>
+              <span class="detail-value">${bookingData.bookingId}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Guest Name:</span>
+              <span class="detail-value">${bookingData.guestName}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Email:</span>
+              <span class="detail-value">${bookingData.email}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Phone:</span>
+              <span class="detail-value">${bookingData.phone}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Check-in:</span>
+              <span class="detail-value">${bookingData.arrivalDate}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Check-out:</span>
+              <span class="detail-value">${bookingData.departureDate}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Room Type:</span>
+              <span class="detail-value">${bookingData.roomTypeText}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Number of Rooms:</span>
+              <span class="detail-value">${bookingData.roomCount}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Payment Method:</span>
+              <span class="detail-value">${bookingData.paymentMethod}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">Payment Date:</span>
+              <span class="detail-value">${new Date(bookingData.paymentDate).toLocaleString()}</span>
+            </div>
+          </div>
+          <div class="total">
+            <h2>Total Amount Paid: ₹${bookingData.total.toLocaleString()}</h2>
+          </div>
+          <div class="footer">
+            <p>Thank you for choosing Gaurikeerthana Residency!</p>
+            <p>For any queries, contact us at +91 994779277</p>
+          </div>
+        </body>
+        </html>
+      `;
+    }
+  </script>
+
+</body>
+
+</html>

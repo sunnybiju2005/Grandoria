@@ -27,6 +27,111 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <!-- Payment Gateway Styles -->
+  <style>
+    .payment-option {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-option:hover {
+      transform: translateY(-2px);
+    }
+    
+    .payment-card {
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      background: #fff;
+      transition: all 0.3s ease;
+    }
+    
+    .payment-option:hover .payment-card {
+      border-color: #007bff;
+      box-shadow: 0 4px 15px rgba(0,123,255,0.1);
+    }
+    
+    .payment-card i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+    
+    .payment-card h6 {
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+    
+    .payment-card p {
+      margin: 0;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+    
+    .booking-summary {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      border-left: 4px solid #007bff;
+    }
+    
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid #dee2e6;
+    }
+    
+    .summary-item:last-child {
+      border-bottom: none;
+    }
+    
+    .success-icon {
+      animation: bounce 0.6s ease-in-out;
+    }
+    
+    .failure-icon {
+      animation: shake 0.6s ease-in-out;
+    }
+    
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+      }
+      40% {
+        transform: translateY(-10px);
+      }
+      60% {
+        transform: translateY(-5px);
+      }
+    }
+    
+    @keyframes shake {
+      0%, 100% {
+        transform: translateX(0);
+      }
+      10%, 30%, 50%, 70%, 90% {
+        transform: translateX(-5px);
+      }
+      20%, 40%, 60%, 80% {
+        transform: translateX(5px);
+      }
+    }
+    
+    .booking-details {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    
+    .booking-details p {
+      margin: 5px 0;
+      font-size: 0.9rem;
+    }
+  </style>
+
   <!-- =======================================================
   * Template Name: Gaurikeerthana
   * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
@@ -385,11 +490,371 @@
 
       // Payment button functionality
       document.getElementById('proceed-payment').addEventListener('click', function() {
-        // Redirect to payment gateway
-        alert('Redirecting to secure payment gateway...');
-        // In a real implementation, this would redirect to your payment gateway
-        // window.location.href = 'payment-gateway.html';
+        // Store booking data in localStorage for payment processing
+        const bookingData = {
+          bookingId: generateBookingId(),
+          guestName: guestName,
+          email: email,
+          phone: phone,
+          arrivalDate: arrivalDate,
+          departureDate: departureDate,
+          roomType: roomType,
+          roomTypeText: roomTypeText,
+          roomCount: roomCount,
+          roomRate: roomRate,
+          subtotal: subtotal,
+          gst: gst,
+          total: total,
+          timestamp: new Date().toISOString(),
+          status: 'pending_payment'
+        };
+
+        // Store booking data
+        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+        
+        // Show payment options
+        showPaymentOptions(bookingData);
       });
+
+      function generateBookingId() {
+        const timestamp = Date.now();
+        const random = Math.floor(Math.random() * 1000);
+        return `GR-${timestamp}-${random}`;
+      }
+
+      function showPaymentOptions(bookingData) {
+        // Create payment options modal
+        const paymentModal = document.createElement('div');
+        paymentModal.className = 'modal fade';
+        paymentModal.id = 'paymentModal';
+        paymentModal.innerHTML = `
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Choose Payment Method</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="payment-option" onclick="selectPaymentMethod('razorpay')">
+                      <div class="payment-card">
+                        <i class="bi bi-credit-card-fill text-primary"></i>
+                        <h6>Razorpay</h6>
+                        <p>Credit/Debit Cards, UPI, Net Banking</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="payment-option" onclick="selectPaymentMethod('payu')">
+                      <div class="payment-card">
+                        <i class="bi bi-wallet-fill text-success"></i>
+                        <h6>PayU</h6>
+                        <p>Cards, UPI, Wallets, EMI</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row mt-3">
+                  <div class="col-md-6">
+                    <div class="payment-option" onclick="selectPaymentMethod('phonepe')">
+                      <div class="payment-card">
+                        <i class="bi bi-phone-fill text-info"></i>
+                        <h6>PhonePe</h6>
+                        <p>UPI, Cards, Wallets</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="payment-option" onclick="selectPaymentMethod('paytm')">
+                      <div class="payment-card">
+                        <i class="bi bi-wallet2 text-warning"></i>
+                        <h6>Paytm</h6>
+                        <p>Paytm Wallet, UPI, Cards</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="booking-summary mt-4">
+                  <h6>Booking Summary</h6>
+                  <div class="summary-item">
+                    <span>Total Amount:</span>
+                    <strong>₹${bookingData.total.toLocaleString()}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Add modal to page
+        document.body.appendChild(paymentModal);
+        
+        // Show modal
+        const modal = new bootstrap.Modal(paymentModal);
+        modal.show();
+
+        // Remove modal when hidden
+        paymentModal.addEventListener('hidden.bs.modal', function() {
+          document.body.removeChild(paymentModal);
+        });
+      }
+
+      // Global function for payment method selection
+      window.selectPaymentMethod = function(method) {
+        const bookingData = JSON.parse(localStorage.getItem('currentBooking'));
+        
+        // Update booking with payment method
+        bookingData.paymentMethod = method;
+        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
+        modal.hide();
+
+        // Redirect to payment gateway
+        redirectToPaymentGateway(method, bookingData);
+      };
+
+      function redirectToPaymentGateway(method, bookingData) {
+        // Create payment gateway URL with booking data
+        const paymentUrl = createPaymentUrl(method, bookingData);
+        
+        // Show loading message
+        document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing Payment...';
+        document.getElementById('proceed-payment').disabled = true;
+
+        // Simulate payment gateway redirect
+        setTimeout(() => {
+          // In a real implementation, this would redirect to the actual payment gateway
+          // For demo purposes, we'll simulate a successful payment
+          simulatePaymentSuccess(bookingData);
+        }, 2000);
+      }
+
+      function createPaymentUrl(method, bookingData) {
+        // This would be replaced with actual payment gateway URLs
+        const baseUrl = 'https://your-payment-gateway.com/pay';
+        const params = new URLSearchParams({
+          amount: bookingData.total,
+          currency: 'INR',
+          order_id: bookingData.bookingId,
+          customer_name: bookingData.guestName,
+          customer_email: bookingData.email,
+          customer_phone: bookingData.phone,
+          return_url: window.location.origin + '/payment-success.html',
+          cancel_url: window.location.origin + '/booking-confirmation.html'
+        });
+        
+        return `${baseUrl}?${params.toString()}`;
+      }
+
+      function simulatePaymentSuccess(bookingData) {
+        // Simulate random payment success/failure (50% chance of each)
+        const isPaymentSuccessful = Math.random() > 0.5;
+        
+        if (isPaymentSuccessful) {
+          // Update booking status for successful payment
+          bookingData.status = 'confirmed';
+          bookingData.paymentStatus = 'success';
+          bookingData.paymentDate = new Date().toISOString();
+          
+          // Save confirmed booking
+          localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
+          
+          // Show success message
+          showPaymentSuccess(bookingData);
+        } else {
+          // Update booking status for failed payment
+          bookingData.status = 'payment_failed';
+          bookingData.paymentStatus = 'failed';
+          bookingData.paymentDate = new Date().toISOString();
+          bookingData.failureReason = 'Payment gateway declined the transaction';
+          
+          // Save failed booking
+          localStorage.setItem('failedBooking', JSON.stringify(bookingData));
+          
+          // Show failure message
+          showPaymentFailure(bookingData);
+        }
+      }
+
+      function showPaymentSuccess(bookingData) {
+        // Create success modal
+        const successModal = document.createElement('div');
+        successModal.className = 'modal fade';
+        successModal.id = 'successModal';
+        successModal.innerHTML = `
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-success text-white">
+                <h5 class="modal-title"><i class="bi bi-check-circle-fill me-2"></i>Payment Successful!</h5>
+              </div>
+              <div class="modal-body text-center">
+                <div class="success-icon mb-3">
+                  <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
+                </div>
+                <h4 class="text-success mb-3">Booking Confirmed!</h4>
+                <p class="mb-3">Your payment has been processed successfully.</p>
+                <div class="booking-details">
+                  <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
+                  <p><strong>Total Paid:</strong> ₹${bookingData.total.toLocaleString()}</p>
+                  <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
+                  <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
+                </div>
+                <div class="mt-4">
+                  <button class="btn btn-primary me-2" onclick="downloadBookingReceipt()">
+                    <i class="bi bi-download me-1"></i>Download Receipt
+                  </button>
+                  <button class="btn btn-outline-primary" onclick="goToHome()">
+                    <i class="bi bi-house me-1"></i>Go to Home
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(successModal);
+        const modal = new bootstrap.Modal(successModal);
+        modal.show();
+
+        // Remove modal when hidden
+        successModal.addEventListener('hidden.bs.modal', function() {
+          document.body.removeChild(successModal);
+        });
+      }
+
+      function showPaymentFailure(bookingData) {
+        // Create failure modal
+        const failureModal = document.createElement('div');
+        failureModal.className = 'modal fade';
+        failureModal.id = 'failureModal';
+        failureModal.innerHTML = `
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="bi bi-x-circle-fill me-2"></i>Payment Failed!</h5>
+              </div>
+              <div class="modal-body text-center">
+                <div class="failure-icon mb-3">
+                  <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
+                </div>
+                <h4 class="text-danger mb-3">Payment Unsuccessful!</h4>
+                <p class="mb-3">Your payment could not be processed. Please try again.</p>
+                <div class="booking-details">
+                  <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
+                  <p><strong>Amount:</strong> ₹${bookingData.total.toLocaleString()}</p>
+                  <p><strong>Failure Reason:</strong> ${bookingData.failureReason}</p>
+                  <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
+                  <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
+                </div>
+                <div class="mt-4">
+                  <button class="btn btn-danger me-2" onclick="retryPayment()">
+                    <i class="bi bi-arrow-clockwise me-1"></i>Retry Payment
+                  </button>
+                  <button class="btn btn-outline-secondary" onclick="goToHome()">
+                    <i class="bi bi-house me-1"></i>Go to Home
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        document.body.appendChild(failureModal);
+        const modal = new bootstrap.Modal(failureModal);
+        modal.show();
+
+        // Remove modal when hidden
+        failureModal.addEventListener('hidden.bs.modal', function() {
+          document.body.removeChild(failureModal);
+        });
+      }
+
+      // Global functions for success modal
+      window.downloadBookingReceipt = function() {
+        const bookingData = JSON.parse(localStorage.getItem('confirmedBooking'));
+        const receiptContent = generateReceiptContent(bookingData);
+        
+        // Create and download receipt
+        const blob = new Blob([receiptContent], { type: 'text/html' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `booking-receipt-${bookingData.bookingId}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      };
+
+      window.goToHome = function() {
+        window.location.href = 'index.html';
+      };
+
+      window.retryPayment = function() {
+        // Get the failed booking data
+        const failedBooking = JSON.parse(localStorage.getItem('failedBooking'));
+        
+        if (failedBooking) {
+          // Reset payment status
+          failedBooking.status = 'pending_payment';
+          failedBooking.paymentStatus = 'pending';
+          delete failedBooking.failureReason;
+          
+          // Store as current booking for retry
+          localStorage.setItem('currentBooking', JSON.stringify(failedBooking));
+          
+          // Remove failed booking
+          localStorage.removeItem('failedBooking');
+          
+          // Show payment options again
+          showPaymentOptions(failedBooking);
+        }
+      };
+
+      function generateReceiptContent(bookingData) {
+        return `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Booking Receipt - ${bookingData.bookingId}</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              .header { text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 20px; margin-bottom: 20px; }
+              .booking-details { background: #f8f9fa; padding: 20px; border-radius: 5px; }
+              .total { background: #007bff; color: white; padding: 15px; border-radius: 5px; text-align: center; }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <h1>Gaurikeerthana Residency</h1>
+              <h2>Booking Receipt</h2>
+            </div>
+            <div class="booking-details">
+              <h3>Booking Information</h3>
+              <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
+              <p><strong>Guest Name:</strong> ${bookingData.guestName}</p>
+              <p><strong>Email:</strong> ${bookingData.email}</p>
+              <p><strong>Phone:</strong> ${bookingData.phone}</p>
+              <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
+              <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
+              <p><strong>Room Type:</strong> ${bookingData.roomTypeText}</p>
+              <p><strong>Number of Rooms:</strong> ${bookingData.roomCount}</p>
+              <p><strong>Payment Method:</strong> ${bookingData.paymentMethod}</p>
+              <p><strong>Payment Date:</strong> ${new Date(bookingData.paymentDate).toLocaleString()}</p>
+            </div>
+            <div class="total">
+              <h3>Total Amount Paid: ₹${bookingData.total.toLocaleString()}</h3>
+            </div>
+            <p style="text-align: center; margin-top: 20px; color: #666;">
+              Thank you for choosing Gaurikeerthana Residency!
+            </p>
+          </body>
+          </html>
+        `;
+      }
 
     });
   </script>
