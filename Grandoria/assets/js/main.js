@@ -1,5 +1,5 @@
 /**
-* Template Name: Grandoria
+* Template Name: Gaurikeerthana
 * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
 * Updated: Jul 29 2025 with Bootstrap v5.3.7
 * Author: BootstrapMade.com

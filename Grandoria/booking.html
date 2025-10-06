@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Booking - Grandoria Bootstrap Template</title>
+  <title>Booking - Gaurikeerthana Bootstrap Template</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -28,7 +28,7 @@
   <link href="assets/css/main.css" rel="stylesheet">
 
   <!-- =======================================================
-  * Template Name: Grandoria
+  * Template Name: Gaurikeerthana
   * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
   * Updated: Jul 29 2025 with Bootstrap v5.3.7
   * Author: BootstrapMade.com
@@ -59,7 +59,7 @@
         <a href="index.html" class="logo d-flex align-items-center">
           <!-- Uncomment the line below if you also wish to use an image logo -->
           <!-- <img src="assets/img/logo.webp" alt=""> -->
-          <h1 class="sitename">Grandoria</h1>
+          <h1 class="sitename">Gaurikeerthana</h1>
         </a>
 
         <nav id="navmenu" class="navmenu">
@@ -108,7 +108,7 @@
         <div class="reservation-wrapper">
 
           <div class="reservation-header text-center" data-aos="fade-up" data-aos-delay="200">
-            <h2>Reserve Your Stay</h2>
+            <h2>BOOK Your Stay</h2>
             <p class="lead">Experience unmatched hospitality with our streamlined booking process</p>
           </div>
 
@@ -116,18 +116,18 @@
 
             <div class="booking-form-section" data-aos="fade-right" data-aos-delay="300">
               <div class="form-container">
-                <form class="reservation-form" action="" method="POST">
+                <form class="reservation-form" action="booking-confirmation.html" method="GET">
 
                   <div class="form-section">
                     <h4>Booking Details</h4>
                     <div class="form-grid">
                       <div class="form-group">
                         <label for="arrival-date" class="form-label">Arrival Date</label>
-                        <input type="date" class="form-control" id="arrival-date" name="arrival_date" required="">
+                        <input type="date" class="form-control" id="arrival-date" name="arrival_date" required="" min="">
                       </div>
                       <div class="form-group">
                         <label for="departure-date" class="form-label">Departure Date</label>
-                        <input type="date" class="form-control" id="departure-date" name="departure_date" required="">
+                        <input type="date" class="form-control" id="departure-date" name="departure_date" required="" min="">
                       </div>
                       <div class="form-group">
                         <label for="guest-count" class="form-label">Total Guests</label>
@@ -147,7 +147,9 @@
                           <option value="1">1 Room</option>
                           <option value="2">2 Rooms</option>
                           <option value="3">3 Rooms</option>
-                          <option value="4">4+ Rooms</option>
+                          <option value="4">4 Rooms</option>
+                          <option value="5">5 Rooms</option>
+                          <option value="6">6 Rooms</option>
                         </select>
                       </div>
                     </div>
@@ -156,19 +158,13 @@
                   <div class="form-section">
                     <h4>Room Preferences</h4>
                     <div class="form-group">
-                      <label for="accommodation-type" class="form-label">Accommodation Type</label>
-                      <select class="form-select" id="accommodation-type" name="accommodation_type">
-                        <option value="">No preference</option>
-                        <option value="classic">Classic Room</option>
-                        <option value="premium">Premium Room</option>
-                        <option value="junior-suite">Junior Suite</option>
-                        <option value="luxury-suite">Luxury Suite</option>
-                        <option value="penthouse">Penthouse Suite</option>
+                      <label for="room-type" class="form-label">Room Type</label>
+                      <select class="form-select" id="room-type" name="room_type" required="">
+                        <option value="">Choose room type</option>
+                        <option value="normal-non-ac">Normal Non-AC Room - ₹2,000/night</option>
+                        <option value="normal-ac">Normal AC Room - ₹2,500/night</option>
+                        <option value="deluxe-ac">Deluxe AC Room - ₹4,000/night</option>
                       </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="additional-notes" class="form-label">Additional Requirements</label>
-                      <textarea class="form-control" id="additional-notes" name="additional_notes" rows="3" placeholder="Please specify any special arrangements or preferences..."></textarea>
                     </div>
                   </div>
 
@@ -193,7 +189,7 @@
                   <div class="form-actions">
                     <button type="submit" class="btn btn-primary">
                       <i class="bi bi-calendar-plus me-2"></i>
-                      Submit Reservation Request
+                      Submit 
                     </button>
                   </div>
 
@@ -281,13 +277,13 @@
         <div class="row gy-4">
           <div class="col-lg-4 col-md-6 footer-about">
             <a href="index.html" class="logo d-flex align-items-center">
-              <span class="sitename">Grandoria</span>
+              <span class="sitename">GAURIKEERTHANA RESIDENCY</span>
             </a>
             <div class="footer-contact pt-3">
-              <p>A108 Adam Street</p>
-              <p>New York, NY 535022</p>
+              <p>GAURIKEERTHANA RESIDENCY</p>
+              <p>Gaurikeerthana, Kerala, India</p>
               <p class="mt-3"><strong>Phone:</strong> <span>+91 994779277 , +91 4872081979</span></p>
-              <p><strong>Email:</strong> <span>info@example.com</span></p>
+              <p><strong>Email:</strong> <span>Gaurikeerthanagvyr@gmail.com</span></p>
             </div>
           </div>
 
@@ -299,39 +295,6 @@
               <li><a href="#">Services</a></li>
               <li><a href="#">Terms of service</a></li>
               <li><a href="#">Privacy policy</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Our Services</h4>
-            <ul>
-              <li><a href="#">Web Design</a></li>
-              <li><a href="#">Web Development</a></li>
-              <li><a href="#">Product Management</a></li>
-              <li><a href="#">Marketing</a></li>
-              <li><a href="#">Graphic Design</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Hic solutasetp</h4>
-            <ul>
-              <li><a href="#">Molestiae accusamus iure</a></li>
-              <li><a href="#">Excepturi dignissimos</a></li>
-              <li><a href="#">Suscipit distinctio</a></li>
-              <li><a href="#">Dilecta</a></li>
-              <li><a href="#">Sit quas consectetur</a></li>
-            </ul>
-          </div>
-
-          <div class="col-lg-2 col-md-3 footer-links">
-            <h4>Nobis illum</h4>
-            <ul>
-              <li><a href="#">Ipsam</a></li>
-              <li><a href="#">Laudantium dolorum</a></li>
-              <li><a href="#">Dinera</a></li>
-              <li><a href="#">Trodelas</a></li>
-              <li><a href="#">Flexo</a></li>
             </ul>
           </div>
 
@@ -383,6 +346,107 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Booking Form Validation Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set minimum date to today
+      const today = new Date().toISOString().split('T')[0];
+      document.getElementById('arrival-date').setAttribute('min', today);
+      document.getElementById('departure-date').setAttribute('min', today);
+
+      // Update departure date minimum when arrival date changes
+      document.getElementById('arrival-date').addEventListener('change', function() {
+        const arrivalDate = this.value;
+        if (arrivalDate) {
+          // Set minimum departure date to day after arrival
+          const nextDay = new Date(arrivalDate);
+          nextDay.setDate(nextDay.getDate() + 1);
+          document.getElementById('departure-date').setAttribute('min', nextDay.toISOString().split('T')[0]);
+        }
+      });
+
+      // Room availability data
+      const roomAvailability = {
+        'normal-non-ac': 3,
+        'normal-ac': 6,
+        'deluxe-ac': 2
+      };
+
+      // Form validation
+      const form = document.querySelector('.reservation-form');
+      const submitButton = form.querySelector('button[type="submit"]');
+
+      // Add form validation
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Check if all required fields are filled
+        const requiredFields = form.querySelectorAll('[required]');
+        let allFieldsFilled = true;
+        let emptyFields = [];
+
+        requiredFields.forEach(field => {
+          if (!field.value.trim()) {
+            allFieldsFilled = false;
+            emptyFields.push(field.previousElementSibling.textContent || field.getAttribute('name'));
+            field.classList.add('is-invalid');
+          } else {
+            field.classList.remove('is-invalid');
+          }
+        });
+
+        // Check if departure date is after arrival date
+        const arrivalDate = new Date(document.getElementById('arrival-date').value);
+        const departureDate = new Date(document.getElementById('departure-date').value);
+        
+        if (departureDate <= arrivalDate) {
+          allFieldsFilled = false;
+          document.getElementById('departure-date').classList.add('is-invalid');
+          alert('Departure date must be after arrival date.');
+        }
+
+        // Check room availability
+        const selectedRoomType = document.getElementById('room-type').value;
+        const requestedRooms = parseInt(document.getElementById('room-count').value);
+        
+        if (selectedRoomType && requestedRooms) {
+          const availableRooms = roomAvailability[selectedRoomType];
+          if (requestedRooms > availableRooms) {
+            allFieldsFilled = false;
+            document.getElementById('room-count').classList.add('is-invalid');
+            alert(`Only ${availableRooms} ${getRoomTypeName(selectedRoomType)} rooms are available. Please reduce the number of rooms or choose a different room type.`);
+          }
+        }
+
+        if (!allFieldsFilled) {
+          alert('Please fill in all required fields and check room availability before submitting.');
+          return false;
+        }
+
+        // If all validations pass, submit the form
+        this.submit();
+      });
+
+      // Function to get room type name
+      function getRoomTypeName(roomType) {
+        const names = {
+          'normal-non-ac': 'Normal Non-AC',
+          'normal-ac': 'Normal AC',
+          'deluxe-ac': 'Deluxe AC'
+        };
+        return names[roomType] || roomType;
+      }
+
+      // Remove invalid class when user starts typing
+      const inputs = form.querySelectorAll('input, select, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', function() {
+          this.classList.remove('is-invalid');
+        });
+      });
+    });
+  </script>
 
 </body>
 
