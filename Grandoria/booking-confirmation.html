@@ -416,6 +416,13 @@
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
+  <!-- Firebase CDN Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  
+  <!-- Firebase Configuration -->
+  <script src="firebase-config-simple.js"></script>
+
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
 
@@ -431,6 +438,8 @@
 
     // Populate booking details from URL parameters
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM Content Loaded - Starting booking confirmation script');
+      
       // Get form data from URL parameters
       const guestName = getUrlParameter('primary_guest');
       const guestEmail = getUrlParameter('contact_email');
@@ -440,6 +449,12 @@
       const guestCount = getUrlParameter('guest_count');
       const roomCount = getUrlParameter('room_count');
       const roomType = getUrlParameter('room_type');
+      
+      // Debug: Log retrieved values
+      console.log('Retrieved URL parameters:', {
+        guestName, guestEmail, guestPhone, arrivalDate, departureDate, 
+        guestCount, roomCount, roomType
+      });
 
       // Populate the form fields
       if (guestName) document.getElementById('guest-name').textContent = guestName;
@@ -489,13 +504,33 @@
       }
 
       // Payment button functionality
-      document.getElementById('proceed-payment').addEventListener('click', function() {
-        // Store booking data in localStorage for payment processing
+      console.log('Setting up payment button event listener');
+      const paymentButton = document.getElementById('proceed-payment');
+      console.log('Payment button found:', !!paymentButton);
+      
+      if (paymentButton) {
+        paymentButton.addEventListener('click', async function() {
+          console.log('Payment button clicked');
+          console.log('Firebase service available:', !!window.firebaseBookingService);
+          console.log('LocalStorage fallback available:', !!window.localStorageFallback);
+          
+          // Calculate pricing (move calculation here)
+          const checkin = new Date(arrivalDate);
+          const checkout = new Date(departureDate);
+          const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
+          const numberOfRooms = parseInt(roomCount) || 1;
+          const subtotal = roomRate * nights * numberOfRooms;
+          const gst = Math.round(subtotal * 0.05); // 5% GST
+          const total = subtotal + gst;
+          
+          console.log('Calculated pricing:', { nights, numberOfRooms, subtotal, gst, total });
+          
+        // Create booking data
         const bookingData = {
           bookingId: generateBookingId(),
           guestName: guestName,
-          email: email,
-          phone: phone,
+          email: guestEmail,
+          phone: guestPhone,
           arrivalDate: arrivalDate,
           departureDate: departureDate,
           roomType: roomType,
@@ -509,12 +544,69 @@
           status: 'pending_payment'
         };
 
-        // Store booking data
-        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
-        
-        // Show payment options
-        showPaymentOptions(bookingData);
+        // Show loading state
+        this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Saving Booking...';
+        this.disabled = true;
+
+        try {
+          // Save booking to Firebase (with localStorage fallback)
+          if (window.firebaseBookingService) {
+            const bookingId = await window.firebaseBookingService.saveBooking(bookingData);
+            bookingData.firebaseId = bookingId;
+            console.log('Booking saved to Firebase with ID:', bookingId);
+          } else {
+            // Fallback to localStorage if Firebase is not available
+            window.localStorageFallback.saveBooking(bookingData);
+            console.log('Firebase not available, using localStorage fallback');
+          }
+          
+          // Store booking data locally as backup
+          localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+          
+          // Show payment options
+          showPaymentOptions(bookingData);
+          
+        } catch (error) {
+          console.error('Error saving booking:', error);
+          
+          // Fallback to localStorage
+          localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+          console.log('Using localStorage fallback due to error');
+          
+          // Show payment options
+          showPaymentOptions(bookingData);
+          
+        } finally {
+          // Reset button state
+          this.innerHTML = '<i class="bi bi-credit-card me-2"></i>Proceed to Payment Gateway';
+          this.disabled = false;
+        }
       });
+      } else {
+        console.error('Payment button not found!');
+        // Try to find the button with a different selector
+        const altButton = document.querySelector('button[type="submit"]') || 
+                         document.querySelector('.btn-primary') || 
+                         document.querySelector('[onclick*="payment"]');
+        console.log('Alternative button found:', !!altButton);
+        if (altButton) {
+          console.log('Adding click handler to alternative button');
+          altButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Alternative button clicked - showing payment options');
+            // Create a simple booking data object for testing
+            const testBookingData = {
+              bookingId: 'TEST-' + Date.now(),
+              guestName: 'Test User',
+              email: 'test@example.com',
+              total: 1000,
+              status: 'pending_payment'
+            };
+            showPaymentOptions(testBookingData);
+          });
+        }
+      }
+
 
       function generateBookingId() {
         const timestamp = Date.now();
@@ -649,7 +741,7 @@
         return `${baseUrl}?${params.toString()}`;
       }
 
-      function simulatePaymentSuccess(bookingData) {
+      async function simulatePaymentSuccess(bookingData) {
         // Simulate random payment success/failure (50% chance of each)
         const isPaymentSuccessful = Math.random() > 0.5;
         
@@ -659,7 +751,27 @@
           bookingData.paymentStatus = 'success';
           bookingData.paymentDate = new Date().toISOString();
           
-          // Save confirmed booking
+          // Update in Firebase (with localStorage fallback)
+          try {
+            if (window.firebaseBookingService && bookingData.firebaseId) {
+              await window.firebaseBookingService.updateBookingStatus(bookingData.firebaseId, {
+                status: 'confirmed',
+                paymentStatus: 'success',
+                paymentDate: bookingData.paymentDate
+              });
+              console.log('Payment success updated in Firebase');
+            } else {
+              window.localStorageFallback.updateBookingStatus(bookingData.bookingId, {
+                status: 'confirmed',
+                paymentStatus: 'success',
+                paymentDate: bookingData.paymentDate
+              });
+            }
+          } catch (error) {
+            console.error('Error updating payment success in Firebase:', error);
+          }
+          
+          // Save confirmed booking locally
           localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
           
           // Show success message
@@ -671,7 +783,29 @@
           bookingData.paymentDate = new Date().toISOString();
           bookingData.failureReason = 'Payment gateway declined the transaction';
           
-          // Save failed booking
+          // Update in Firebase (with localStorage fallback)
+          try {
+            if (window.firebaseBookingService && bookingData.firebaseId) {
+              await window.firebaseBookingService.updateBookingStatus(bookingData.firebaseId, {
+                status: 'payment_failed',
+                paymentStatus: 'failed',
+                paymentDate: bookingData.paymentDate,
+                failureReason: bookingData.failureReason
+              });
+              console.log('Payment failure updated in Firebase');
+            } else {
+              window.localStorageFallback.updateBookingStatus(bookingData.bookingId, {
+                status: 'payment_failed',
+                paymentStatus: 'failed',
+                paymentDate: bookingData.paymentDate,
+                failureReason: bookingData.failureReason
+              });
+            }
+          } catch (error) {
+            console.error('Error updating payment failure in Firebase:', error);
+          }
+          
+          // Save failed booking locally
           localStorage.setItem('failedBooking', JSON.stringify(bookingData));
           
           // Show failure message
