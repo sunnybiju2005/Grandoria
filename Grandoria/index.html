@@ -27,6 +27,114 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <!-- Custom Reviews Styles -->
+  <style>
+    .reviews-container {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .reviews-track {
+      display: flex;
+      animation: scroll-left 30s linear infinite;
+      width: calc(300px * 16); /* 8 reviews * 2 (duplicates) = 16 cards */
+    }
+
+    .review-card {
+      flex: 0 0 300px;
+      margin-right: 20px;
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .review-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    .review-content {
+      text-align: center;
+    }
+
+    .stars {
+      color: #ffc107;
+      font-size: 1.2rem;
+    }
+
+    .review-text {
+      font-style: italic;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .review-author {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .author-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #e9ecef;
+    }
+
+    .author-info h6 {
+      margin: 0;
+      color: #2c3e50;
+      font-weight: 600;
+    }
+
+    .author-info span {
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(calc(-320px * 8)); /* 8 reviews * (300px + 20px margin) */
+      }
+    }
+
+    /* Pause animation on hover */
+    .reviews-container:hover .reviews-track {
+      animation-play-state: paused;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .reviews-track {
+        width: calc(280px * 16);
+      }
+      
+      .review-card {
+        flex: 0 0 280px;
+        padding: 20px;
+      }
+      
+      @keyframes scroll-left {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(calc(-300px * 8));
+        }
+      }
+    }
+  </style>
+
   <!-- =======================================================
   * Template Name: Gaurikeerthana
   * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
@@ -123,22 +231,7 @@
               <div class="main-image">
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Luxury Hotel" class="img-fluid">
               </div>
-              <div class="floating-card" data-aos="zoom-in" data-aos-delay="400">
-                <div class="card-content">
-                  <div class="rating">
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                    <i class="bi bi-star-fill"></i>
-                  </div>
-                  <h6>Exceptional Experience</h6>
-                  <p>"Absolutely stunning residency . The service was impeccable."</p>
-                  <div class="guest-info">
-                    <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1759762561/boowr6itl1k4pzqff9lr.webp" alt="Guest" class="guest-avatar">
-                    <span>SUNNY BIJU</span>
-                  </div>
-                </div>
-              </div>
+              
             </div>
           </div>
 
@@ -364,6 +457,192 @@
 
 
 
+    <!-- Reviews Section -->
+    <section id="reviews" class="reviews section light-background">
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        
+        <!-- Section Title -->
+        <div class="text-center mb-5">
+          <h2>What Our Guests Say</h2>
+          <p>Read genuine reviews from our satisfied guests</p>
+        </div>
+
+        <!-- Reviews Carousel -->
+        <div class="reviews-container">
+          <div class="reviews-track" id="reviews-track">
+            
+            <!-- Review 1 -->
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">"Exceptional service and beautiful rooms. The staff went above and beyond to make our stay memorable. Highly recommended!"</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1759762561/boowr6itl1k4pzqff9lr.webp" alt="Sarah Johnson" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Sarah Johnson</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 2 -->
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">"Perfect location with stunning views. The rooms are spacious and well-maintained. Will definitely stay here again!"</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" alt="Michael Chen" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Michael Chen</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 3 -->
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                </div>
+                <p class="review-text">"Amazing hospitality and delicious food. The amenities are top-notch and the staff is very friendly and helpful."</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" alt="Emma Rodriguez" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Emma Rodriguez</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 4 -->
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">"Outstanding experience from check-in to check-out. The room was luxurious and the service was impeccable. Worth every penny!"</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927627/qiejjeaivz1jsdhxjicl.jpg" alt="David Thompson" class="author-avatar">
+                  <div class="author-info">
+                    <h6>David Thompson</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Review 5 -->
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">"Beautiful property with excellent facilities. The staff made us feel like family. Can't wait to return for another stay!"</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/wwes8d5bg4z1br1wgetj.jpg" alt="Lisa Park" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Lisa Park</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Duplicate reviews for seamless loop -->
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">"Exceptional service and beautiful rooms. The staff went above and beyond to make our stay memorable. Highly recommended!"</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1759762561/boowr6itl1k4pzqff9lr.webp" alt="Sarah Johnson" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Sarah Johnson</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <p class="review-text">"Perfect location with stunning views. The rooms are spacious and well-maintained. Will definitely stay here again!"</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" alt="Michael Chen" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Michael Chen</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="review-card">
+              <div class="review-content">
+                <div class="stars mb-3">
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-fill"></i>
+                  <i class="bi bi-star-half"></i>
+                </div>
+                <p class="review-text">"Amazing hospitality and delicious food. The amenities are top-notch and the staff is very friendly and helpful."</p>
+                <div class="review-author">
+                  <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" alt="Emma Rodriguez" class="author-avatar">
+                  <div class="author-info">
+                    <h6>Emma Rodriguez</h6>
+                    <span>Verified Guest</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section><!-- /Reviews Section -->
+
     <!-- Gallery Showcase Section -->
     <section id="gallery-showcase" class="gallery-showcase section">
 
@@ -558,6 +837,17 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Admin Access Script -->
+  <script>
+    // Admin access with Ctrl+A shortcut
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        window.location.href = 'admin-login.html';
+      }
+    });
+  </script>
 
 </body>
 

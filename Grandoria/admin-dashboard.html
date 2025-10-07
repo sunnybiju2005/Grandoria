@@ -4,7 +4,6 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-
   <title>Admin Dashboard - Gaurikeerthana Residency</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
@@ -26,154 +25,493 @@
 
   <!-- Admin Dashboard Styles -->
   <style>
-    .admin-header {
+    .admin-navbar {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 2rem 0;
-      margin-bottom: 2rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
     }
-    
+
+    .admin-navbar .navbar-brand {
+      color: white !important;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .admin-navbar .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      transition: color 0.3s ease;
+      font-weight: 500;
+    }
+
+    .admin-navbar .nav-link:hover {
+      color: white !important;
+    }
+
+    .logout-btn {
+      background: rgba(255,255,255,0.2);
+      border: 1px solid rgba(255,255,255,0.3);
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255,255,255,0.3);
+      color: white;
+    }
+
     .stats-card {
       background: white;
-      border-radius: 10px;
-      padding: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      margin-bottom: 1rem;
-      text-align: center;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+      margin-bottom: 20px;
     }
-    
+
+    .stats-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .stats-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+      margin-bottom: 15px;
+    }
+
     .stats-number {
       font-size: 2rem;
-      font-weight: bold;
-      color: #007bff;
+      font-weight: 700;
+      color: #2c3e50;
+      margin-bottom: 5px;
     }
-    
+
+    .stats-label {
+      color: #6c757d;
+      font-weight: 500;
+    }
+
     .booking-card {
       background: white;
-      border-radius: 10px;
-      padding: 1.5rem;
-      margin-bottom: 1rem;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      border-radius: 15px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 20px;
+      transition: all 0.3s ease;
       border-left: 4px solid #007bff;
     }
-    
+
+    .booking-card:hover {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    }
+
     .booking-card.confirmed {
       border-left-color: #28a745;
     }
-    
+
     .booking-card.pending {
       border-left-color: #ffc107;
     }
-    
+
     .booking-card.failed {
       border-left-color: #dc3545;
     }
-    
+
+    .booking-card.cancelled {
+      border-left-color: #6c757d;
+    }
+
     .status-badge {
-      padding: 0.25rem 0.75rem;
-      border-radius: 15px;
-      font-size: 0.8rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
       font-weight: 600;
+      text-transform: uppercase;
     }
-    
-    .status-confirmed {
-      background: #d4edda;
-      color: #155724;
+
+    .status-confirmed { background: #d4edda; color: #155724; }
+    .status-pending { background: #fff3cd; color: #856404; }
+    .status-failed { background: #f8d7da; color: #721c24; }
+    .status-cancelled { background: #e2e3e5; color: #383d41; }
+
+    .room-availability {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
     }
-    
-    .status-pending {
-      background: #fff3cd;
-      color: #856404;
+
+    .availability-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #dee2e6;
     }
-    
-    .status-failed {
-      background: #f8d7da;
-      color: #721c24;
+
+    .availability-item:last-child {
+      border-bottom: none;
     }
-    
-    .filter-buttons {
-      margin-bottom: 2rem;
+
+    .availability-count {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: #28a745;
     }
-    
+
+    .availability-count.full {
+      color: #dc3545;
+    }
+
+    .search-filters {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 30px;
+    }
+
+    .btn-action {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      border: none;
+      transition: all 0.3s ease;
+      margin: 2px;
+    }
+
+    .btn-cancel {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background: #c82333;
+      color: white;
+    }
+
+    .btn-confirm {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn-confirm:hover {
+      background: #218838;
+      color: white;
+    }
+
+    .btn-view {
+      background: #007bff;
+      color: white;
+    }
+
+    .btn-view:hover {
+      background: #0056b3;
+      color: white;
+    }
+
     .loading {
       text-align: center;
-      padding: 2rem;
+      padding: 3rem;
+      color: #6c757d;
     }
-    
+
     .no-bookings {
       text-align: center;
       padding: 3rem;
+      color: #6c757d;
+    }
+
+    .availability-section {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .room-type-header {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .room-capacity {
+      font-size: 0.9rem;
       color: #6c757d;
     }
   </style>
 </head>
 
 <body>
-  <div class="admin-header">
+  <!-- Admin Navigation -->
+  <nav class="navbar navbar-expand-lg admin-navbar">
     <div class="container">
-      <div class="row align-items-center">
-        <div class="col-md-8">
-          <h1><i class="bi bi-speedometer2 me-3"></i>Admin Dashboard</h1>
-          <p class="mb-0">Gaurikeerthana Residency - Booking Management</p>
-        </div>
-        <div class="col-md-4 text-end">
-          <button class="btn btn-light" onclick="refreshBookings()">
-            <i class="bi bi-arrow-clockwise me-2"></i>Refresh
+      <a class="navbar-brand" href="#">
+        <i class="bi bi-shield-lock me-2"></i>Admin Dashboard
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="adminNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showSection('overview')">
+              <i class="bi bi-speedometer2 me-1"></i>Overview
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showSection('bookings')">
+              <i class="bi bi-calendar-check me-1"></i>Bookings
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#" onclick="showSection('availability')">
+              <i class="bi bi-house me-1"></i>Room Availability
+            </a>
+          </li>
+        </ul>
+        
+        <div class="d-flex">
+          <button class="btn btn-light me-2" onclick="refreshData()">
+            <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+          </button>
+          <button class="btn logout-btn" onclick="logout()">
+            <i class="bi bi-box-arrow-right me-1"></i>Logout
           </button>
         </div>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <div class="container">
-    <!-- Statistics Cards -->
-    <div class="row mb-4">
-      <div class="col-md-3">
-        <div class="stats-card">
-          <div class="stats-number" id="totalBookings">0</div>
-          <div class="text-muted">Total Bookings</div>
+  <div class="container mt-4">
+    <!-- Overview Section -->
+    <div id="overview-section">
+      <!-- Statistics Cards -->
+      <div class="row mb-4">
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-card">
+            <div class="stats-icon" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+            <div class="stats-number" id="totalBookings">0</div>
+            <div class="stats-label">Total Bookings</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-card">
+            <div class="stats-icon" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="stats-number" id="confirmedBookings">0</div>
+            <div class="stats-label">Confirmed</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-card">
+            <div class="stats-icon" style="background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);">
+              <i class="bi bi-clock"></i>
+            </div>
+            <div class="stats-number" id="pendingBookings">0</div>
+            <div class="stats-label">Pending</div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6">
+          <div class="stats-card">
+            <div class="stats-icon" style="background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);">
+              <i class="bi bi-x-circle"></i>
+            </div>
+            <div class="stats-number" id="failedBookings">0</div>
+            <div class="stats-label">Failed</div>
+          </div>
         </div>
       </div>
-      <div class="col-md-3">
-        <div class="stats-card">
-          <div class="stats-number" id="confirmedBookings">0</div>
-          <div class="text-muted">Confirmed</div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="stats-card">
-          <div class="stats-number" id="pendingBookings">0</div>
-          <div class="text-muted">Pending</div>
-        </div>
-      </div>
-      <div class="col-md-3">
-        <div class="stats-card">
-          <div class="stats-number" id="failedBookings">0</div>
-          <div class="text-muted">Failed</div>
+
+      <!-- Quick Room Availability -->
+      <div class="room-availability">
+        <h5 class="mb-3"><i class="bi bi-house me-2"></i>Quick Room Availability</h5>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="availability-section">
+              <div class="room-type-header">Normal Non-AC Room</div>
+              <div class="room-capacity">Capacity: 3 rooms</div>
+              <div class="availability-count" id="non-ac-available">3</div>
+              <small class="text-muted">Available</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="availability-section">
+              <div class="room-type-header">Normal AC Room</div>
+              <div class="room-capacity">Capacity: 6 rooms</div>
+              <div class="availability-count" id="ac-available">6</div>
+              <small class="text-muted">Available</small>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="availability-section">
+              <div class="room-type-header">Deluxe AC Room</div>
+              <div class="room-capacity">Capacity: 2 rooms</div>
+              <div class="availability-count" id="deluxe-available">2</div>
+              <small class="text-muted">Available</small>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Filter Buttons -->
-    <div class="filter-buttons">
-      <button class="btn btn-primary me-2" onclick="filterBookings('all')">
-        <i class="bi bi-list-ul me-1"></i>All Bookings
-      </button>
-      <button class="btn btn-success me-2" onclick="filterBookings('confirmed')">
-        <i class="bi bi-check-circle me-1"></i>Confirmed
-      </button>
-      <button class="btn btn-warning me-2" onclick="filterBookings('pending')">
-        <i class="bi bi-clock me-1"></i>Pending
-      </button>
-      <button class="btn btn-danger me-2" onclick="filterBookings('failed')">
-        <i class="bi bi-x-circle me-1"></i>Failed
-      </button>
+    <!-- Bookings Section -->
+    <div id="bookings-section" style="display: none;">
+      <!-- Search and Filters -->
+      <div class="search-filters">
+        <div class="row">
+          <div class="col-md-4">
+            <div class="mb-3">
+              <label for="searchInput" class="form-label">Search Bookings</label>
+              <input type="text" class="form-control" id="searchInput" placeholder="Search by name, email, or booking ID...">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="statusFilter" class="form-label">Filter by Status</label>
+              <select class="form-select" id="statusFilter">
+                <option value="all">All Status</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="pending_payment">Pending Payment</option>
+                <option value="payment_failed">Payment Failed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="roomTypeFilter" class="form-label">Filter by Room Type</label>
+              <select class="form-select" id="roomTypeFilter">
+                <option value="all">All Room Types</option>
+                <option value="normal-non-ac">Normal Non-AC</option>
+                <option value="normal-ac">Normal AC</option>
+                <option value="deluxe-ac">Deluxe AC</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="mb-3">
+              <label class="form-label">&nbsp;</label>
+              <button class="btn btn-primary w-100" onclick="applyFilters()">
+                <i class="bi bi-funnel me-1"></i>Filter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookings List -->
+      <div id="bookingsContainer">
+        <div class="loading">
+          <i class="bi bi-hourglass-split me-2"></i>Loading bookings...
+        </div>
+      </div>
     </div>
 
-    <!-- Bookings List -->
-    <div id="bookingsContainer">
-      <div class="loading">
-        <i class="bi bi-hourglass-split me-2"></i>Loading bookings...
+    <!-- Room Availability Section -->
+    <div id="availability-section" style="display: none;">
+      <div class="room-availability">
+        <h5 class="mb-4"><i class="bi bi-house me-2"></i>Detailed Room Availability</h5>
+        
+        <!-- Hotel Policy Information -->
+        <div class="alert alert-info mb-4">
+          <h6><i class="bi bi-clock me-2"></i>Hotel Policy</h6>
+          <div class="row">
+            <div class="col-md-6">
+              <strong>Check-in Time:</strong> 2:00 PM<br>
+              <small class="text-muted">Same-day bookings allowed until 2:00 PM</small>
+            </div>
+            <div class="col-md-6">
+              <strong>Check-out Time:</strong> 12:00 PM<br>
+              <small class="text-muted">Rooms available for new guests after 12:00 PM</small>
+            </div>
+          </div>
+        </div>
+        
+        <div class="row">
+          <div class="col-md-4">
+            <div class="availability-section">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">Normal Non-AC Room</h6>
+                <span class="badge bg-secondary">3 Rooms</span>
+              </div>
+              <div class="availability-item">
+                <span>Total Capacity:</span>
+                <span class="availability-count">3</span>
+              </div>
+              <div class="availability-item">
+                <span>Currently Booked:</span>
+                <span class="availability-count" id="non-ac-booked">0</span>
+              </div>
+              <div class="availability-item">
+                <span>Available:</span>
+                <span class="availability-count" id="non-ac-available-detailed">3</span>
+              </div>
+              <div class="availability-item">
+                <small class="text-muted">Today's occupancy</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="availability-section">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">Normal AC Room</h6>
+                <span class="badge bg-secondary">6 Rooms</span>
+              </div>
+              <div class="availability-item">
+                <span>Total Capacity:</span>
+                <span class="availability-count">6</span>
+              </div>
+              <div class="availability-item">
+                <span>Currently Booked:</span>
+                <span class="availability-count" id="ac-booked">0</span>
+              </div>
+              <div class="availability-item">
+                <span>Available:</span>
+                <span class="availability-count" id="ac-available-detailed">6</span>
+              </div>
+              <div class="availability-item">
+                <small class="text-muted">Today's occupancy</small>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4">
+            <div class="availability-section">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">Deluxe AC Room</h6>
+                <span class="badge bg-secondary">2 Rooms</span>
+              </div>
+              <div class="availability-item">
+                <span>Total Capacity:</span>
+                <span class="availability-count">2</span>
+              </div>
+              <div class="availability-item">
+                <span>Currently Booked:</span>
+                <span class="availability-count" id="deluxe-booked">0</span>
+              </div>
+              <div class="availability-item">
+                <span>Available:</span>
+                <span class="availability-count" id="deluxe-available-detailed">2</span>
+              </div>
+              <div class="availability-item">
+                <small class="text-muted">Today's occupancy</small>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -193,9 +531,55 @@
     let allBookings = [];
     let filteredBookings = [];
 
-    document.addEventListener('DOMContentLoaded', async function() {
-      await loadBookings();
+    // Check admin authentication
+    document.addEventListener('DOMContentLoaded', function() {
+      if (!isAdminAuthenticated()) {
+        window.location.href = 'admin-login.html';
+        return;
+      }
+      
+      loadBookings();
+      
+      // Set up event listeners
+      document.getElementById('searchInput').addEventListener('input', applyFilters);
+      document.getElementById('statusFilter').addEventListener('change', applyFilters);
+      document.getElementById('roomTypeFilter').addEventListener('change', applyFilters);
     });
+
+    function isAdminAuthenticated() {
+      const loggedIn = sessionStorage.getItem('adminLoggedIn');
+      const loginTime = sessionStorage.getItem('adminLoginTime');
+      
+      if (!loggedIn || !loginTime) return false;
+      
+      const hoursSinceLogin = (new Date() - new Date(loginTime)) / (1000 * 60 * 60);
+      return hoursSinceLogin < 8; // 8 hour session
+    }
+
+    function logout() {
+      sessionStorage.removeItem('adminLoggedIn');
+      sessionStorage.removeItem('adminLoginTime');
+      window.location.href = 'admin-login.html';
+    }
+
+    function showSection(sectionName) {
+      // Hide all sections
+      document.getElementById('overview-section').style.display = 'none';
+      document.getElementById('bookings-section').style.display = 'none';
+      document.getElementById('availability-section').style.display = 'none';
+      
+      // Show selected section
+      document.getElementById(sectionName + '-section').style.display = 'block';
+      
+      // Update active nav link
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      // Load data for availability section
+      if (sectionName === 'availability') {
+        updateRoomAvailability();
+      }
+    }
 
     async function loadBookings() {
       const container = document.getElementById('bookingsContainer');
@@ -214,6 +598,7 @@
 
         filteredBookings = [...allBookings];
         updateStatistics();
+        updateRoomAvailability();
         displayBookings();
 
       } catch (error) {
@@ -227,22 +612,40 @@
       
       // Check for confirmed bookings
       const confirmedBooking = localStorage.getItem('confirmedBooking');
-      if (confirmedBooking) {
-        bookings.push(JSON.parse(confirmedBooking));
+      if (confirmedBooking && confirmedBooking !== 'null') {
+        try {
+          const parsed = JSON.parse(confirmedBooking);
+          if (parsed && parsed.bookingId) {
+            bookings.push(parsed);
+          }
+        } catch (e) {
+          console.error('Error parsing confirmed booking:', e);
+        }
       }
       
       // Check for failed bookings
       const failedBooking = localStorage.getItem('failedBooking');
-      if (failedBooking) {
-        bookings.push(JSON.parse(failedBooking));
+      if (failedBooking && failedBooking !== 'null') {
+        try {
+          const parsed = JSON.parse(failedBooking);
+          if (parsed && parsed.bookingId) {
+            bookings.push(parsed);
+          }
+        } catch (e) {
+          console.error('Error parsing failed booking:', e);
+        }
       }
       
       // Check for current bookings
       const currentBooking = localStorage.getItem('currentBooking');
-      if (currentBooking) {
-        const booking = JSON.parse(currentBooking);
-        if (booking.status === 'pending_payment') {
-          bookings.push(booking);
+      if (currentBooking && currentBooking !== 'null') {
+        try {
+          const parsed = JSON.parse(currentBooking);
+          if (parsed && parsed.bookingId && parsed.status === 'pending_payment') {
+            bookings.push(parsed);
+          }
+        } catch (e) {
+          console.error('Error parsing current booking:', e);
         }
       }
       
@@ -253,7 +656,7 @@
       const total = allBookings.length;
       const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
       const pending = allBookings.filter(b => b.status === 'pending_payment').length;
-      const failed = allBookings.filter(b => b.status === 'payment_failed').length;
+      const failed = allBookings.filter(b => b.status === 'payment_failed' || b.status === 'cancelled').length;
 
       document.getElementById('totalBookings').textContent = total;
       document.getElementById('confirmedBookings').textContent = confirmed;
@@ -261,72 +664,181 @@
       document.getElementById('failedBookings').textContent = failed;
     }
 
-    function filterBookings(status) {
-      if (status === 'all') {
-        filteredBookings = [...allBookings];
-      } else {
-        filteredBookings = allBookings.filter(booking => booking.status === status);
+    function updateRoomAvailability() {
+      // Calculate current overall room availability based on confirmed bookings
+      const confirmedBookings = allBookings.filter(b => b.status === 'confirmed');
+      
+      // Get today's date for current availability calculation
+      const today = new Date().toISOString().split('T')[0];
+      
+      // STRICT ROOM CAPACITY LIMITS
+      const roomCapacity = {
+        'normal-non-ac': 3,
+        'normal-ac': 6,
+        'deluxe-ac': 2
+      };
+      
+      // Calculate availability for today (current occupancy)
+      const todayNonAcBooked = getBookedRoomsForDate('normal-non-ac', today, confirmedBookings);
+      const todayAcBooked = getBookedRoomsForDate('normal-ac', today, confirmedBookings);
+      const todayDeluxeBooked = getBookedRoomsForDate('deluxe-ac', today, confirmedBookings);
+
+      // Update availability displays with today's data - ENFORCE LIMITS
+      const nonAcAvailable = Math.max(0, roomCapacity['normal-non-ac'] - todayNonAcBooked);
+      const acAvailable = Math.max(0, roomCapacity['normal-ac'] - todayAcBooked);
+      const deluxeAvailable = Math.max(0, roomCapacity['deluxe-ac'] - todayDeluxeBooked);
+
+      // Verify no overbooking occurred
+      if (todayNonAcBooked > roomCapacity['normal-non-ac']) {
+        console.error(`OVERBOOKING DETECTED: Normal Non-AC rooms: ${todayNonAcBooked} booked vs ${roomCapacity['normal-non-ac']} total`);
       }
+      if (todayAcBooked > roomCapacity['normal-ac']) {
+        console.error(`OVERBOOKING DETECTED: Normal AC rooms: ${todayAcBooked} booked vs ${roomCapacity['normal-ac']} total`);
+      }
+      if (todayDeluxeBooked > roomCapacity['deluxe-ac']) {
+        console.error(`OVERBOOKING DETECTED: Deluxe AC rooms: ${todayDeluxeBooked} booked vs ${roomCapacity['deluxe-ac']} total`);
+      }
+
+      // Overview section
+      document.getElementById('non-ac-available').textContent = nonAcAvailable;
+      document.getElementById('ac-available').textContent = acAvailable;
+      document.getElementById('deluxe-available').textContent = deluxeAvailable;
+
+      // Detailed section
+      document.getElementById('non-ac-booked').textContent = todayNonAcBooked;
+      document.getElementById('non-ac-available-detailed').textContent = nonAcAvailable;
+      document.getElementById('ac-booked').textContent = todayAcBooked;
+      document.getElementById('ac-available-detailed').textContent = acAvailable;
+      document.getElementById('deluxe-booked').textContent = todayDeluxeBooked;
+      document.getElementById('deluxe-available-detailed').textContent = deluxeAvailable;
+
+      // Update colors based on availability
+      updateAvailabilityColors('non-ac-available', nonAcAvailable, roomCapacity['normal-non-ac']);
+      updateAvailabilityColors('ac-available', acAvailable, roomCapacity['normal-ac']);
+      updateAvailabilityColors('deluxe-available', deluxeAvailable, roomCapacity['deluxe-ac']);
+      updateAvailabilityColors('non-ac-available-detailed', nonAcAvailable, roomCapacity['normal-non-ac']);
+      updateAvailabilityColors('ac-available-detailed', acAvailable, roomCapacity['normal-ac']);
+      updateAvailabilityColors('deluxe-available-detailed', deluxeAvailable, roomCapacity['deluxe-ac']);
+    }
+
+    // Helper function to get booked rooms for a specific date
+    function getBookedRoomsForDate(roomType, date, bookings) {
+      return bookings
+        .filter(booking => {
+          return booking.roomType === roomType &&
+                 isDateInRange(date, booking.arrivalDate, booking.departureDate);
+        })
+        .reduce((sum, booking) => sum + parseInt(booking.roomCount), 0);
+    }
+
+    // Check if a specific date falls within a date range
+    function isDateInRange(checkDate, startDate, endDate) {
+      const check = new Date(checkDate);
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      
+      // Exclude the checkout date (departure date)
+      end.setDate(end.getDate() - 1);
+      
+      return check >= start && check <= end;
+    }
+
+    function updateAvailabilityColors(elementId, available, total) {
+      const element = document.getElementById(elementId);
+      if (available === 0) {
+        element.classList.add('full');
+      } else {
+        element.classList.remove('full');
+      }
+    }
+
+    function applyFilters() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const statusFilter = document.getElementById('statusFilter').value;
+      const roomTypeFilter = document.getElementById('roomTypeFilter').value;
+
+      filteredBookings = allBookings.filter(booking => {
+        const matchesSearch = !searchTerm || 
+          booking.guestName.toLowerCase().includes(searchTerm) ||
+          booking.email.toLowerCase().includes(searchTerm) ||
+          booking.bookingId.toLowerCase().includes(searchTerm);
+        
+        const matchesStatus = statusFilter === 'all' || booking.status === statusFilter;
+        
+        const matchesRoomType = roomTypeFilter === 'all' || booking.roomType === roomTypeFilter;
+
+        return matchesSearch && matchesStatus && matchesRoomType;
+      });
+
       displayBookings();
     }
 
     function displayBookings() {
       const container = document.getElementById('bookingsContainer');
       
+      console.log(`Displaying ${filteredBookings.length} bookings`);
+      
       if (filteredBookings.length === 0) {
-        container.innerHTML = '<div class="no-bookings"><i class="bi bi-inbox me-2"></i>No bookings found.</div>';
+        container.innerHTML = '<div class="no-bookings"><i class="bi bi-inbox me-2"></i>No bookings found matching your criteria.</div>';
         return;
       }
 
-      const bookingsHTML = filteredBookings.map(booking => `
-        <div class="booking-card ${booking.status}">
+      const bookingsHTML = filteredBookings.map((booking, index) => `
+        <div class="booking-card ${booking.status}" id="booking-${booking.bookingId}">
           <div class="row">
             <div class="col-md-8">
-              <div class="d-flex justify-content-between align-items-start mb-2">
+              <div class="d-flex justify-content-between align-items-start mb-3">
                 <h5 class="mb-0">${booking.guestName}</h5>
                 <span class="status-badge status-${booking.status}">
                   ${getStatusText(booking.status)}
                 </span>
               </div>
-              <p class="text-muted mb-2">
+              <p class="text-muted mb-3">
                 <i class="bi bi-envelope me-2"></i>${booking.email}
                 <i class="bi bi-phone me-2 ms-3"></i>${booking.phone}
               </p>
               <div class="row">
                 <div class="col-md-6">
-                  <p class="mb-1"><strong>Booking ID:</strong> ${booking.bookingId}</p>
-                  <p class="mb-1"><strong>Check-in:</strong> ${booking.arrivalDate}</p>
-                  <p class="mb-1"><strong>Check-out:</strong> ${booking.departureDate}</p>
+                  <p class="mb-2"><strong>Booking ID:</strong> ${booking.bookingId}</p>
+                  <p class="mb-2"><strong>Check-in:</strong> ${booking.arrivalDate}</p>
+                  <p class="mb-2"><strong>Check-out:</strong> ${booking.departureDate}</p>
                 </div>
                 <div class="col-md-6">
-                  <p class="mb-1"><strong>Room Type:</strong> ${booking.roomTypeText}</p>
-                  <p class="mb-1"><strong>Rooms:</strong> ${booking.roomCount}</p>
-                  <p class="mb-1"><strong>Total:</strong> ₹${booking.total.toLocaleString()}</p>
+                  <p class="mb-2"><strong>Room Type:</strong> ${booking.roomTypeText}</p>
+                  <p class="mb-2"><strong>Rooms:</strong> ${booking.roomCount}</p>
+                  <p class="mb-2"><strong>Total:</strong> ₹${booking.total.toLocaleString()}</p>
                 </div>
               </div>
             </div>
             <div class="col-md-4 text-end">
-              <div class="mb-2">
+              <div class="mb-3">
                 <small class="text-muted">
                   <i class="bi bi-calendar me-1"></i>
                   ${new Date(booking.timestamp).toLocaleDateString()}
                 </small>
               </div>
               ${booking.paymentMethod ? `
-                <div class="mb-2">
+                <div class="mb-3">
                   <small class="text-muted">
                     <i class="bi bi-credit-card me-1"></i>
                     ${booking.paymentMethod}
                   </small>
                 </div>
               ` : ''}
-              <div class="btn-group-vertical">
-                <button class="btn btn-sm btn-outline-primary" onclick="viewBooking('${booking.bookingId}')">
+              <div class="btn-group-vertical w-100">
+                <button class="btn btn-action btn-view mb-1" onclick="viewBooking('${booking.bookingId}')">
                   <i class="bi bi-eye me-1"></i>View Details
                 </button>
                 ${booking.status === 'confirmed' ? `
-                  <button class="btn btn-sm btn-outline-success" onclick="downloadReceipt('${booking.bookingId}')">
-                    <i class="bi bi-download me-1"></i>Receipt
+                  <button class="btn btn-action btn-cancel mb-1" onclick="cancelBooking('${booking.bookingId}')" id="cancel-btn-${booking.bookingId}">
+                    <i class="bi bi-x-circle me-1"></i>Cancel Booking
+                  </button>
+                  <button class="btn btn-action btn-confirm" onclick="downloadReceipt('${booking.bookingId}')">
+                    <i class="bi bi-download me-1"></i>Download Receipt
+                  </button>
+                ` : booking.status === 'pending_payment' ? `
+                  <button class="btn btn-action btn-cancel" onclick="cancelBooking('${booking.bookingId}')" id="cancel-btn-${booking.bookingId}">
+                    <i class="bi bi-x-circle me-1"></i>Cancel Booking
                   </button>
                 ` : ''}
               </div>
@@ -343,7 +855,112 @@
         case 'confirmed': return 'Confirmed';
         case 'pending_payment': return 'Pending Payment';
         case 'payment_failed': return 'Payment Failed';
+        case 'cancelled': return 'Cancelled';
         default: return status;
+      }
+    }
+
+    async function cancelBooking(bookingId) {
+      if (!confirm('Are you sure you want to cancel this booking? This action cannot be undone.')) {
+        return;
+      }
+
+      // Disable the cancel button immediately to prevent multiple clicks
+      const cancelButton = document.getElementById(`cancel-btn-${bookingId}`);
+      if (cancelButton) {
+        cancelButton.disabled = true;
+        cancelButton.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Cancelling...';
+      }
+
+      try {
+        console.log(`Attempting to cancel booking: ${bookingId}`);
+        
+        // Find the booking to cancel
+        const bookingToCancel = allBookings.find(b => b.bookingId === bookingId);
+        
+        if (!bookingToCancel) {
+          alert('Booking not found!');
+          if (cancelButton) {
+            cancelButton.disabled = false;
+            cancelButton.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel Booking';
+          }
+          return;
+        }
+
+        console.log('Found booking to cancel:', bookingToCancel);
+
+        // INSTANT DATABASE REMOVAL FIRST
+        try {
+          // Remove from Firebase IMMEDIATELY
+          if (window.firebaseBookingService) {
+            await window.firebaseBookingService.deleteBooking(bookingId);
+            console.log('Booking deleted from Firebase instantly');
+          }
+          
+          // Clean up localStorage IMMEDIATELY
+          const keysToCheck = ['confirmedBooking', 'failedBooking', 'currentBooking'];
+          keysToCheck.forEach(key => {
+            const stored = localStorage.getItem(key);
+            if (stored && stored !== 'null') {
+              try {
+                const parsed = JSON.parse(stored);
+                if (parsed && parsed.bookingId === bookingId) {
+                  localStorage.removeItem(key);
+                  console.log(`Booking removed from localStorage key: ${key} instantly`);
+                }
+              } catch (e) {
+                console.error(`Error parsing ${key}:`, e);
+              }
+            }
+          });
+          
+          console.log('Database cleanup completed instantly');
+        } catch (dbError) {
+          console.error('Database removal error:', dbError);
+          alert('Error removing booking from database. Please try again.');
+          if (cancelButton) {
+            cancelButton.disabled = false;
+            cancelButton.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel Booking';
+          }
+          return;
+        }
+
+        // IMMEDIATE UI UPDATE - Remove from display
+        const bookingCard = document.getElementById(`booking-${bookingId}`);
+        if (bookingCard) {
+          // Add fade-out effect
+          bookingCard.style.transition = 'opacity 0.3s ease-out';
+          bookingCard.style.opacity = '0';
+          
+          setTimeout(() => {
+            bookingCard.remove();
+            console.log('Booking card removed from DOM');
+          }, 300);
+        }
+
+        // Remove from arrays immediately
+        const initialCount = allBookings.length;
+        allBookings = allBookings.filter(b => b.bookingId !== bookingId);
+        filteredBookings = filteredBookings.filter(b => b.bookingId !== bookingId);
+        
+        console.log(`Booking removed from arrays. Before: ${initialCount}, After: ${allBookings.length}`);
+
+        // Update statistics and availability immediately
+        updateStatistics();
+        updateRoomAvailability();
+        
+        // Show success message immediately
+        alert(`Booking ${bookingId} has been cancelled and removed from database instantly!`);
+        
+      } catch (error) {
+        console.error('Error cancelling booking:', error);
+        alert('Error cancelling booking. Please try again.');
+        
+        // Re-enable button on error
+        if (cancelButton) {
+          cancelButton.disabled = false;
+          cancelButton.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel Booking';
+        }
       }
     }
 
@@ -464,8 +1081,11 @@ Booking Date: ${new Date(booking.timestamp).toLocaleString()}
       `;
     }
 
-    async function refreshBookings() {
+    async function refreshData() {
       await loadBookings();
+      if (document.getElementById('bookings-section').style.display !== 'none') {
+        applyFilters();
+      }
     }
   </script>
 

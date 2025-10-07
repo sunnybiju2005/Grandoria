@@ -1,13 +1,13 @@
 // Firebase Configuration
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCuuhKEdDevyLKZ-hDDMNoMt3YOy3XO00Y",
-  authDomain: "gaurikeerthana-residency.firebaseapp.com",
-  projectId: "gaurikeerthana-residency",
-  storageBucket: "gaurikeerthana-residency.firebasestorage.app",
-  messagingSenderId: "272531946539",
-  appId: "1:272531946539:web:f513fc6a03dc189bad7e6e",
-  measurementId: "G-SZPH6Z7TGH"
+  apiKey: "AIzaSyDK0nn070RQAkmL_EzzfKo8HyBw78wyWzg",
+  authDomain: "gaurikeerthana-residency-c3ba4.firebaseapp.com",
+  projectId: "gaurikeerthana-residency-c3ba4",
+  storageBucket: "gaurikeerthana-residency-c3ba4.firebasestorage.app",
+  messagingSenderId: "875606607101",
+  appId: "1:875606607101:web:baa1cf0e22b0d52c466a94",
+  measurementId: "G-X365HD4ESW"
 };
 
 // Initialize Firebase using CDN imports (compatible with HTML files)

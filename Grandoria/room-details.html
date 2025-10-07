@@ -359,119 +359,6 @@
 
     </section><!-- /Room Details Section -->
 
-    <!-- Gallery Showcase Section -->
-    <section id="gallery-showcase" class="gallery-showcase section">
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="gallery-carousel swiper init-swiper" data-aos="fade-up" data-aos-delay="200">
-          <script type="application/json" class="swiper-config">
-            {
-              "loop": true,
-              "speed": 600,
-              "autoplay": {
-                "delay": 3000
-              },
-              "slidesPerView": 1,
-              "spaceBetween": 20,
-              "centeredSlides": true,
-              "breakpoints": {
-                "576": {
-                  "slidesPerView": 2,
-                  "centeredSlides": false
-                },
-                "768": {
-                  "slidesPerView": 3,
-                  "centeredSlides": false
-                },
-                "992": {
-                  "slidesPerView": 4,
-                  "centeredSlides": false
-                },
-                "1200": {
-                  "slidesPerView": 5,
-                  "centeredSlides": false
-                }
-              }
-            }
-          </script>
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-1.webp" alt="Normal Non-AC Room" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-1.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-3.webp" alt="Normal AC Room" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-3.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-7.webp" alt="Deluxe AC Room" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-7.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-8.webp" alt="Room Interior" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-8.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-6.webp" alt="Room Amenities" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-6.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-18.webp" alt="Room View" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-18.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-12.webp" alt="Luxury Suite" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-12.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="gallery-item">
-                <img src="assets/img/hotel/room-5.webp" alt="Room Facilities" class="img-fluid" loading="lazy">
-                <a href="assets/img/hotel/room-5.webp" class="gallery-overlay glightbox">
-                  <i class="bi bi-eye"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="300">
-          <a href="gallery.html" class="btn btn-gallery">
-            <i class="bi bi-collection me-2"></i>Discover Our Full Gallery
-          </a>
-        </div>
-
-      </div>
-
-    </section><!-- /Gallery Showcase Section -->
 
   </main>
 
@@ -551,6 +438,17 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Admin Access Script -->
+  <script>
+    // Admin access with Ctrl+A shortcut
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        window.location.href = 'admin-login.html';
+      }
+    });
+  </script>
 
 </body>
 

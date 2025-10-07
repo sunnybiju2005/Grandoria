@@ -991,6 +991,14 @@
       }
 
     });
+
+    // Admin access with Ctrl+A shortcut
+    document.addEventListener('keydown', function(e) {
+      if (e.ctrlKey && e.key === 'a') {
+        e.preventDefault();
+        window.location.href = 'admin-login.html';
+      }
+    });
   </script>
 
 </body>

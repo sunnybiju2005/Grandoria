@@ -3,13 +3,13 @@
 
 // Firebase Configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCuuhKEdDevyLKZ-hDDMNoMt3YOy3XO00Y",
-  authDomain: "gaurikeerthana-residency.firebaseapp.com",
-  projectId: "gaurikeerthana-residency",
-  storageBucket: "gaurikeerthana-residency.firebasestorage.app",
-  messagingSenderId: "272531946539",
-  appId: "1:272531946539:web:f513fc6a03dc189bad7e6e",
-  measurementId: "G-SZPH6Z7TGH"
+  apiKey: "AIzaSyDK0nn070RQAkmL_EzzfKo8HyBw78wyWzg",
+  authDomain: "gaurikeerthana-residency-c3ba4.firebaseapp.com",
+  projectId: "gaurikeerthana-residency-c3ba4",
+  storageBucket: "gaurikeerthana-residency-c3ba4.firebasestorage.app",
+  messagingSenderId: "875606607101",
+  appId: "1:875606607101:web:baa1cf0e22b0d52c466a94",
+  measurementId: "G-X365HD4ESW"
 };
 
 // Initialize Firebase (will be available globally after CDN scripts load)
@@ -197,6 +197,35 @@ class FirebaseBookingService {
       throw error;
     }
   }
+
+  // Delete booking
+  async deleteBooking(bookingId) {
+    if (!this.init()) {
+      throw new Error('Firebase not initialized');
+    }
+
+    try {
+      // First, try to delete the specific document
+      await db.collection(this.collection).doc(bookingId).delete();
+      console.log(`Booking ${bookingId} deleted successfully from Firebase`);
+      
+      // Also try to delete any bookings with matching bookingId in case of data inconsistency
+      const snapshot = await db.collection(this.collection).where('bookingId', '==', bookingId).get();
+      if (!snapshot.empty) {
+        const batch = db.batch();
+        snapshot.docs.forEach(doc => {
+          batch.delete(doc.ref);
+        });
+        await batch.commit();
+        console.log(`Additional bookings with ID ${bookingId} deleted from Firebase`);
+      }
+      
+      return true;
+    } catch (error) {
+      console.error('Error deleting booking from Firebase: ', error);
+      throw error;
+    }
+  }
 }
 
 // Initialize Firebase service
@@ -219,6 +248,34 @@ window.localStorageFallback = {
   getBooking: (bookingId) => {
     const bookingData = JSON.parse(localStorage.getItem('currentBooking') || '{}');
     return bookingData;
+  },
+
+  deleteBooking: (bookingId) => {
+    // More targeted removal based on booking ID
+    const keysToCheck = ['confirmedBooking', 'failedBooking', 'currentBooking'];
+    let removed = false;
+    
+    keysToCheck.forEach(key => {
+      const stored = localStorage.getItem(key);
+      if (stored && stored !== 'null') {
+        try {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.bookingId === bookingId) {
+            localStorage.removeItem(key);
+            console.log(`Booking ${bookingId} deleted from localStorage key: ${key}`);
+            removed = true;
+          }
+        } catch (e) {
+          console.error(`Error parsing ${key}:`, e);
+        }
+      }
+    });
+    
+    if (!removed) {
+      console.log(`Booking ${bookingId} not found in localStorage`);
+    }
+    
+    return true;
   }
 };
 

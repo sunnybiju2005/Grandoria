@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Admin Login - Gaurikeerthana</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="assets/img/favicon.png" rel="icon">
+  <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <!-- Admin Login Styles -->
+  <style>
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .admin-navbar {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+
+    .admin-navbar .navbar-brand {
+      color: white !important;
+      font-weight: 700;
+      font-size: 1.5rem;
+    }
+
+    .admin-navbar .nav-link {
+      color: rgba(255,255,255,0.9) !important;
+      transition: color 0.3s ease;
+      font-weight: 500;
+    }
+
+    .admin-navbar .nav-link:hover {
+      color: white !important;
+    }
+
+    .login-container-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 80px);
+      padding: 20px 0;
+    }
+
+    .admin-login-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      width: 100%;
+      max-width: 450px;
+      margin: 20px;
+    }
+
+    .admin-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .admin-header h1 {
+      color: #2c3e50;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .admin-header p {
+      color: #6c757d;
+      margin-bottom: 0;
+    }
+
+    .form-floating {
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 12px 15px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+
+    .btn-admin {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      border: none;
+      border-radius: 10px;
+      padding: 12px 30px;
+      font-weight: 600;
+      color: white;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .btn-admin:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      color: white;
+    }
+
+    .alert {
+      border-radius: 10px;
+      border: none;
+      margin-top: 20px;
+    }
+
+    .admin-footer {
+      text-align: center;
+      margin-top: 30px;
+      color: #6c757d;
+      font-size: 14px;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      border-top-color: transparent;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Admin Navigation -->
+  <nav class="navbar navbar-expand-lg admin-navbar">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <i class="bi bi-shield-lock me-2"></i>Gaurikeerthana Admin
+      </a>
+      
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="collapse navbar-collapse" id="adminNav">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">
+              <i class="bi bi-house me-1"></i>Home
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="rooms.html">
+              <i class="bi bi-door-open me-1"></i>Rooms
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="booking.html">
+              <i class="bi bi-calendar-plus me-1"></i>Booking
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="contact.html">
+              <i class="bi bi-telephone me-1"></i>Contact
+            </a>
+          </li>
+        </ul>
+        
+        <div class="d-flex">
+          <span class="navbar-text text-white me-3">
+            <i class="bi bi-person-circle me-1"></i>Admin Access
+          </span>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="login-container-wrapper">
+    <div class="admin-login-container fade-in">
+    <div class="admin-header">
+      <h1><i class="bi bi-shield-lock me-2"></i>Admin Login</h1>
+      <p>Gaurikeerthana Residency Management</p>
+    </div>
+
+    <form id="adminLoginForm">
+      <div class="form-floating">
+        <input type="text" class="form-control" id="adminId" placeholder="Admin ID" required>
+        <label for="adminId"><i class="bi bi-person me-2"></i>Admin ID</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="password" class="form-control" id="adminPassword" placeholder="Password" required>
+        <label for="adminPassword"><i class="bi bi-lock me-2"></i>Password</label>
+      </div>
+
+      <button type="submit" class="btn btn-admin">
+        <span class="loading-spinner" id="loginSpinner"></span>
+        <span id="loginText">Login to Dashboard</span>
+      </button>
+    </form>
+
+    <div id="loginAlert" class="alert hidden" role="alert">
+      <i class="bi bi-exclamation-triangle me-2"></i>
+      <span id="alertMessage"></span>
+    </div>
+
+    <div class="admin-footer">
+      <p><i class="bi bi-shield-check me-1"></i>Secure Admin Access</p>
+      <small>Use Ctrl+A from any page to access admin login</small>
+    </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+
+  <!-- Admin Login Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Admin credentials
+      const ADMIN_ID = 'irene';
+      const ADMIN_PASSWORD = 'sabu';
+
+      const loginForm = document.getElementById('adminLoginForm');
+      const adminIdInput = document.getElementById('adminId');
+      const adminPasswordInput = document.getElementById('adminPassword');
+      const loginAlert = document.getElementById('loginAlert');
+      const alertMessage = document.getElementById('alertMessage');
+      const loginSpinner = document.getElementById('loginSpinner');
+      const loginText = document.getElementById('loginText');
+
+      // Focus on first input
+      adminIdInput.focus();
+
+      // Login form submission
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const enteredId = adminIdInput.value.trim();
+        const enteredPassword = adminPasswordInput.value.trim();
+
+        // Show loading state
+        loginSpinner.style.display = 'inline-block';
+        loginText.textContent = 'Authenticating...';
+        loginForm.querySelector('button').disabled = true;
+
+        // Simulate authentication delay
+        setTimeout(() => {
+          if (enteredId === ADMIN_ID && enteredPassword === ADMIN_PASSWORD) {
+            // Login successful
+            showAlert('success', 'Login successful! Redirecting to dashboard...');
+            
+            // Store admin session
+            sessionStorage.setItem('adminLoggedIn', 'true');
+            sessionStorage.setItem('adminLoginTime', new Date().toISOString());
+            
+            // Redirect to admin dashboard
+            setTimeout(() => {
+              window.location.href = 'admin-dashboard.html';
+            }, 1500);
+          } else {
+            // Login failed
+            showAlert('danger', 'Invalid credentials. Please check your Admin ID and Password.');
+            adminPasswordInput.value = '';
+            adminPasswordInput.focus();
+          }
+
+          // Reset button state
+          loginSpinner.style.display = 'none';
+          loginText.textContent = 'Login to Dashboard';
+          loginForm.querySelector('button').disabled = false;
+        }, 1000);
+      });
+
+      function showAlert(type, message) {
+        alertMessage.textContent = message;
+        loginAlert.className = `alert alert-${type}`;
+        loginAlert.classList.remove('hidden');
+        
+        // Auto-hide success alerts
+        if (type === 'success') {
+          setTimeout(() => {
+            loginAlert.classList.add('hidden');
+          }, 3000);
+        }
+      }
+
+      // Handle Enter key in form fields
+      adminIdInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          adminPasswordInput.focus();
+        }
+      });
+
+      adminPasswordInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          loginForm.dispatchEvent(new Event('submit'));
+        }
+      });
+
+      // Check if already logged in
+      if (sessionStorage.getItem('adminLoggedIn') === 'true') {
+        const loginTime = new Date(sessionStorage.getItem('adminLoginTime'));
+        const now = new Date();
+        const hoursSinceLogin = (now - loginTime) / (1000 * 60 * 60);
+        
+        if (hoursSinceLogin < 8) { // 8 hour session
+          showAlert('info', 'Already logged in. Redirecting to dashboard...');
+          setTimeout(() => {
+            window.location.href = 'admin-dashboard.html';
+          }, 1000);
+        } else {
+          // Session expired
+          sessionStorage.removeItem('adminLoggedIn');
+          sessionStorage.removeItem('adminLoginTime');
+        }
+      }
+    });
+  </script>
+
+</body>
+
+</html>

@@ -10,7 +10,7 @@
 
 2. **Create New Project**
    - Click "Create a project"
-   - Project name: `gaurikeerthana-residency`
+   - Project name: `gaurikeerthana-residency-c3ba4`
    - Click "Continue"
 
 3. **Enable Google Analytics (Optional)**
@@ -57,28 +57,30 @@
    - It looks like this:
    ```javascript
    const firebaseConfig = {
-     apiKey: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXX",
-     authDomain: "gaurikeerthana-residency.firebaseapp.com",
-     projectId: "gaurikeerthana-residency",
-     storageBucket: "gaurikeerthana-residency.appspot.com",
-     messagingSenderId: "123456789012",
-     appId: "1:123456789012:web:abcdef1234567890"
+     apiKey: "AIzaSyDK0nn070RQAkmL_EzzfKo8HyBw78wyWzg",
+     authDomain: "gaurikeerthana-residency-c3ba4.firebaseapp.com",
+     projectId: "gaurikeerthana-residency-c3ba4",
+     storageBucket: "gaurikeerthana-residency-c3ba4.firebasestorage.app",
+     messagingSenderId: "875606607101",
+     appId: "1:875606607101:web:baa1cf0e22b0d52c466a94",
+     measurementId: "G-X365HD4ESW"
    };
    ```
 
 ### **Step 4: Update Your Website**
 
-1. **Edit firebase-config.js**
-   - Open `Grandoria/firebase-config.js`
-   - Replace the placeholder config with your actual config:
+1. **Edit firebase-config-simple.js**
+   - Open `Grandoria/firebase-config-simple.js`
+   - The configuration has been updated with your new Firebase project:
    ```javascript
    const firebaseConfig = {
-     apiKey: "YOUR_ACTUAL_API_KEY",
-     authDomain: "YOUR_ACTUAL_AUTH_DOMAIN",
-     projectId: "YOUR_ACTUAL_PROJECT_ID",
-     storageBucket: "YOUR_ACTUAL_STORAGE_BUCKET",
-     messagingSenderId: "YOUR_ACTUAL_MESSAGING_SENDER_ID",
-     appId: "YOUR_ACTUAL_APP_ID"
+     apiKey: "AIzaSyDK0nn070RQAkmL_EzzfKo8HyBw78wyWzg",
+     authDomain: "gaurikeerthana-residency-c3ba4.firebaseapp.com",
+     projectId: "gaurikeerthana-residency-c3ba4",
+     storageBucket: "gaurikeerthana-residency-c3ba4.firebasestorage.app",
+     messagingSenderId: "875606607101",
+     appId: "1:875606607101:web:baa1cf0e22b0d52c466a94",
+     measurementId: "G-X365HD4ESW"
    };
    ```
 
