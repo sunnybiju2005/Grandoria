@@ -92,10 +92,14 @@ class FirebaseBookingService {
     }
   }
 
-  // Get all bookings (for admin)
+  // Get all bookings (for admin) - only confirmed bookings
   async getAllBookings() {
     try {
-      const q = query(collection(this.db, this.collection), orderBy('createdAt', 'desc'));
+      const q = query(
+        collection(this.db, this.collection), 
+        where('status', '==', 'confirmed'),
+        orderBy('createdAt', 'desc')
+      );
       const querySnapshot = await getDocs(q);
       
       const bookings = [];

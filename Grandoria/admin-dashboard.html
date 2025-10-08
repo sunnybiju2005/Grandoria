@@ -610,12 +610,12 @@
     function loadBookingsFromLocalStorage() {
       const bookings = [];
       
-      // Check for confirmed bookings
+      // Only load confirmed bookings (successful transactions)
       const confirmedBooking = localStorage.getItem('confirmedBooking');
       if (confirmedBooking && confirmedBooking !== 'null') {
         try {
           const parsed = JSON.parse(confirmedBooking);
-          if (parsed && parsed.bookingId) {
+          if (parsed && parsed.bookingId && parsed.status === 'confirmed') {
             bookings.push(parsed);
           }
         } catch (e) {
@@ -623,40 +623,18 @@
         }
       }
       
-      // Check for failed bookings
-      const failedBooking = localStorage.getItem('failedBooking');
-      if (failedBooking && failedBooking !== 'null') {
-        try {
-          const parsed = JSON.parse(failedBooking);
-          if (parsed && parsed.bookingId) {
-            bookings.push(parsed);
-          }
-        } catch (e) {
-          console.error('Error parsing failed booking:', e);
-        }
-      }
-      
-      // Check for current bookings
-      const currentBooking = localStorage.getItem('currentBooking');
-      if (currentBooking && currentBooking !== 'null') {
-        try {
-          const parsed = JSON.parse(currentBooking);
-          if (parsed && parsed.bookingId && parsed.status === 'pending_payment') {
-            bookings.push(parsed);
-          }
-        } catch (e) {
-          console.error('Error parsing current booking:', e);
-        }
-      }
+      // Note: Failed bookings and pending bookings are not stored in the main database 
+      // or displayed in admin dashboard. They are only kept temporarily for retry purposes.
       
       return bookings;
     }
 
     function updateStatistics() {
+      // Since we only load confirmed bookings, all bookings are confirmed
       const total = allBookings.length;
-      const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
-      const pending = allBookings.filter(b => b.status === 'pending_payment').length;
-      const failed = allBookings.filter(b => b.status === 'payment_failed' || b.status === 'cancelled').length;
+      const confirmed = allBookings.length; // All bookings are confirmed
+      const pending = 0; // No pending bookings stored in database
+      const failed = 0; // No failed bookings stored in database
 
       document.getElementById('totalBookings').textContent = total;
       document.getElementById('confirmedBookings').textContent = confirmed;
@@ -666,7 +644,8 @@
 
     function updateRoomAvailability() {
       // Calculate current overall room availability based on confirmed bookings
-      const confirmedBookings = allBookings.filter(b => b.status === 'confirmed');
+      // Since we only load confirmed bookings, all bookings are confirmed
+      const confirmedBookings = allBookings;
       
       // Get today's date for current availability calculation
       const today = new Date().toISOString().split('T')[0];

@@ -27,6 +27,146 @@
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
+  <!-- Availability Check Styles -->
+  <style>
+    .availability-status {
+      margin-top: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #e9ecef;
+      background: #f8f9fa;
+      transition: all 0.3s ease;
+    }
+
+    .availability-status.checking {
+      border-color: #ffc107;
+      background: #fff3cd;
+    }
+
+    .availability-status.available {
+      border-color: #28a745;
+      background: #d4edda;
+    }
+
+    .availability-status.unavailable {
+      border-color: #dc3545;
+      background: #f8d7da;
+    }
+
+    .availability-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .availability-icon {
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .availability-icon i {
+      font-size: 1.2rem;
+    }
+
+    .availability-status.checking .availability-icon i {
+      color: #ffc107;
+      animation: spin 1s linear infinite;
+    }
+
+    .availability-status.available .availability-icon i {
+      color: #28a745;
+    }
+
+    .availability-status.unavailable .availability-icon i {
+      color: #dc3545;
+    }
+
+    .availability-text h6 {
+      margin: 0 0 5px 0;
+      font-weight: 600;
+    }
+
+    .availability-status.checking .availability-text h6 {
+      color: #856404;
+    }
+
+    .availability-status.available .availability-text h6 {
+      color: #155724;
+    }
+
+    .availability-status.unavailable .availability-text h6 {
+      color: #721c24;
+    }
+
+    .availability-text p {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.4;
+    }
+
+    .availability-actions {
+      margin-top: 12px;
+      text-align: right;
+    }
+
+    .alternative-options {
+      margin-top: 15px;
+      padding: 12px;
+      background: white;
+      border-radius: 8px;
+      border: 1px solid #dee2e6;
+    }
+
+    .alternative-options h6 {
+      margin: 0 0 10px 0;
+      color: #495057;
+      font-size: 0.9rem;
+    }
+
+    .alternative-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .alternative-list li {
+      padding: 5px 0;
+      font-size: 0.85rem;
+      color: #6c757d;
+    }
+
+    .alternative-list li:before {
+      content: "• ";
+      color: #007bff;
+      font-weight: bold;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .form-group.disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .btn-check-availability {
+      margin-top: 10px;
+      width: 100%;
+    }
+
+    #room-count:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background-color: #f8f9fa;
+    }
+
+    .form-group.disabled {
+      opacity: 0.6;
+    }
+  </style>
+
   <!-- =======================================================
   * Template Name: Gaurikeerthana
   * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
@@ -119,6 +259,35 @@
                 <form class="reservation-form" action="booking-confirmation.html" method="GET">
 
                   <div class="form-section">
+                    <h4>Room Preferences</h4>
+                    <div class="form-group">
+                      <label for="room-type" class="form-label">Room Type</label>
+                      <select class="form-select" id="room-type" name="room_type" required="">
+                        <option value="">Choose room type</option>
+                        <option value="normal-non-ac">Normal Non-AC Room - ₹2,000/night</option>
+                        <option value="normal-ac">Normal AC Room - ₹2,500/night</option>
+                        <option value="deluxe-ac">Deluxe AC Room - ₹4,000/night</option>
+                      </select>
+                    </div>
+                    
+                    <!-- Availability Status -->
+                    <div id="availability-status" class="availability-status" style="display: none;">
+                      <div class="availability-content">
+                        <div class="availability-icon">
+                          <i class="bi bi-info-circle"></i>
+                        </div>
+                        <div class="availability-text">
+                          <h6 id="availability-title">Checking Availability...</h6>
+                          <p id="availability-message">Please wait while we check room availability.</p>
+                        </div>
+                      </div>
+                      <div id="availability-actions" class="availability-actions" style="display: none;">
+                        <button type="button" class="btn btn-outline-primary btn-sm" id="check-alternatives">Check Alternatives</button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-section">
                     <h4>Booking Details</h4>
                     <div class="form-grid">
                       <div class="form-group">
@@ -151,20 +320,8 @@
                           <option value="5">5 Rooms</option>
                           <option value="6">6 Rooms</option>
                         </select>
+                        <small class="form-text text-muted" id="room-count-help">Maximum rooms available: <span id="max-rooms-display">Please select room type</span></small>
                       </div>
-                    </div>
-                  </div>
-
-                  <div class="form-section">
-                    <h4>Room Preferences</h4>
-                    <div class="form-group">
-                      <label for="room-type" class="form-label">Room Type</label>
-                      <select class="form-select" id="room-type" name="room_type" required="">
-                        <option value="">Choose room type</option>
-                        <option value="normal-non-ac">Normal Non-AC Room - ₹2,000/night</option>
-                        <option value="normal-ac">Normal AC Room - ₹2,500/night</option>
-                        <option value="deluxe-ac">Deluxe AC Room - ₹4,000/night</option>
-                      </select>
                     </div>
                   </div>
 
@@ -343,8 +500,6 @@
   <!-- Booking Form Validation Script -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
-      // Set minimum date based on check-in time restrictions
-      setMinimumDates();
 
       // Update departure date minimum when arrival date changes
       document.getElementById('arrival-date').addEventListener('change', function() {
@@ -376,11 +531,6 @@
         const selectedRoomCount = parseInt(this.value);
         
         // Check if selected room count exceeds total capacity
-        const roomCapacity = {
-          'normal-non-ac': 3,
-          'normal-ac': 6,
-          'deluxe-ac': 2
-        };
         
         if (selectedRoomType && selectedRoomCount > roomCapacity[selectedRoomType]) {
           alert(`Maximum ${roomCapacity[selectedRoomType]} ${getRoomTypeName(selectedRoomType)} rooms available. Please select fewer rooms.`);
@@ -490,7 +640,7 @@
       const submitButton = form.querySelector('button[type="submit"]');
 
       // Add form validation
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
         e.preventDefault();
         
         // Check if all required fields are filled
@@ -527,27 +677,15 @@
           alert('Please enter a valid 10-digit mobile number.');
         }
 
-        // Check check-in time restrictions for same-day bookings
-        const arrivalDate = document.getElementById('arrival-date').value;
-        const today = new Date().toISOString().split('T')[0];
-        const currentHour = new Date().getHours();
-        const checkInTime = 14; // 2:00 PM
-        
-        if (arrivalDate === today && currentHour >= checkInTime) {
-          allFieldsFilled = false;
-          document.getElementById('arrival-date').classList.add('is-invalid');
-          alert('Same-day bookings are not available after 2:00 PM. Please select tomorrow or later for your arrival date.');
-        }
 
         // Check room availability
         const selectedRoomType = document.getElementById('room-type').value;
         const requestedRooms = parseInt(document.getElementById('room-count').value);
-        const departureDate = document.getElementById('departure-date').value;
+        const departureDateValue = document.getElementById('departure-date').value;
         
-        if (selectedRoomType && requestedRooms && arrivalDate && departureDate) {
-          const availableRooms = await checkRoomAvailability(selectedRoomType, arrivalDate, departureDate, requestedRooms);
+        if (selectedRoomType && requestedRooms && arrivalDateValue && departureDateValue) {
+          const availableRooms = await checkRoomAvailability(selectedRoomType, arrivalDateValue, departureDateValue, requestedRooms);
           
-          // If availableRooms is 0, it means not enough rooms are available
           if (availableRooms === 0) {
             allFieldsFilled = false;
             document.getElementById('room-count').classList.add('is-invalid');
@@ -586,71 +724,12 @@
       });
     });
 
-    // Function to set minimum dates based on check-in time restrictions
-    function setMinimumDates() {
-      const now = new Date();
-      const currentHour = now.getHours();
-      const checkInTime = 14; // 2:00 PM
-      
-      let minimumDate;
-      
-      // If current time is before 2:00 PM, allow same-day booking
-      // If current time is after 2:00 PM, require next day booking
-      if (currentHour < checkInTime) {
-        minimumDate = now.toISOString().split('T')[0];
-      } else {
-        // After 2:00 PM, set minimum to tomorrow
-        const tomorrow = new Date(now);
-        tomorrow.setDate(tomorrow.getDate() + 1);
-        minimumDate = tomorrow.toISOString().split('T')[0];
-      }
-      
-      document.getElementById('arrival-date').setAttribute('min', minimumDate);
-      document.getElementById('departure-date').setAttribute('min', minimumDate);
-      
-      // Show check-in time information
-      displayCheckInTimeInfo(currentHour < checkInTime);
-    }
 
-    // Display check-in time information
-    function displayCheckInTimeInfo(allowSameDay) {
-      // Remove existing info if any
-      const existingInfo = document.getElementById('checkin-time-info');
-      if (existingInfo) {
-        existingInfo.remove();
-      }
-
-      const info = document.createElement('div');
-      info.id = 'checkin-time-info';
-      info.className = 'alert alert-info mt-3';
-      
-      if (allowSameDay) {
-        info.innerHTML = `
-          <i class="bi bi-clock me-2"></i>
-          <strong>Check-in Time:</strong> 2:00 PM | <strong>Check-out Time:</strong> 12:00 PM<br>
-          <small>Same-day bookings are available until 2:00 PM today.</small>
-        `;
-      } else {
-        info.innerHTML = `
-          <i class="bi bi-clock me-2"></i>
-          <strong>Check-in Time:</strong> 2:00 PM | <strong>Check-out Time:</strong> 12:00 PM<br>
-          <small>Same-day bookings are no longer available after 2:00 PM. Please select tomorrow or later.</small>
-        `;
-      }
-      
-      // Insert after the arrival date field
-      document.getElementById('arrival-date').parentNode.parentNode.appendChild(info);
-    }
 
     // Enhanced daily room availability checking function
     async function checkRoomAvailability(roomType, arrivalDate, departureDate, requestedRooms = 1) {
       try {
-        // Get room capacity limits - STRICT LIMITS
-        const roomCapacity = {
-          'normal-non-ac': 3,
-          'normal-ac': 6,
-          'deluxe-ac': 2
-        };
+        // Get room capacity limits
 
         // Try to get bookings from Firebase first
         let bookings = [];
@@ -751,17 +830,17 @@
     function loadBookingsFromLocalStorage() {
       const bookings = [];
       
-      // Check for confirmed bookings
+      // Only check for confirmed bookings (successful transactions)
       const confirmedBooking = localStorage.getItem('confirmedBooking');
       if (confirmedBooking) {
-        bookings.push(JSON.parse(confirmedBooking));
+        const parsed = JSON.parse(confirmedBooking);
+        if (parsed && parsed.status === 'confirmed') {
+          bookings.push(parsed);
+        }
       }
       
-      // Check for failed bookings
-      const failedBooking = localStorage.getItem('failedBooking');
-      if (failedBooking) {
-        bookings.push(JSON.parse(failedBooking));
-      }
+      // Note: Failed bookings are not considered for availability
+      // as they don't represent confirmed room occupancy
       
       return bookings;
     }
@@ -771,6 +850,477 @@
       if (e.ctrlKey && e.key === 'a') {
         e.preventDefault();
         window.location.href = 'admin-login.html';
+      }
+    });
+
+    let availabilityCheckTimeout;
+    let isCheckingAvailability = false;
+
+    // Room capacity limits
+    const roomCapacity = {
+      'normal-non-ac': 3,
+      'normal-ac': 6,
+      'deluxe-ac': 2
+    };
+    
+    const roomTypeNames = {
+      'normal-non-ac': 'Normal Non-AC Room',
+      'normal-ac': 'Normal AC Room',
+      'deluxe-ac': 'Deluxe AC Room'
+    };
+
+    async function updateRoomCountOptions() {
+      const roomTypeSelect = document.getElementById('room-type');
+      const roomCountSelect = document.getElementById('room-count');
+      const maxRoomsDisplay = document.getElementById('max-rooms-display');
+      const arrivalDate = document.getElementById('arrival-date').value;
+      const departureDate = document.getElementById('departure-date').value;
+      
+      const selectedRoomType = roomTypeSelect.value;
+      
+      if (!selectedRoomType) {
+        // No room type selected
+        maxRoomsDisplay.textContent = 'Please select room type';
+        roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+        roomCountSelect.disabled = true;
+        return;
+      }
+      
+      const maxCapacity = roomCapacity[selectedRoomType];
+      
+      if (!maxCapacity) {
+        console.error('Unknown room type:', selectedRoomType);
+        maxRoomsDisplay.textContent = 'Error';
+        roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+        roomCountSelect.disabled = true;
+        return;
+      }
+      
+      // Show loading state when checking database
+      if (arrivalDate && departureDate && new Date(departureDate) > new Date(arrivalDate)) {
+        maxRoomsDisplay.textContent = 'Checking availability...';
+        roomCountSelect.disabled = true;
+        roomCountSelect.innerHTML = '<option value="">Checking...</option>';
+      }
+      
+      // If dates are selected, check actual availability
+      let availableRooms = maxCapacity;
+      if (arrivalDate && departureDate && new Date(departureDate) > new Date(arrivalDate)) {
+        try {
+          let bookings = [];
+          if (window.firebaseBookingService) {
+            bookings = await window.firebaseBookingService.getAllBookings();
+          } else {
+            bookings = loadBookingsFromLocalStorage();
+          }
+          
+          const requestedDates = getDateRange(arrivalDate, departureDate);
+          availableRooms = maxCapacity;
+          
+          for (const date of requestedDates) {
+            const availableOnDate = await checkAvailabilityForSpecificDate(selectedRoomType, date, bookings, maxCapacity);
+            availableRooms = Math.min(availableRooms, availableOnDate);
+          }
+        } catch (error) {
+          console.error('Error checking availability for room count options:', error);
+          // Fall back to showing all rooms up to capacity
+          availableRooms = maxCapacity;
+        }
+      }
+      
+      // Update the display with clear messaging
+      if (arrivalDate && departureDate) {
+        if (availableRooms === 0) {
+          maxRoomsDisplay.textContent = 'No rooms available';
+        } else if (availableRooms < maxCapacity) {
+          maxRoomsDisplay.textContent = `${availableRooms} of ${maxCapacity} rooms available`;
+        } else {
+          maxRoomsDisplay.textContent = `All ${availableRooms} rooms available`;
+        }
+      } else {
+        maxRoomsDisplay.textContent = `${maxCapacity} rooms total in property`;
+      }
+      
+      roomCountSelect.disabled = false;
+      
+      // Clear existing options
+      roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+      
+      // Add options up to the available rooms (or max capacity if no dates selected)
+      const roomsToShow = arrivalDate && departureDate ? availableRooms : maxCapacity;
+      
+      if (roomsToShow === 0) {
+        roomCountSelect.innerHTML = '<option value="">No rooms available</option>';
+        roomCountSelect.disabled = true;
+      } else {
+        for (let i = 1; i <= roomsToShow; i++) {
+          const option = document.createElement('option');
+          option.value = i;
+          option.textContent = `${i} Room${i > 1 ? 's' : ''}`;
+          roomCountSelect.appendChild(option);
+        }
+      }
+      
+      // Reset the selection
+      roomCountSelect.value = '';
+    }
+
+    // Add event listeners for real-time availability checking
+    document.addEventListener('DOMContentLoaded', function() {
+      const arrivalDateInput = document.getElementById('arrival-date');
+      const departureDateInput = document.getElementById('departure-date');
+      const roomTypeSelect = document.getElementById('room-type');
+      const roomCountSelect = document.getElementById('room-count');
+
+      // Initialize room count options based on current room type selection
+      updateRoomCountOptions();
+
+      // Add event listeners
+      arrivalDateInput.addEventListener('change', async function() {
+        await updateRoomCountOptions();
+        checkAvailability();
+      });
+      departureDateInput.addEventListener('change', async function() {
+        await updateRoomCountOptions();
+        checkAvailability();
+      });
+      roomTypeSelect.addEventListener('change', async function() {
+        await updateRoomCountOptions();
+        checkAvailability();
+      });
+      roomCountSelect.addEventListener('change', checkAvailability);
+
+      // Check alternatives button
+      document.getElementById('check-alternatives').addEventListener('click', showAlternatives);
+    });
+
+    async function checkAvailability() {
+      // Clear previous timeout
+      if (availabilityCheckTimeout) {
+        clearTimeout(availabilityCheckTimeout);
+      }
+
+      // Debounce the check to avoid too many API calls
+      availabilityCheckTimeout = setTimeout(async () => {
+        const arrivalDate = document.getElementById('arrival-date').value;
+        const departureDate = document.getElementById('departure-date').value;
+        const roomType = document.getElementById('room-type').value;
+        const roomCount = parseInt(document.getElementById('room-count').value) || 1;
+
+        // Only check if all required fields are filled
+        if (!arrivalDate || !departureDate || !roomType) {
+          hideAvailabilityStatus();
+          return;
+        }
+
+        // Validate dates
+        if (new Date(departureDate) <= new Date(arrivalDate)) {
+          showAvailabilityStatus('error', 'Invalid Dates', 'Check-out date must be after check-in date.');
+          return;
+        }
+
+        await performAvailabilityCheck(roomType, arrivalDate, departureDate, roomCount);
+      }, 500); // 500ms delay
+    }
+
+    async function performAvailabilityCheck(roomType, arrivalDate, departureDate, requestedRooms) {
+      if (isCheckingAvailability) return;
+      
+      isCheckingAvailability = true;
+      showAvailabilityStatus('checking', 'Checking Availability...', 'Please wait while we verify room availability.');
+
+      try {
+        // Get bookings from database
+        let bookings = [];
+        if (window.firebaseBookingService) {
+          bookings = await window.firebaseBookingService.getAllBookings();
+        } else {
+          bookings = loadBookingsFromLocalStorage();
+        }
+
+        // Use the existing robust availability checking function
+        const availableRooms = await checkRoomAvailability(roomType, arrivalDate, departureDate, requestedRooms);
+
+        // Update room count options based on actual availability
+        await updateRoomCountOptions();
+
+        // Check if rooms are available
+        if (availableRooms >= requestedRooms) {
+          showAvailabilityStatus('available', 'Rooms Available!', 
+            `${requestedRooms} room(s) of ${getRoomTypeName(roomType)} available for your selected dates.`);
+          enableFormSubmission();
+        } else if (availableRooms > 0) {
+          showAvailabilityStatus('unavailable', 'Limited Availability', 
+            `Only ${availableRooms} room(s) available. You requested ${requestedRooms} rooms. Please reduce your room count or select alternative dates.`);
+          disableFormSubmission();
+          showAlternativesButton();
+        } else {
+          showAvailabilityStatus('unavailable', 'No Rooms Available', 
+            `No ${getRoomTypeName(roomType)} rooms available for your selected dates. All ${roomCapacity[roomType]} rooms are already booked.`);
+          disableFormSubmission();
+          showAlternativesButton();
+        }
+
+      } catch (error) {
+        console.error('Error checking availability:', error);
+        showAvailabilityStatus('error', 'Check Failed', 'Unable to check availability. Please try again.');
+        disableFormSubmission();
+      } finally {
+        isCheckingAvailability = false;
+      }
+    }
+
+    function showAvailabilityStatus(type, title, message) {
+      const statusDiv = document.getElementById('availability-status');
+      const titleElement = document.getElementById('availability-title');
+      const messageElement = document.getElementById('availability-message');
+      const iconElement = statusDiv.querySelector('.availability-icon i');
+
+      // Remove existing classes
+      statusDiv.className = 'availability-status';
+      
+      // Add new classes and content
+      statusDiv.classList.add(type);
+      titleElement.textContent = title;
+      messageElement.textContent = message;
+      
+      // Update icon based on type
+      switch(type) {
+        case 'checking':
+          iconElement.className = 'bi bi-hourglass-split';
+          break;
+        case 'available':
+          iconElement.className = 'bi bi-check-circle';
+          break;
+        case 'unavailable':
+          iconElement.className = 'bi bi-x-circle';
+          break;
+        case 'error':
+          iconElement.className = 'bi bi-exclamation-triangle';
+          break;
+      }
+      
+      statusDiv.style.display = 'block';
+    }
+
+    function hideAvailabilityStatus() {
+      document.getElementById('availability-status').style.display = 'none';
+    }
+
+    function showAlternativesButton() {
+      document.getElementById('availability-actions').style.display = 'block';
+    }
+
+    function hideAlternativesButton() {
+      document.getElementById('availability-actions').style.display = 'none';
+    }
+
+    function enableFormSubmission() {
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Proceed to Booking';
+      }
+      hideAlternativesButton();
+    }
+
+    function disableFormSubmission() {
+      const submitButton = document.querySelector('button[type="submit"]');
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Check Availability First';
+      }
+    }
+
+    async function showAlternatives() {
+      const roomType = document.getElementById('room-type').value;
+      const arrivalDate = document.getElementById('arrival-date').value;
+      const departureDate = document.getElementById('departure-date').value;
+      const roomCount = parseInt(document.getElementById('room-count').value) || 1;
+
+      try {
+        // Get bookings from database
+        let bookings = [];
+        if (window.firebaseBookingService) {
+          bookings = await window.firebaseBookingService.getAllBookings();
+        } else {
+          bookings = loadBookingsFromLocalStorage();
+        }
+
+        const alternatives = await findAlternativeOptions(roomType, arrivalDate, departureDate, roomCount, bookings);
+        
+        if (alternatives.length > 0) {
+          showAlternativesList(alternatives);
+        } else {
+          showAvailabilityStatus('unavailable', 'No Alternatives Found', 
+            'Unfortunately, no rooms are available for your selected dates. Please try different dates.');
+        }
+      } catch (error) {
+        console.error('Error finding alternatives:', error);
+        showAvailabilityStatus('error', 'Error', 'Unable to find alternatives. Please try again.');
+      }
+    }
+
+    async function findAlternativeOptions(selectedRoomType, arrivalDate, departureDate, requestedRooms, bookings) {
+      const alternatives = [];
+
+      // Check other room types
+      for (const [roomType, capacity] of Object.entries(roomCapacity)) {
+        if (roomType === selectedRoomType) continue;
+
+        // Use the robust availability checking function
+        const availableRooms = await checkRoomAvailability(roomType, arrivalDate, departureDate, requestedRooms);
+
+        if (availableRooms >= requestedRooms) {
+          alternatives.push({
+            type: 'room_type',
+            roomType: roomType,
+            roomTypeName: getRoomTypeName(roomType),
+            availableRooms: availableRooms
+          });
+        }
+      }
+
+      // Check nearby dates (within 3 days)
+      for (let dayOffset = -3; dayOffset <= 3; dayOffset++) {
+        if (dayOffset === 0) continue;
+
+        const newArrivalDate = new Date(arrivalDate);
+        newArrivalDate.setDate(newArrivalDate.getDate() + dayOffset);
+        const newArrivalDateStr = newArrivalDate.toISOString().split('T')[0];
+
+        const newDepartureDate = new Date(departureDate);
+        newDepartureDate.setDate(newDepartureDate.getDate() + dayOffset);
+        const newDepartureDateStr = newDepartureDate.toISOString().split('T')[0];
+
+        // Skip if dates are in the past
+        if (newArrivalDate < new Date()) continue;
+
+        // Use the robust availability checking function
+        const availableRooms = await checkRoomAvailability(selectedRoomType, newArrivalDateStr, newDepartureDateStr, requestedRooms);
+
+        if (availableRooms >= requestedRooms) {
+          alternatives.push({
+            type: 'date',
+            arrivalDate: newArrivalDateStr,
+            departureDate: newDepartureDateStr,
+            roomType: selectedRoomType,
+            roomTypeName: getRoomTypeName(selectedRoomType),
+            dayOffset: dayOffset,
+            availableRooms: availableRooms
+          });
+        }
+      }
+
+      return alternatives.slice(0, 5); // Limit to 5 alternatives
+    }
+
+    function showAlternativesList(alternatives) {
+      const alternativesHtml = alternatives.map(alt => {
+        if (alt.type === 'room_type') {
+          return `<li>Switch to <strong>${alt.roomTypeName}</strong> (${alt.availableRooms} rooms available)</li>`;
+        } else if (alt.type === 'date') {
+          const dateStr = new Date(alt.arrivalDate).toLocaleDateString();
+          const offsetText = alt.dayOffset > 0 ? `${alt.dayOffset} days later` : `${Math.abs(alt.dayOffset)} days earlier`;
+          return `<li>Try <strong>${dateStr}</strong> (${offsetText}) - ${alt.availableRooms} rooms available</li>`;
+        }
+        return '';
+      }).join('');
+
+      const alternativesDiv = document.createElement('div');
+      alternativesDiv.className = 'alternative-options';
+      alternativesDiv.innerHTML = `
+        <h6>Available Alternatives:</h6>
+        <ul class="alternative-list">
+          ${alternativesHtml}
+        </ul>
+      `;
+
+      const statusDiv = document.getElementById('availability-status');
+      // Remove existing alternatives
+      const existingAlternatives = statusDiv.querySelector('.alternative-options');
+      if (existingAlternatives) {
+        existingAlternatives.remove();
+      }
+      
+      statusDiv.appendChild(alternativesDiv);
+    }
+
+    function getRoomTypeName(roomType) {
+      return roomTypeNames[roomType] || roomType;
+    }
+
+    // Helper function to get date range
+    function getDateRange(startDate, endDate) {
+      const dates = [];
+      const currentDate = new Date(startDate);
+      const end = new Date(endDate);
+      
+      while (currentDate < end) {
+        dates.push(currentDate.toISOString().split('T')[0]);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      
+      return dates;
+    }
+
+    // Override form submission to check availability first
+    document.querySelector('.reservation-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const statusDiv = document.getElementById('availability-status');
+      const isAvailable = statusDiv.classList.contains('available');
+      
+      if (!isAvailable) {
+        showAvailabilityStatus('error', 'Check Availability First', 'Please wait for availability confirmation before proceeding.');
+        return;
+      }
+
+      // Double-check availability before submission to prevent race conditions
+      const arrivalDate = document.getElementById('arrival-date').value;
+      const departureDate = document.getElementById('departure-date').value;
+      const roomType = document.getElementById('room-type').value;
+      const roomCount = parseInt(document.getElementById('room-count').value) || 1;
+
+      // Validate room count against room type capacity
+      const maxCapacity = roomCapacity[roomType];
+      if (roomCount > maxCapacity) {
+        showAvailabilityStatus('error', 'Invalid Selection', 
+          `You selected ${roomCount} rooms, but ${getRoomTypeName(roomType)} only has ${maxCapacity} rooms available. Please select a valid number of rooms.`);
+        disableFormSubmission();
+        return;
+      }
+
+      showAvailabilityStatus('checking', 'Final Verification...', 'Performing final availability check before booking...');
+
+      try {
+        // Get fresh data from database
+        let bookings = [];
+        if (window.firebaseBookingService) {
+          bookings = await window.firebaseBookingService.getAllBookings();
+        } else {
+          bookings = loadBookingsFromLocalStorage();
+        }
+
+        // Final availability check
+        const availableRooms = await checkRoomAvailability(roomType, arrivalDate, departureDate, roomCount);
+        
+        if (availableRooms >= roomCount) {
+          showAvailabilityStatus('available', 'Booking Confirmed!', 'Availability confirmed. Proceeding to booking...');
+          
+          // Small delay to show confirmation message
+          setTimeout(() => {
+            this.submit();
+          }, 1000);
+        } else {
+          showAvailabilityStatus('unavailable', 'Booking No Longer Available', 
+            `Sorry, the ${roomCount} room(s) are no longer available. Only ${availableRooms} room(s) remaining. Please select fewer rooms or different dates.`);
+          disableFormSubmission();
+        }
+      } catch (error) {
+        console.error('Error in final availability check:', error);
+        showAvailabilityStatus('error', 'Verification Failed', 'Unable to verify availability. Please try again.');
+        disableFormSubmission();
       }
     });
   </script>

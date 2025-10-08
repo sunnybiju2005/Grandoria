@@ -525,7 +525,7 @@
           
           console.log('Calculated pricing:', { nights, numberOfRooms, subtotal, gst, total });
           
-        // Create booking data
+        // Create booking data (temporary for payment processing)
         const bookingData = {
           bookingId: generateBookingId(),
           guestName: guestName,
@@ -545,37 +545,20 @@
         };
 
         // Show loading state
-        this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Saving Booking...';
+        this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing...';
         this.disabled = true;
 
         try {
-          // Save booking to Firebase (with localStorage fallback)
-          if (window.firebaseBookingService) {
-            const bookingId = await window.firebaseBookingService.saveBooking(bookingData);
-            bookingData.firebaseId = bookingId;
-            console.log('Booking saved to Firebase with ID:', bookingId);
-          } else {
-            // Fallback to localStorage if Firebase is not available
-            window.localStorageFallback.saveBooking(bookingData);
-            console.log('Firebase not available, using localStorage fallback');
-          }
-          
-          // Store booking data locally as backup
+          // Store booking data temporarily for payment processing only
           localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+          console.log('Booking data stored temporarily for payment processing');
           
-          // Show payment options
+          // Show payment options (booking will only be saved to database after successful payment)
           showPaymentOptions(bookingData);
           
         } catch (error) {
-          console.error('Error saving booking:', error);
-          
-          // Fallback to localStorage
-          localStorage.setItem('currentBooking', JSON.stringify(bookingData));
-          console.log('Using localStorage fallback due to error');
-          
-          // Show payment options
-          showPaymentOptions(bookingData);
-          
+          console.error('Error processing booking:', error);
+          alert('Error processing your booking. Please try again.');
         } finally {
           // Reset button state
           this.innerHTML = '<i class="bi bi-credit-card me-2"></i>Proceed to Payment Gateway';
@@ -750,29 +733,32 @@
           bookingData.status = 'confirmed';
           bookingData.paymentStatus = 'success';
           bookingData.paymentDate = new Date().toISOString();
+          bookingData.createdAt = new Date();
+          bookingData.updatedAt = new Date();
           
-          // Update in Firebase (with localStorage fallback)
+          // Save confirmed booking to Firebase database (only successful transactions)
           try {
-            if (window.firebaseBookingService && bookingData.firebaseId) {
-              await window.firebaseBookingService.updateBookingStatus(bookingData.firebaseId, {
-                status: 'confirmed',
-                paymentStatus: 'success',
-                paymentDate: bookingData.paymentDate
-              });
-              console.log('Payment success updated in Firebase');
+            if (window.firebaseBookingService) {
+              const bookingId = await window.firebaseBookingService.saveBooking(bookingData);
+              bookingData.firebaseId = bookingId;
+              console.log('Confirmed booking saved to Firebase with ID:', bookingId);
             } else {
-              window.localStorageFallback.updateBookingStatus(bookingData.bookingId, {
-                status: 'confirmed',
-                paymentStatus: 'success',
-                paymentDate: bookingData.paymentDate
-              });
+              // Fallback to localStorage if Firebase is not available
+              window.localStorageFallback.saveBooking(bookingData);
+              console.log('Firebase not available, confirmed booking saved to localStorage fallback');
             }
           } catch (error) {
-            console.error('Error updating payment success in Firebase:', error);
+            console.error('Error saving confirmed booking to Firebase:', error);
+            // Fallback to localStorage
+            window.localStorageFallback.saveBooking(bookingData);
+            console.log('Confirmed booking saved to localStorage due to Firebase error');
           }
           
-          // Save confirmed booking locally
+          // Save confirmed booking locally for admin dashboard
           localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
+          
+          // Clear temporary booking data
+          localStorage.removeItem('currentBooking');
           
           // Show success message
           showPaymentSuccess(bookingData);
@@ -783,30 +769,14 @@
           bookingData.paymentDate = new Date().toISOString();
           bookingData.failureReason = 'Payment gateway declined the transaction';
           
-          // Update in Firebase (with localStorage fallback)
-          try {
-            if (window.firebaseBookingService && bookingData.firebaseId) {
-              await window.firebaseBookingService.updateBookingStatus(bookingData.firebaseId, {
-                status: 'payment_failed',
-                paymentStatus: 'failed',
-                paymentDate: bookingData.paymentDate,
-                failureReason: bookingData.failureReason
-              });
-              console.log('Payment failure updated in Firebase');
-            } else {
-              window.localStorageFallback.updateBookingStatus(bookingData.bookingId, {
-                status: 'payment_failed',
-                paymentStatus: 'failed',
-                paymentDate: bookingData.paymentDate,
-                failureReason: bookingData.failureReason
-              });
-            }
-          } catch (error) {
-            console.error('Error updating payment failure in Firebase:', error);
-          }
+          // DO NOT save failed bookings to database - only store temporarily for retry
+          console.log('Payment failed - booking not saved to database');
           
-          // Save failed booking locally
+          // Save failed booking locally for retry (not in main database)
           localStorage.setItem('failedBooking', JSON.stringify(bookingData));
+          
+          // Clear temporary booking data
+          localStorage.removeItem('currentBooking');
           
           // Show failure message
           showPaymentFailure(bookingData);
