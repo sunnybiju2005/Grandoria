@@ -266,7 +266,7 @@
                         <option value="">Choose room type</option>
                         <option value="normal-non-ac">Normal Non-AC Room - ₹2,000/night</option>
                         <option value="normal-ac">Normal AC Room - ₹2,500/night</option>
-                        <option value="deluxe-ac">Deluxe AC Room - ₹4,000/night</option>
+                        <option value="deluxe-ac">Deluxe AC Room - ₹4,500/night</option>
                       </select>
                     </div>
                     
@@ -321,6 +321,10 @@
                           <option value="6">6 Rooms</option>
                         </select>
                         <small class="form-text text-muted" id="room-count-help">Maximum rooms available: <span id="max-rooms-display">Please select room type</span></small>
+                        <div id="room-selection-help" class="alert alert-info mt-2" style="display: none;">
+                          <i class="bi bi-info-circle me-2"></i>
+                          <strong>Room Selection Guide:</strong> Please select a room type first, then choose your check-in and check-out dates to see available room options.
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -500,9 +504,15 @@
   <!-- Booking Form Validation Script -->
   <script>
     document.addEventListener('DOMContentLoaded', function() {
+      // Show help message initially
+      const helpMessage = document.getElementById('room-selection-help');
+      const roomTypeSelect = document.getElementById('room-type');
+      if (!roomTypeSelect.value) {
+        helpMessage.style.display = 'block';
+      }
 
       // Update departure date minimum when arrival date changes
-      document.getElementById('arrival-date').addEventListener('change', function() {
+      document.getElementById('arrival-date').addEventListener('change', async function() {
         const arrivalDate = this.value;
         if (arrivalDate) {
           // Set minimum departure date to day after arrival
@@ -510,19 +520,47 @@
           nextDay.setDate(nextDay.getDate() + 1);
           document.getElementById('departure-date').setAttribute('min', nextDay.toISOString().split('T')[0]);
           
-          // Check availability if both dates and room type are selected
-          checkAndDisplayAvailability();
+          // Only check availability if room type is selected - don't update room options
+          const roomType = document.getElementById('room-type').value;
+          if (roomType) {
+            // Just check availability without updating room count options
+            checkAndDisplayAvailability();
+          }
         }
       });
 
       // Check availability when departure date changes
-      document.getElementById('departure-date').addEventListener('change', function() {
-        checkAndDisplayAvailability();
+      document.getElementById('departure-date').addEventListener('change', async function() {
+        // Only check availability if room type is selected - don't update room options
+        const roomType = document.getElementById('room-type').value;
+        if (roomType) {
+          // Just check availability without updating room count options
+          checkAndDisplayAvailability();
+        }
       });
 
       // Check availability when room type changes
-      document.getElementById('room-type').addEventListener('change', function() {
-        checkAndDisplayAvailability();
+      document.getElementById('room-type').addEventListener('change', async function() {
+        const helpMessage = document.getElementById('room-selection-help');
+        if (this.value) {
+          helpMessage.style.display = 'none';
+          // Clear any pending updates
+          if (roomOptionsUpdateTimeout) {
+            clearTimeout(roomOptionsUpdateTimeout);
+          }
+          // Update room count options first with a small delay
+          roomOptionsUpdateTimeout = setTimeout(async () => {
+            await updateRoomCountOptions();
+            checkAndDisplayAvailability();
+          }, 300);
+        } else {
+          helpMessage.style.display = 'block';
+          // Clear room count options when no room type is selected
+          const roomCountSelect = document.getElementById('room-count');
+          roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+          roomCountSelect.disabled = true;
+          document.getElementById('max-rooms-display').textContent = 'Please select room type';
+        }
       });
 
       // Check availability when room count changes
@@ -530,14 +568,23 @@
         const selectedRoomType = document.getElementById('room-type').value;
         const selectedRoomCount = parseInt(this.value);
         
-        // Check if selected room count exceeds total capacity
+        console.log('Room count changed to:', selectedRoomCount, 'for room type:', selectedRoomType);
         
+        // Check if selected room count exceeds total capacity
         if (selectedRoomType && selectedRoomCount > roomCapacity[selectedRoomType]) {
           alert(`Maximum ${roomCapacity[selectedRoomType]} ${getRoomTypeName(selectedRoomType)} rooms available. Please select fewer rooms.`);
           this.value = roomCapacity[selectedRoomType];
+          return; // Exit early to prevent further processing
         }
         
-        checkAndDisplayAvailability();
+        // Only check availability if we have all required fields - but don't update room options
+        const arrivalDate = document.getElementById('arrival-date').value;
+        const departureDate = document.getElementById('departure-date').value;
+        
+        if (selectedRoomType && arrivalDate && departureDate) {
+          // Just check availability without updating room count options
+          checkAndDisplayAvailability();
+        }
       });
 
       // Function to check and display availability
@@ -681,18 +728,30 @@
         // Check room availability
         const selectedRoomType = document.getElementById('room-type').value;
         const requestedRooms = parseInt(document.getElementById('room-count').value);
+        const arrivalDateValue = document.getElementById('arrival-date').value;
         const departureDateValue = document.getElementById('departure-date').value;
         
         if (selectedRoomType && requestedRooms && arrivalDateValue && departureDateValue) {
-          const availableRooms = await checkRoomAvailability(selectedRoomType, arrivalDateValue, departureDateValue, requestedRooms);
-          
-          if (availableRooms === 0) {
+          // First check if requested rooms exceed room capacity
+          const maxCapacity = roomCapacity[selectedRoomType];
+          if (requestedRooms > maxCapacity) {
             allFieldsFilled = false;
             document.getElementById('room-count').classList.add('is-invalid');
+            alert(`You selected ${requestedRooms} rooms, but ${getRoomTypeName(selectedRoomType)} only has ${maxCapacity} rooms available. Please select a valid number of rooms.`);
+          } else {
+            // Check actual availability
+            const availableRooms = await checkRoomAvailability(selectedRoomType, arrivalDateValue, departureDateValue, requestedRooms);
             
-            // Calculate actual available rooms for the message
-            const actualAvailable = await checkRoomAvailability(selectedRoomType, arrivalDate, departureDate, 1);
-            alert(`Not enough ${getRoomTypeName(selectedRoomType)} rooms available for the selected dates. Only ${actualAvailable} room${actualAvailable > 1 ? 's' : ''} available. Please reduce the number of rooms or choose different dates.`);
+            if (availableRooms < requestedRooms) {
+              allFieldsFilled = false;
+              document.getElementById('room-count').classList.add('is-invalid');
+              
+              if (availableRooms === 0) {
+                alert(`No ${getRoomTypeName(selectedRoomType)} rooms available for the selected dates. Please choose different dates or a different room type.`);
+              } else {
+                alert(`Not enough ${getRoomTypeName(selectedRoomType)} rooms available for the selected dates. Only ${availableRooms} room${availableRooms > 1 ? 's' : ''} available. Please reduce the number of rooms or choose different dates.`);
+              }
+            }
           }
         }
 
@@ -855,8 +914,10 @@
 
     let availabilityCheckTimeout;
     let isCheckingAvailability = false;
+    let isUpdatingRoomOptions = false;
+    let roomOptionsUpdateTimeout;
 
-    // Room capacity limits
+    // Room capacity limits - moved to top for proper initialization
     const roomCapacity = {
       'normal-non-ac': 3,
       'normal-ac': 6,
@@ -870,99 +931,118 @@
     };
 
     async function updateRoomCountOptions() {
-      const roomTypeSelect = document.getElementById('room-type');
-      const roomCountSelect = document.getElementById('room-count');
-      const maxRoomsDisplay = document.getElementById('max-rooms-display');
-      const arrivalDate = document.getElementById('arrival-date').value;
-      const departureDate = document.getElementById('departure-date').value;
+      if (isUpdatingRoomOptions) return; // Prevent multiple simultaneous calls
+      isUpdatingRoomOptions = true;
       
-      const selectedRoomType = roomTypeSelect.value;
+      try {
+        const roomTypeSelect = document.getElementById('room-type');
+        const roomCountSelect = document.getElementById('room-count');
+        const maxRoomsDisplay = document.getElementById('max-rooms-display');
+        const arrivalDate = document.getElementById('arrival-date').value;
+        const departureDate = document.getElementById('departure-date').value;
+        
+        // Store the current selection before making any changes
+        const currentSelection = roomCountSelect.value;
+        console.log('updateRoomCountOptions called, current selection:', currentSelection);
+        
+        const selectedRoomType = roomTypeSelect.value;
       
-      if (!selectedRoomType) {
-        // No room type selected
-        maxRoomsDisplay.textContent = 'Please select room type';
-        roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
-        roomCountSelect.disabled = true;
-        return;
-      }
-      
-      const maxCapacity = roomCapacity[selectedRoomType];
-      
-      if (!maxCapacity) {
-        console.error('Unknown room type:', selectedRoomType);
-        maxRoomsDisplay.textContent = 'Error';
-        roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
-        roomCountSelect.disabled = true;
-        return;
-      }
-      
-      // Show loading state when checking database
-      if (arrivalDate && departureDate && new Date(departureDate) > new Date(arrivalDate)) {
-        maxRoomsDisplay.textContent = 'Checking availability...';
-        roomCountSelect.disabled = true;
-        roomCountSelect.innerHTML = '<option value="">Checking...</option>';
-      }
-      
-      // If dates are selected, check actual availability
-      let availableRooms = maxCapacity;
-      if (arrivalDate && departureDate && new Date(departureDate) > new Date(arrivalDate)) {
-        try {
-          let bookings = [];
-          if (window.firebaseBookingService) {
-            bookings = await window.firebaseBookingService.getAllBookings();
+        if (!selectedRoomType) {
+          // No room type selected
+          maxRoomsDisplay.textContent = 'Please select room type';
+          roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+          roomCountSelect.disabled = true;
+          return;
+        }
+        
+        const maxCapacity = roomCapacity[selectedRoomType];
+        
+        if (!maxCapacity) {
+          console.error('Unknown room type:', selectedRoomType);
+          maxRoomsDisplay.textContent = 'Error';
+          roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+          roomCountSelect.disabled = true;
+          return;
+        }
+        
+        // If dates are selected, check actual availability
+        let availableRooms = maxCapacity;
+        if (arrivalDate && departureDate && new Date(departureDate) > new Date(arrivalDate)) {
+          try {
+            let bookings = [];
+            if (window.firebaseBookingService) {
+              bookings = await window.firebaseBookingService.getAllBookings();
+            } else {
+              bookings = loadBookingsFromLocalStorage();
+            }
+            
+            const requestedDates = getDateRange(arrivalDate, departureDate);
+            availableRooms = maxCapacity;
+            
+            for (const date of requestedDates) {
+              const availableOnDate = await checkAvailabilityForSpecificDate(selectedRoomType, date, bookings, maxCapacity);
+              availableRooms = Math.min(availableRooms, availableOnDate);
+            }
+          } catch (error) {
+            console.error('Error checking availability for room count options:', error);
+            // Fall back to showing all rooms up to capacity
+            availableRooms = maxCapacity;
+          }
+        }
+        
+        // Update the display with clear messaging
+        if (arrivalDate && departureDate) {
+          if (availableRooms === 0) {
+            maxRoomsDisplay.textContent = 'No rooms available';
+          } else if (availableRooms < maxCapacity) {
+            maxRoomsDisplay.textContent = `${availableRooms} of ${maxCapacity} rooms available`;
           } else {
-            bookings = loadBookingsFromLocalStorage();
+            maxRoomsDisplay.textContent = `All ${availableRooms} rooms available`;
           }
-          
-          const requestedDates = getDateRange(arrivalDate, departureDate);
-          availableRooms = maxCapacity;
-          
-          for (const date of requestedDates) {
-            const availableOnDate = await checkAvailabilityForSpecificDate(selectedRoomType, date, bookings, maxCapacity);
-            availableRooms = Math.min(availableRooms, availableOnDate);
-          }
-        } catch (error) {
-          console.error('Error checking availability for room count options:', error);
-          // Fall back to showing all rooms up to capacity
-          availableRooms = maxCapacity;
-        }
-      }
-      
-      // Update the display with clear messaging
-      if (arrivalDate && departureDate) {
-        if (availableRooms === 0) {
-          maxRoomsDisplay.textContent = 'No rooms available';
-        } else if (availableRooms < maxCapacity) {
-          maxRoomsDisplay.textContent = `${availableRooms} of ${maxCapacity} rooms available`;
         } else {
-          maxRoomsDisplay.textContent = `All ${availableRooms} rooms available`;
+          maxRoomsDisplay.textContent = `${maxCapacity} rooms total in property`;
         }
-      } else {
-        maxRoomsDisplay.textContent = `${maxCapacity} rooms total in property`;
-      }
-      
-      roomCountSelect.disabled = false;
-      
-      // Clear existing options
-      roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
-      
-      // Add options up to the available rooms (or max capacity if no dates selected)
-      const roomsToShow = arrivalDate && departureDate ? availableRooms : maxCapacity;
-      
-      if (roomsToShow === 0) {
-        roomCountSelect.innerHTML = '<option value="">No rooms available</option>';
-        roomCountSelect.disabled = true;
-      } else {
-        for (let i = 1; i <= roomsToShow; i++) {
-          const option = document.createElement('option');
-          option.value = i;
-          option.textContent = `${i} Room${i > 1 ? 's' : ''}`;
-          roomCountSelect.appendChild(option);
+        
+        roomCountSelect.disabled = false;
+        
+        // Determine how many rooms to show
+        const roomsToShow = arrivalDate && departureDate ? availableRooms : maxCapacity;
+        
+        // Only rebuild options if the current selection is invalid or if we need to add more options
+        const currentValue = parseInt(currentSelection);
+        const needsUpdate = !currentValue || currentValue > roomsToShow || roomCountSelect.children.length <= 1;
+        
+        if (needsUpdate) {
+          // Clear existing options
+          roomCountSelect.innerHTML = '<option value="">Choose rooms</option>';
+          
+          if (roomsToShow === 0) {
+            roomCountSelect.innerHTML = '<option value="">No rooms available</option>';
+            roomCountSelect.disabled = true;
+          } else {
+            for (let i = 1; i <= roomsToShow; i++) {
+              const option = document.createElement('option');
+              option.value = i;
+              option.textContent = `${i} Room${i > 1 ? 's' : ''}`;
+              roomCountSelect.appendChild(option);
+            }
+          }
         }
+        
+        // Restore selection if it's still valid
+        if (currentValue && currentValue <= roomsToShow && roomsToShow > 0) {
+          roomCountSelect.value = currentValue;
+          console.log('Restored selection to:', currentValue);
+        } else if (currentSelection) {
+          console.log('Selection invalid, clearing:', currentSelection);
+          roomCountSelect.value = '';
+        }
+        
+      } catch (error) {
+        console.error('Error updating room count options:', error);
+      } finally {
+        isUpdatingRoomOptions = false;
       }
-      
-      // Reset the selection
-      roomCountSelect.value = '';
     }
 
     // Add event listeners for real-time availability checking
@@ -974,6 +1054,14 @@
 
       // Initialize room count options based on current room type selection
       updateRoomCountOptions();
+      
+      // Set up initial room count options if room type is already selected
+      const initialRoomType = document.getElementById('room-type').value;
+      if (initialRoomType) {
+        setTimeout(() => {
+          updateRoomCountOptions();
+        }, 100);
+      }
 
       // Add event listeners
       arrivalDateInput.addEventListener('change', async function() {
