@@ -1,854 +1,2572 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
+
+
 <head>
+
   <meta charset="utf-8">
+
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
   <title>GAURIKEERTHANA </title>
+
   <meta name="description" content="">
+
   <meta name="keywords" content="">
 
+
+
   <!-- Favicons -->
+
   <link href="https://imgs.search.brave.com/fGQUDl7YLj-ORXZoHNRQ4cvfdd9zGBST5diK1EnLiYA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMi9HLUxl/dHRlci1QTkctSW1h/Z2UucG5n" rel="icon">
+
   <link href="https://imgs.search.brave.com/fGQUDl7YLj-ORXZoHNRQ4cvfdd9zGBST5diK1EnLiYA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMi9HLUxl/dHRlci1QTkctSW1h/Z2UucG5n" rel="apple-touch-icon">
 
+
+
   <!-- Fonts -->
+
   <link href="https://fonts.googleapis.com" rel="preconnect">
+
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+
   <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
+
+
   <!-- Vendor CSS Files -->
+
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
   <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
   <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+
+
   <!-- Main CSS File -->
+
   <link href="assets/css/main.css" rel="stylesheet">
+  
+  <!-- Mobile Responsive CSS -->
+  <link href="assets/css/mobile-responsive.css" rel="stylesheet">
+
+
 
   <!-- Custom Reviews Styles -->
+
   <style>
+
     .reviews-container {
+
       overflow: hidden;
+
       position: relative;
+
       width: 100%;
+
       margin: 0 auto;
+
     }
+
+
 
     .reviews-track {
+
       display: flex;
+
       animation: scroll-left 30s linear infinite;
+
       width: calc(300px * 16); /* 8 reviews * 2 (duplicates) = 16 cards */
+
     }
+
+
 
     .review-card {
+
       flex: 0 0 300px;
+
       margin-right: 20px;
+
       background: white;
+
       border-radius: 15px;
+
       padding: 25px;
+
       box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+
       transition: transform 0.3s ease;
+
     }
+
+
 
     .review-card:hover {
+
       transform: translateY(-5px);
+
       box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+
     }
+
+
 
     .review-content {
+
       text-align: center;
+
     }
+
+
 
     .stars {
+
       color: #ffc107;
+
       font-size: 1.2rem;
+
     }
+
+
 
     .review-text {
+
       font-style: italic;
+
       color: #666;
+
       margin-bottom: 20px;
+
       line-height: 1.6;
+
     }
+
+
 
     .review-author {
+
       display: flex;
+
       align-items: center;
+
       justify-content: center;
+
       gap: 15px;
+
     }
+
+
 
     .author-avatar {
+
       width: 50px;
+
       height: 50px;
+
       border-radius: 50%;
+
       object-fit: cover;
+
       border: 3px solid #e9ecef;
+
     }
+
+
 
     .author-info h6 {
+
       margin: 0;
+
       color: #2c3e50;
+
       font-weight: 600;
+
     }
+
+
 
     .author-info span {
+
       color: #6c757d;
+
       font-size: 0.9rem;
+
     }
+
+
 
     @keyframes scroll-left {
+
       0% {
+
         transform: translateX(0);
+
       }
+
       100% {
+
         transform: translateX(calc(-320px * 8)); /* 8 reviews * (300px + 20px margin) */
+
       }
+
     }
+
+
 
     /* Pause animation on hover */
+
     .reviews-container:hover .reviews-track {
+
       animation-play-state: paused;
+
     }
+
+
 
     /* Responsive adjustments */
+
     @media (max-width: 768px) {
+
       .reviews-track {
+
         width: calc(280px * 16);
+
       }
+
+      
       
       .review-card {
+
         flex: 0 0 280px;
+
         padding: 20px;
+
       }
+
+      
       
       @keyframes scroll-left {
+
         0% {
+
           transform: translateX(0);
+
         }
+
         100% {
+
           transform: translateX(calc(-300px * 8));
+
         }
+
       }
+
     }
+
   </style>
 
+
+
   <!-- =======================================================
+
   * Template Name: Gaurikeerthana
+
   * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
+
   * Updated: Jul 29 2025 with Bootstrap v5.3.7
+
   * Author: BootstrapMade.com
+
   * License: https://bootstrapmade.com/license/
+
   ======================================================== -->
+
 </head>
+
+
 
 <body class="index-page">
 
+
+
   <header id="header" class="header sticky-top">
 
+
+
     <div class="topbar d-flex align-items-center dark-background">
+
       <div class="container d-flex justify-content-center justify-content-md-between">
+
         <div class="contact-info d-flex align-items-center">
+
           <a href="mailto:Gaurikeerthanagvyr@gmail.com">Gaurikeerthanagvyr@gmail.com</a>
+
           <span class="ms-4">+91 994779277 , +91 4872081979</span>
+
         </div>
+
         <div class="social-links d-none d-md-flex align-items-center">
+
           <a href="https://instagram.com/gaurikeerthanaresidency_" class="instagram"><i class="bi bi-instagram"></i></a>
+
           <a href="https://wa.me/919947792777" class="Whatsapp"><i class="bi bi-whatsapp"></i></a>
+
         </div>
+
       </div>
+
     </div><!-- End Top Bar -->
+
+
 
     <div class="branding d-flex align-items-cente">
 
+
+
       <div class="container position-relative d-flex align-items-center justify-content-between">
+
         <a href="index.html" class="logo d-flex align-items-center">
+
           <!-- Uncomment the line below if you also wish to use an image logo -->
+
           <!-- <img src="assets/img/logo.webp" alt=""> -->
+
           <h1 class="sitename">GAURIKEERTHANA</h1>
+
         </a>
 
+
+
         <nav id="navmenu" class="navmenu">
+
           <ul>
+
             <li><a href="index.html" class="active">Home</a></li>
+
             <li><a href="about.html">About</a></li>
+
             <li><a href="rooms.html">Rooms</a></li>
+
             <li><a href="amenities.html">Amenities</a></li>
+
             <li><a href="location.html">Location</a></li>
+
             <li class="dropdown"><a href="#"><span>Pages</span></a>
+
               <ul>
+
                 <li><a href="room-details.html">Room Details</a></li>
+
                 <li><a href="gallery.html">Gallery</a></li>
+
                 <li><a href="booking.html">Booking</a></li>
+
                 <li><a href="terms.html">Terms Page</a></li>
+
               </ul>
+
             </li>
+
             <li><a href="contact.html">Contact</a></li>
+
+
+
 
       
     </div>
 
+
+
   </header>
+
+
 
   <main class="main">
 
+
+
     <!-- Hotel Hero Section -->
+
     <section id="hotel-hero" class="hotel-hero section">
+
+
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
+
+
         <div class="row gy-4 align-items-center">
 
+
+
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+
             <div class="hero-content">
+
               <h1>Luxury Redefined in Every Stay</h1>
+
               <p class="lead">Experience unparalleled comfort and sophistication at our residency.Comfortable rooms and essential amenities for a pleasant stay.</p>
+
               <div class="hero-features">
+
                 <div class="feature-item">
+
                   <i class="bi bi-wifi"></i>
+
                   <span>Complimentary WiFi</span>
+
                 </div>
+
                 <div class="feature-item">
+
                   <i class="bi bi-car-front"></i>
+
                   <span>Parking space</span>
+
                 </div>
+
                 <div class="feature-item">
+
                   <i class="bi bi-cup-hot"></i>
+
                   <span>24/7 Room Service</span>
+
                 </div>
+
               </div>
+
               <div class="hero-buttons">
+
                 <a href="booking.html" class="btn btn-primary">Book Now</a>
+
                 <a href="rooms.html" class="btn btn-outline">View Rooms</a>
+
               </div>
+
             </div>
+
           </div>
+
+
 
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+
             <div class="hero-images">
+
               <div class="main-image">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Luxury Hotel" class="img-fluid">
+
               </div>
               
+              
+              
             </div>
+
           </div>
 
+
+
         </div>
+
+
+
 
         
     </section><!-- /Hotel Hero Section -->
 
+
+
     <!-- About Home Section -->
+
     <section id="about-home" class="about-home section light-background">
+
+
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
+
+
         <div class="row gy-4 align-items-center">
 
+
+
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+
             <div class="about-content">
+
               <h2>Welcome to GAURIKEERTHANA RESIDENCY</h2>
+
               <p class="lead">Where luxury meets tranquility in the heart of nature's paradise.</p>
+
               <p>Nestled among rolling hills and pristine landscapes, Grandview Resort has been offering exceptional hospitality for over three decades. Our commitment to excellence and attention to detail creates an unforgettable experience for discerning travelers seeking both comfort and adventure.</p>
+
               <p>From our elegantly appointed suites to our world-class amenities, every aspect of your stay is designed to exceed expectations. Discover breathtaking views, exquisite dining, and personalized service that makes every moment special.</p>
+
+
+
+              
 
               
 
               <div class="about-actions">
+
                 <a href="about.html" class="btn-primary">Our Story</a>
+
                 <a href="rooms.html" class="btn-secondary">View Rooms</a>
+
               </div>
+
             </div>
+
           </div><!-- End About Content -->
 
+
+
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+
             <div class="about-images">
+
               <div class="main-image">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/npsqafqf5lrnoibsfg7g.jpg" alt="Grandview Resort Main View" class="img-fluid">
+
               </div>
+
               <div class="secondary-image">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/wwes8d5bg4z1br1wgetj.jpg" alt="Luxury Suite Interior" class="img-fluid">
+
               </div>
               
+              
+              
             </div>
+
           </div><!-- End About Images -->
+
+
 
         </div>
 
+
+
       </div>
+
+
 
     </section><!-- /About Home Section -->
 
+
+
     <!-- Rooms Showcase Section -->
+
     <section id="rooms-showcase" class="rooms-showcase section">
 
+
+
       <!-- Section Title -->
+
       <div class="container section-title" data-aos="fade-up">
+
         <span class="description-title">Rooms</span>
+
         <h2>Our Room Types</h2>
+
         <p>Choose from our three comfortable room options designed for your perfect stay</p>
+
       </div><!-- End Section Title -->
+
+
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
+
+
         <div class="row gy-5">
+
           <div class="col-xl-8" data-aos="zoom-in" data-aos-delay="200">
+
             <div class="hero-room-showcase">
+
               <div class="showcase-image-container">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" alt="Grand Presidential Suite" class="img-fluid">
+
                 <div class="room-category-badge">
+
                   <span>Deluxe AC</span>
+
                 </div>
+
                 <div class="room-details-overlay">
+
                   <div class="room-specs">
+
                     <span class="spec-item">
+
                       <span>2 Guests</span>
+
                     </span>
+
                     <span class="spec-item">
+
                       <span>25m²</span>
+
                     </span>
+
                     <span class="spec-item">
+
                       <span>Deluxe Floor</span>
+
                     </span>
+
                   </div>
+
                 </div>
+
               </div>
+
               <div class="showcase-content">
+
                 <div class="room-title-section">
+
                   <h2>Deluxe AC Room</h2>
+
                   <div class="room-rating">
+
                     <div class="stars">
+
                       <span>★★★★★</span>
+
                     </div>
+
                     <span class="rating-text">5.0 Excellence</span>
+
                   </div>
+
                 </div>
+
                 <p class="room-description">Experience ultimate comfort in our Deluxe AC Room featuring modern amenities, premium air conditioning, and elegant furnishings. Perfect for guests seeking luxury and comfort during their stay.</p>
+
                 <div class="amenities-grid">
+
                   <div class="amenity-item">
+
                     <span>Premium WiFi</span>
+
                   </div>
+
                   <div class="amenity-item">
+
                     <span>Smart TV</span>
+
                   </div>
+
                   <div class="amenity-item">
+
                     <span>Coffee Bar</span>
+
                   </div>
+
                   <div class="amenity-item">
+
                     <span>Air Conditioning</span>
+
                   </div>
+
                 </div>
+
                 <div class="booking-section">
+
                   <div class="price-display">
+
                     <span class="currency">₹</span>
+
                     <span class="amount">4,500</span>
+
                     <span class="period">per night</span>
+
                   </div>
+
                   <a href="room-details.html" class="primary-booking-btn">VIEW</a>
+
                 </div>
+
               </div>
+
             </div>
+
           </div><!-- End Hero Room -->
 
+
+
           <div class="col-xl-4">
+
             <div class="room-list-container">
+
               <div class="standard-room-card" data-aos="slide-left" data-aos-delay="250">
+
                 <div class="card-image">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" alt="Normal AC Room" class="img-fluid">
+
                   <div class="view-link">
+
                     <span>View</span>
+
                   </div>
+
                 </div>
+
                 <div class="card-content">
+
                   <h4>Normal AC Room</h4>
+
                   <p>Comfortable and well-equipped room with air conditioning, perfect for a pleasant stay. Features modern amenities and comfortable bedding.</p>
+
                   <div class="features-list">
+
                     <span>Air Conditioning</span>
+
                     <span>WiFi</span>
+
                   </div>
+
                   <div class="booking-row">
+
                     <div class="price">₹2,500<small>/night</small></div>
+
                     <a href="room-details.html" class="book-link">VIEW</a>
+
                   </div>
+
                 </div>
+
               </div><!-- End Standard Room -->
+
+
+
+             
+
 
              
               
 
               <div class="standard-room-card" data-aos="slide-left" data-aos-delay="350">
+
                 <div class="card-image">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927627/qiejjeaivz1jsdhxjicl.jpg" alt="Normal Non-AC Room" class="img-fluid">
+
                   <div class="view-link">
+
                     <span>View</span>
+
                   </div>
+
                 </div>
+
                 <div class="card-content">
+
                   <h4>Normal Non-AC Room</h4>
+
                   <p>Basic comfortable room with essential amenities. Ideal for budget-conscious travelers who prefer natural ventilation and cooling.</p>
+
                   <div class="features-list">
+
                     <span>WiFi</span>
+
                     <span>Natural Ventilation</span>
+
                   </div>
+
                   <div class="booking-row">
+
                     <div class="price">₹2,000<small>/night</small></div>
+
                     <a href="room-details.html" class="book-link">VIEW</a>
+
                   </div>
+
                 </div>
+
               </div><!-- End Standard Room -->
 
+
+
             </div>
+
           </div>
 
+
+
         </div>
+
+
+
+        
 
         
 
       </div>
 
+
+
     </section><!-- /Rooms Showcase Section -->
+  
+  
+
+          
   
           
 
         </div>
 
+
+
       </div>
 
+
+
     </section><!-- /Amenities Cards Section -->
+
+
+
+    
 
     
 
     <!-- Call To Action Section -->
+
     <section id="call-to-action" class="call-to-action section light-background">
+
+
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
+
+
         <div class="row align-items-center">
+
           <div class="col-lg-6" data-aos="fade-right" data-aos-delay="200">
+
             <div class="content">
+
               <h2>Experience Luxury Like Never Before</h2>
+
               <p>Immerse yourself in unparalleled comfort and sophistication at our premium hotel. From elegantly appointed rooms to world-class amenities, every detail is crafted to exceed your expectations. Book your extraordinary stay today and create unforgettable memories.</p>
+
               <ul class="features-list">
+
                 <li><i class="bi bi-check-circle"></i> Wi-Fi</li>
+
                 <li><i class="bi bi-check-circle"></i> 24/7  room service</li>
+
                 <li><i class="bi bi-check-circle"></i>parking space</li>
+
                 <li><i class="bi bi-check-circle"></i> Prime location </li>
+
               </ul>
+
               <div class="cta-buttons">
+
                 <a href="booking.html" class="btn-primary">Book Your Stay</a>
+
                 <a href="rooms.html" class="btn-secondary">View Rooms</a>
+
               </div>
+
             </div>
+
           </div>
+
+
 
           <div class="col-lg-6" data-aos="fade-left" data-aos-delay="300">
+
             <div class="image-wrapper">
+
               <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Luxury Hotel Experience" class="img-fluid">
               
+              
+              
             </div>
+
           </div>
+
         </div>
 
+
+
       </div>
+
+
 
     </section><!-- /Call To Action Section -->
 
 
 
+
+
+
+
     <!-- Reviews Section -->
+
     <section id="reviews" class="reviews section light-background">
+
       <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        
         
         <!-- Section Title -->
+
         <div class="text-center mb-5">
+
           <h2>What Our Guests Say</h2>
+
           <p>Read genuine reviews from our satisfied guests</p>
+
         </div>
+
+
 
         <!-- Reviews Carousel -->
+
         <div class="reviews-container">
+
           <div class="reviews-track" id="reviews-track">
+
+            
             
             <!-- Review 1 -->
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                 </div>
+
                 <p class="review-text">"Exceptional service and beautiful rooms. The staff went above and beyond to make our stay memorable. Highly recommended!"</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1759762561/boowr6itl1k4pzqff9lr.webp" alt="Sarah Johnson" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Sarah Johnson</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+
 
             <!-- Review 2 -->
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                 </div>
+
                 <p class="review-text">"Perfect location with stunning views. The rooms are spacious and well-maintained. Will definitely stay here again!"</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" alt="Michael Chen" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Michael Chen</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+
 
             <!-- Review 3 -->
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-half"></i>
+
                 </div>
+
                 <p class="review-text">"Amazing hospitality and delicious food. The amenities are top-notch and the staff is very friendly and helpful."</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" alt="Emma Rodriguez" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Emma Rodriguez</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+
 
             <!-- Review 4 -->
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                 </div>
+
                 <p class="review-text">"Outstanding experience from check-in to check-out. The room was luxurious and the service was impeccable. Worth every penny!"</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927627/qiejjeaivz1jsdhxjicl.jpg" alt="David Thompson" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>David Thompson</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+
 
             <!-- Review 5 -->
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                 </div>
+
                 <p class="review-text">"Beautiful property with excellent facilities. The staff made us feel like family. Can't wait to return for another stay!"</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/wwes8d5bg4z1br1wgetj.jpg" alt="Lisa Park" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Lisa Park</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+
 
             <!-- Duplicate reviews for seamless loop -->
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                 </div>
+
                 <p class="review-text">"Exceptional service and beautiful rooms. The staff went above and beyond to make our stay memorable. Highly recommended!"</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1759762561/boowr6itl1k4pzqff9lr.webp" alt="Sarah Johnson" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Sarah Johnson</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
 
+
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                 </div>
+
                 <p class="review-text">"Perfect location with stunning views. The rooms are spacious and well-maintained. Will definitely stay here again!"</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" alt="Michael Chen" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Michael Chen</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
 
+
+
             <div class="review-card">
+
               <div class="review-content">
+
                 <div class="stars mb-3">
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-fill"></i>
+
                   <i class="bi bi-star-half"></i>
+
                 </div>
+
                 <p class="review-text">"Amazing hospitality and delicious food. The amenities are top-notch and the staff is very friendly and helpful."</p>
+
                 <div class="review-author">
+
                   <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" alt="Emma Rodriguez" class="author-avatar">
+
                   <div class="author-info">
+
                     <h6>Emma Rodriguez</h6>
+
                     <span>Verified Guest</span>
+
                   </div>
+
                 </div>
+
               </div>
+
             </div>
+
+
 
           </div>
+
         </div>
 
+
+
       </div>
+
     </section><!-- /Reviews Section -->
 
+
+
     <!-- Gallery Showcase Section -->
+
     <section id="gallery-showcase" class="gallery-showcase section">
+
+
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
+
+
         <div class="gallery-carousel swiper init-swiper" data-aos="fade-up" data-aos-delay="200">
+
           <script type="application/json" class="swiper-config">
+
             {
+
               "loop": true,
+
               "speed": 600,
+
               "autoplay": {
+
                 "delay": 3000
+
               },
+
               "slidesPerView": 1,
+
               "spaceBetween": 20,
+
               "centeredSlides": true,
+
               "breakpoints": {
+
                 "576": {
+
                   "slidesPerView": 2,
+
                   "centeredSlides": false
+
                 },
+
                 "768": {
+
                   "slidesPerView": 3,
+
                   "centeredSlides": false
+
                 },
+
                 "992": {
+
                   "slidesPerView": 4,
+
                   "centeredSlides": false
+
                 },
+
                 "1200": {
+
                   "slidesPerView": 5,
+
                   "centeredSlides": false
+
                 }
+
               }
+
             }
+
           </script>
+
           <div class="swiper-wrapper">
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" alt="Luxurious Suite" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927644/xxmdyknrwjzwvfkrspia.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/wwes8d5bg4z1br1wgetj.jpg" alt="Modern Lobby" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/wwes8d5bg4z1br1wgetj.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/egjotdploowxicl5oorf.jpg" alt="Elegant Dining Area" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927643/egjotdploowxicl5oorf.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927642/ducu0m6akhm6fwrwq3nb.jpg" alt="Grand Ballroom Setup" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927642/ducu0m6akhm6fwrwq3nb.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" alt="Relaxing Poolside" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/i76dwh68u6nhlpbsswkb.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/rdq4tzutynwdagh79r7s.jpg" alt="Cozy Guest Room" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927628/rdq4tzutynwdagh79r7s.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927627/qiejjeaivz1jsdhxjicl.jpg" alt="Spa and Wellness Center" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1757927627/qiejjeaivz1jsdhxjicl.jpg" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
             <div class="swiper-slide">
+
               <div class="gallery-item">
+
                 <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Conference Facilities" class="img-fluid" loading="lazy">
+
                 <a href="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" class="gallery-overlay glightbox">
+
                   <i class="bi bi-eye"></i>
+
                 </a>
+
               </div>
+
             </div>
+
           </div>
+
         </div>
+
+
 
         <div class="text-center mt-5" data-aos="fade-up" data-aos-delay="300">
+
           <a href="gallery.html" class="btn btn-gallery">
+
             <i class="bi bi-collection me-2"></i>Discover Our Full Gallery
+
           </a>
+
         </div>
 
+
+
       </div>
+
+
 
     </section><!-- /Gallery Showcase Section -->
 
+
+
   </main>
+
+
 
   <footer id="footer" class="footer position-relative dark-background">
 
+
+
     <div class="footer-top">
+
       <div class="container">
+
         <div class="row gy-4">
+
           <div class="col-lg-4 col-md-6 footer-about">
+
             <a href="index.html" class="logo d-flex align-items-center">
+
               <span class="sitename">GAURIKEERTHANA RESIDENCY</span>
+
             </a>
+
             <div class="footer-contact pt-3">
+
               <p>GAURIKEERTHANA RESIDENCY</p>
+
               <p>Gaurikeerthana, Kerala, India</p>
+
               <p class="mt-3"><strong>Phone:</strong> <span>+91 994779277 , +91 4872081979</span></p>
+
               <p><strong>Email:</strong> <span>Gaurikeerthanagvyr@gmail.com</span></p>
+
             </div>
+
           </div>
+
+
 
           <div class="col-lg-2 col-md-3 footer-links">
+
             <h4>Useful Links</h4>
+
             <ul>
+
               <li><a href="#">Home</a></li>
+
               <li><a href="#">About us</a></li>
+
               <li><a href="#">Services</a></li>
+
               <li><a href="#">Terms of service</a></li>
+
               <li><a href="#">Privacy policy</a></li>
+
             </ul>
+
           </div>
 
 
 
+
+
+
+
         </div>
+
       </div>
+
     </div>
+
+
 
     <div class="copyright text-center">
+
       <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
 
+
+
         <div class="d-flex flex-column align-items-center align-items-lg-start">
+
           <div>
+
             © Copyright <strong><span>MyWebsite</span></strong>. All Rights Reserved
+
           </div>
+
           <div class="credits">
+
             <!-- All the links in the footer should remain intact. -->
+
             <!-- You can delete the links only if you purchased the pro version. -->
+
             <!-- Licensing information: https://bootstrapmade.com/license/ -->
+
             <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/herobiz-bootstrap-business-template/ -->
+
             Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+
           </div>
+
         </div>
+
+
 
         <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+
           <a href="https://instagram.com/gaurikeerthanaresidency_"><i class="bi bi-instagram"></i></a>
+
           <a href="https://wa.me/919947792777"><i class="bi bi-whatsapp"></i></a>
+
         </div>
 
+
+
       </div>
+
     </div>
+
+
 
   </footer>
 
+
+
   <!-- Scroll Top -->
+
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
+  <!-- Walk-in Booking Modal -->
+  <div class="modal fade" id="walkInModal" tabindex="-1" aria-labelledby="walkInModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="walkInModalLabel">
+            <i class="bi bi-person-walking me-2"></i>Walk-in Customer Booking
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Password Authentication -->
+          <div id="walkInPasswordSection">
+            <div class="text-center mb-4">
+              <i class="bi bi-shield-lock text-primary" style="font-size: 3rem;"></i>
+              <h4 class="mt-3">Admin Access Required</h4>
+              <p class="text-muted">Enter admin password to access walk-in booking system</p>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="adminPassword" class="form-label">Admin Password</label>
+                  <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password">
+                </div>
+                <div class="text-center">
+                  <button type="button" class="btn btn-primary" onclick="authenticateWalkIn()">
+                    <i class="bi bi-unlock me-2"></i>Access Booking System
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Booking Form -->
+          <div id="walkInBookingSection" style="display: none;">
+            <form id="walkInBookingForm">
+              <!-- Room Summary -->
+              <div class="alert alert-info mb-4">
+                <h6 class="mb-2"><i class="bi bi-info-circle me-2"></i>Hotel Room Information</h6>
+                <div class="row">
+                  <div class="col-md-4">
+                    <strong>Normal Non-AC Rooms:</strong> 3 rooms (₹2,000/night)
+                  </div>
+                  <div class="col-md-4">
+                    <strong>Normal AC Rooms:</strong> 6 rooms (₹2,500/night)
+                  </div>
+                  <div class="col-md-4">
+                    <strong>Deluxe AC Rooms:</strong> 2 rooms (₹4,500/night)
+                  </div>
+                </div>
+                <div class="mt-2">
+                  <strong>Total Rooms:</strong> 11 rooms
+                </div>
+              </div>
+
+              <!-- Step 1: Room Type and Dates -->
+              <div class="card mb-4">
+                <div class="card-header">
+                  <h6 class="mb-0"><i class="bi bi-1-circle me-2"></i>Step 1: Select Room Type and Dates</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInRoomType" class="form-label">Room Type *</label>
+                        <select class="form-select" id="walkInRoomType" required onchange="onRoomTypeChange()">
+                          <option value="">Select Room Type</option>
+                          <option value="Normal Non-AC Room" data-price="2000">Normal Non-AC Room - ₹2,000/night (3 rooms)</option>
+                          <option value="Normal AC Room" data-price="2500">Normal AC Room - ₹2,500/night (6 rooms)</option>
+                          <option value="Deluxe AC Room" data-price="4500">Deluxe AC Room - ₹4,500/night (2 rooms)</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="mb-3">
+                        <label for="walkInCheckIn" class="form-label">Check-in Date *</label>
+                        <input type="date" class="form-control" id="walkInCheckIn" required onchange="onDateChange()">
+                        <div class="invalid-feedback" id="walkInCheckInError"></div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="mb-3">
+                        <label for="walkInCheckOut" class="form-label">Check-out Date *</label>
+                        <input type="date" class="form-control" id="walkInCheckOut" required onchange="onDateChange()">
+                        <div class="invalid-feedback" id="walkInCheckOutError"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2: Room Selection (Hidden until step 1 is complete) -->
+              <div class="card mb-4" id="roomSelectionCard" style="display: none;">
+                <div class="card-header">
+                  <h6 class="mb-0"><i class="bi bi-2-circle me-2"></i>Step 2: Select Available Rooms</h6>
+                </div>
+                <div class="card-body">
+                  <!-- Room Availability Status -->
+                  <div id="roomAvailabilityStatus" class="mb-3" style="display: none;">
+                    <div class="alert alert-info">
+                      <span id="availabilityMessage"></span>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="mb-3">
+                        <label for="walkInRoomCount" class="form-label">Number of Rooms *</label>
+                        <select class="form-select" id="walkInRoomCount" required onchange="onRoomCountChange()">
+                          <option value="">Select Number of Rooms</option>
+                        </select>
+                        <small class="form-text text-muted">Available rooms will be shown based on your date and room type selection</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3: Guest Information (Hidden until step 2 is complete) -->
+              <div class="card mb-4" id="guestInfoCard" style="display: none;">
+                <div class="card-header">
+                  <h6 class="mb-0"><i class="bi bi-3-circle me-2"></i>Step 3: Guest Information</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInGuestName" class="form-label">Guest Name *</label>
+                        <input type="text" class="form-control" id="walkInGuestName" required>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInPhone" class="form-label">Phone Number *</label>
+                        <input type="tel" class="form-control" id="walkInPhone" required placeholder="10-digit mobile number" maxlength="10">
+                        <div class="invalid-feedback" id="walkInPhoneError"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInEmail" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="walkInEmail" placeholder="example@email.com">
+                        <div class="invalid-feedback" id="walkInEmailError"></div>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInAdults" class="form-label">Number of Adults *</label>
+                        <select class="form-select" id="walkInAdults" required>
+                          <option value="">Select</option>
+                          <option value="1">1 Adult</option>
+                          <option value="2">2 Adults</option>
+                          <option value="3">3 Adults</option>
+                          <option value="4">4+ Adults</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInChildren" class="form-label">Number of Children</label>
+                        <select class="form-select" id="walkInChildren">
+                          <option value="0">No Children</option>
+                          <option value="1">1 Child</option>
+                          <option value="2">2 Children</option>
+                          <option value="3">3 Children</option>
+                          <option value="4">4+ Children</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="mb-3">
+                        <label for="walkInSpecialRequests" class="form-label">Special Requests</label>
+                        <textarea class="form-control" id="walkInSpecialRequests" rows="3" placeholder="Any special requests or notes..."></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Booking Summary -->
+              <div class="card">
+                <div class="card-header">
+                  <h6 class="mb-0">Booking Summary</h6>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><strong>Room Type:</strong> <span id="summaryRoomType">-</span></p>
+                      <p><strong>Number of Rooms:</strong> <span id="summaryRoomCount">-</span></p>
+                      <p><strong>Duration:</strong> <span id="summaryNights">-</span></p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><strong>Price per room/night:</strong> ₹<span id="summaryPrice">-</span></p>
+                      <p><strong>Subtotal:</strong> ₹<span id="summarySubtotal">-</span></p>
+                      <p><strong>GST (5%):</strong> ₹<span id="summaryGST">-</span></p>
+                      <p><strong>Total Amount:</strong> ₹<span id="summaryTotal">-</span></p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="confirmWalkInBtn" onclick="confirmWalkInBooking()" style="display: none;">
+            <i class="bi bi-check-circle me-2"></i>Confirm Walk-in Booking
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
   <!-- Preloader -->
+
   <div id="preloader"></div>
 
+
+
   <!-- Vendor JS Files -->
+
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
   <script src="assets/vendor/php-email-form/validate.js"></script>
+
   <script src="assets/vendor/aos/aos.js"></script>
+
   <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
+
+
   <!-- Main JS File -->
+
   <script src="assets/js/main.js"></script>
 
-  <!-- Admin Access Script -->
+  <!-- Firebase Configuration -->
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore.js"></script>
+  <script src="firebase-config-simple.js"></script>
+
+
+
+  <!-- Firebase Initialization Script -->
   <script>
-    // Admin access with Ctrl+A shortcut
-    document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && e.key === 'a') {
-        e.preventDefault();
-        window.location.href = 'admin-login.html';
+    // Initialize Firebase and booking service
+    let firebaseInitialized = false;
+    
+    document.addEventListener('DOMContentLoaded', async function() {
+      // Initialize Firebase
+      if (typeof initializeFirebase === 'function') {
+        firebaseInitialized = initializeFirebase();
+        if (firebaseInitialized) {
+          // Initialize booking service
+          window.firebaseBookingService = new FirebaseBookingService();
+          console.log('✅ Firebase and booking service initialized for walk-in booking');
+        } else {
+          console.warn('⚠️ Firebase initialization failed, using localStorage fallback');
+        }
+      } else {
+        console.warn('⚠️ Firebase functions not available, using localStorage fallback');
       }
     });
   </script>
 
+  <!-- Admin Access Script -->
+
+  <script>
+
+    // Admin access with Ctrl+A shortcut
+
+    document.addEventListener('keydown', function(e) {
+
+      if (e.ctrlKey && e.key === 'a') {
+
+        e.preventDefault();
+
+        window.location.href = 'admin-login.html';
+
+      }
+
+      // Walk-in booking access with Ctrl+B shortcut
+      if (e.ctrlKey && e.key === 'b') {
+
+        e.preventDefault();
+
+        openWalkInBookingModal();
+
+      }
+
+    });
+
+    // Real-time phone validation
+    function validatePhoneRealTime() {
+      const phoneInput = document.getElementById('walkInPhone');
+      if (!phoneInput) return;
+      
+      const phone = phoneInput.value.trim();
+      const errorDiv = document.getElementById('walkInPhoneError');
+      
+      if (phone.length > 0) {
+        if (!validatePhone(phone)) {
+          phoneInput.classList.add('is-invalid');
+          if (errorDiv) errorDiv.textContent = 'Phone number must be 10 digits starting with 6-9';
+        } else {
+          phoneInput.classList.remove('is-invalid');
+          if (errorDiv) errorDiv.textContent = '';
+        }
+      } else {
+        phoneInput.classList.remove('is-invalid');
+        if (errorDiv) errorDiv.textContent = '';
+      }
+    }
+
+    // Real-time email validation
+    function validateEmailRealTime() {
+      const emailInput = document.getElementById('walkInEmail');
+      if (!emailInput) return;
+      
+      const email = emailInput.value.trim();
+      const errorDiv = document.getElementById('walkInEmailError');
+      
+      if (email.length > 0) {
+        if (!validateEmail(email)) {
+          emailInput.classList.add('is-invalid');
+          if (errorDiv) errorDiv.textContent = 'Please enter a valid email address (must contain @)';
+        } else {
+          emailInput.classList.remove('is-invalid');
+          if (errorDiv) errorDiv.textContent = '';
+        }
+      } else {
+        emailInput.classList.remove('is-invalid');
+        if (errorDiv) errorDiv.textContent = '';
+      }
+    }
+
+    // Add event listeners when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function() {
+      const phoneInput = document.getElementById('walkInPhone');
+      const emailInput = document.getElementById('walkInEmail');
+      
+      if (phoneInput) {
+        phoneInput.addEventListener('input', validatePhoneRealTime);
+        phoneInput.addEventListener('blur', validatePhoneRealTime);
+      }
+      
+      if (emailInput) {
+        emailInput.addEventListener('input', validateEmailRealTime);
+        emailInput.addEventListener('blur', validateEmailRealTime);
+      }
+    });
+
+    // Walk-in booking functions
+    function openWalkInBookingModal() {
+      // Show modal
+      const modal = new bootstrap.Modal(document.getElementById('walkInModal'));
+      modal.show();
+
+      // Reset form
+      document.getElementById('walkInBookingForm').reset();
+      document.getElementById('walkInPasswordSection').style.display = 'block';
+      document.getElementById('walkInBookingSection').style.display = 'none';
+      document.getElementById('confirmWalkInBtn').style.display = 'none';
+      document.getElementById('adminPassword').value = '';
+
+      // Set minimum date based on current time (same day allowed until 1 PM)
+      const today = new Date();
+      const now = new Date();
+      const currentHour = now.getHours();
+      
+      // Allow same day if before 1 PM, otherwise start from tomorrow
+      const minDate = currentHour >= 13 ? new Date(today.getTime() + 24 * 60 * 60 * 1000) : today;
+      const minDateStr = minDate.toISOString().split('T')[0];
+      
+      document.getElementById('walkInCheckIn').min = minDateStr;
+      document.getElementById('walkInCheckOut').min = minDateStr;
+
+      console.log('Walk-in booking modal opened (Ctrl+B)');
+      
+      // Verify room count with database
+      verifyRoomCount();
+    }
+
+    // Verify room count with database
+    async function verifyRoomCount() {
+      console.log('🔍 Verifying room count with database...');
+      
+      const roomTypes = ['Normal Non-AC Room', 'Normal AC Room', 'Deluxe AC Room'];
+      let totalRooms = 0;
+      
+      for (const roomType of roomTypes) {
+        try {
+          if (window.firebaseBookingService && firebaseInitialized) {
+            const capacity = window.firebaseBookingService.getRoomCapacity(roomType);
+            console.log(`📊 ${roomType}: ${capacity} rooms`);
+            totalRooms += capacity;
+          } else {
+            // Fallback room capacities
+            const roomCapacities = {
+              'Normal Non-AC Room': 3,
+              'Normal AC Room': 6,
+              'Deluxe AC Room': 2
+            };
+            const capacity = roomCapacities[roomType];
+            console.log(`📊 ${roomType}: ${capacity} rooms (fallback)`);
+            totalRooms += capacity;
+          }
+        } catch (error) {
+          console.error(`Error getting capacity for ${roomType}:`, error);
+        }
+      }
+      
+      console.log(`🏨 Total rooms in database: ${totalRooms}`);
+      console.log(`✅ Expected total: 11 rooms (3 + 6 + 2)`);
+      
+      if (totalRooms === 11) {
+        console.log('✅ Room count verification: CORRECT');
+      } else {
+        console.warn('⚠️ Room count verification: MISMATCH');
+      }
+    }
+
+    // Authenticate walk-in booking access
+    function authenticateWalkIn() {
+      const password = document.getElementById('adminPassword').value;
+      
+      if (password === 'admin') {
+        // Show booking form
+        document.getElementById('walkInPasswordSection').style.display = 'none';
+        document.getElementById('walkInBookingSection').style.display = 'block';
+        document.getElementById('confirmWalkInBtn').style.display = 'inline-block';
+        
+        console.log('Walk-in booking access granted');
+      } else {
+        alert('❌ Invalid password. Please enter the correct admin password.');
+        document.getElementById('adminPassword').focus();
+      }
+    }
+
+    // Validate email format
+    function validateEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    // Validate phone number
+    function validatePhone(phone) {
+      const phoneRegex = /^[6-9]\d{9}$/;
+      return phoneRegex.test(phone);
+    }
+
+    // Step 1: Handle room type change
+    function onRoomTypeChange() {
+      const roomType = document.getElementById('walkInRoomType').value;
+      const checkIn = document.getElementById('walkInCheckIn').value;
+      const checkOut = document.getElementById('walkInCheckOut').value;
+      
+      // Reset step 2
+      document.getElementById('roomSelectionCard').style.display = 'none';
+      document.getElementById('guestInfoCard').style.display = 'none';
+      document.getElementById('confirmWalkInBtn').style.display = 'none';
+      
+      // If room type, check-in, and check-out are selected, proceed to step 2
+      if (roomType && checkIn && checkOut && validateWalkInDates()) {
+        checkRoomAvailabilityAndShowStep2();
+      }
+    }
+
+    // Step 1: Handle date change
+    function onDateChange() {
+      const roomType = document.getElementById('walkInRoomType').value;
+      const checkIn = document.getElementById('walkInCheckIn').value;
+      const checkOut = document.getElementById('walkInCheckOut').value;
+      
+      // Reset step 2
+      document.getElementById('roomSelectionCard').style.display = 'none';
+      document.getElementById('guestInfoCard').style.display = 'none';
+      document.getElementById('confirmWalkInBtn').style.display = 'none';
+      
+      // If room type, check-in, and check-out are selected, proceed to step 2
+      if (roomType && checkIn && checkOut && validateWalkInDates()) {
+        checkRoomAvailabilityAndShowStep2();
+      }
+    }
+
+    // Check availability and show step 2
+    async function checkRoomAvailabilityAndShowStep2() {
+      const roomType = document.getElementById('walkInRoomType').value;
+      const checkIn = document.getElementById('walkInCheckIn').value;
+      const checkOut = document.getElementById('walkInCheckOut').value;
+      
+      if (!roomType || !checkIn || !checkOut) return;
+      
+      // Show loading state
+      document.getElementById('roomAvailabilityStatus').style.display = 'block';
+      document.getElementById('availabilityMessage').innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Checking room availability...';
+      document.getElementById('roomAvailabilityStatus').className = 'mb-3 alert alert-info';
+      
+      try {
+        // Get all available rooms for this type and date range
+        const result = await checkRoomAvailabilityAPI(roomType, checkIn, checkOut, 999); // Check for maximum rooms
+        
+        if (result.availableRooms > 0) {
+          // Show step 2
+          document.getElementById('roomSelectionCard').style.display = 'block';
+          
+          // Update room count options based on available rooms
+          updateRoomCountOptions(result.availableRooms);
+          
+          // Update availability message with detailed information
+          const conflictInfo = result.conflictingBookings && result.conflictingBookings.length > 0 
+            ? ` (${result.conflictingBookings.length} existing bookings checked)`
+            : '';
+          
+          document.getElementById('availabilityMessage').innerHTML = `
+            <i class="bi bi-check-circle me-2"></i>
+            ✅ ${result.availableRooms} ${roomType}(s) available for selected dates!
+            <br><small class="text-muted">Checked against ${result.onlineBookings || 0} online bookings and ${result.walkInBookings || 0} walk-in bookings${conflictInfo}</small>
+          `;
+          document.getElementById('roomAvailabilityStatus').className = 'mb-3 alert alert-success';
+          
+          console.log(`Found ${result.availableRooms} available rooms for ${roomType}`);
+        } else {
+          // No rooms available
+          document.getElementById('roomSelectionCard').style.display = 'none';
+          document.getElementById('availabilityMessage').innerHTML = `
+            <i class="bi bi-x-circle me-2"></i>
+            ❌ No ${roomType}(s) available for selected dates. Please try different dates or room type.
+            <br><small class="text-muted">Checked against ${result.onlineBookings || 0} online bookings and ${result.walkInBookings || 0} walk-in bookings</small>
+          `;
+          document.getElementById('roomAvailabilityStatus').className = 'mb-3 alert alert-danger';
+        }
+      } catch (error) {
+        console.error('Error checking availability:', error);
+        document.getElementById('roomSelectionCard').style.display = 'none';
+        document.getElementById('availabilityMessage').innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>⚠️ Unable to check availability. Please try again.';
+        document.getElementById('roomAvailabilityStatus').className = 'mb-3 alert alert-warning';
+      }
+    }
+
+    // Step 2: Handle room count change
+    function onRoomCountChange() {
+      const roomCount = parseInt(document.getElementById('walkInRoomCount').value) || 0;
+      
+      // Reset step 3
+      document.getElementById('guestInfoCard').style.display = 'none';
+      document.getElementById('confirmWalkInBtn').style.display = 'none';
+      
+      if (roomCount > 0) {
+        // Show step 3 immediately when room count is selected
+        document.getElementById('guestInfoCard').style.display = 'block';
+        document.getElementById('confirmWalkInBtn').style.display = 'inline-block';
+        
+        // Update booking summary
+        calculateWalkInTotal();
+      }
+    }
+
+    // Update room count options based on available rooms
+    function updateRoomCountOptions(maxRooms) {
+      const roomCountSelect = document.getElementById('walkInRoomCount');
+      const currentValue = roomCountSelect.value;
+      
+      // Clear existing options
+      roomCountSelect.innerHTML = '<option value="">Select Rooms</option>';
+      
+      for (let i = 1; i <= maxRooms; i++) {
+        const option = document.createElement('option');
+        option.value = i;
+        option.textContent = `${i} Room${i > 1 ? 's' : ''}`;
+        if (currentValue && parseInt(currentValue) === i) {
+          option.selected = true;
+        }
+        roomCountSelect.appendChild(option);
+      }
+    }
+
+    // Validate walk-in booking dates with 1 PM rule
+    function validateWalkInDates() {
+      const checkIn = document.getElementById('walkInCheckIn').value;
+      const checkOut = document.getElementById('walkInCheckOut').value;
+      const checkInInput = document.getElementById('walkInCheckIn');
+      const checkOutInput = document.getElementById('walkInCheckOut');
+      
+      let isValid = true;
+      
+      if (checkIn) {
+        const today = new Date();
+        const now = new Date();
+        const currentHour = now.getHours();
+        const checkInDate = new Date(checkIn);
+        
+        // Check if it's same day booking after 1 PM
+        if (checkInDate.toDateString() === today.toDateString()) {
+          if (currentHour >= 13) { // 1 PM or later
+            checkInInput.classList.add('is-invalid');
+            document.getElementById('walkInCheckInError').textContent = 'Same-day bookings are only allowed until 1 PM. Please select tomorrow or later.';
+            isValid = false;
+          } else {
+            checkInInput.classList.remove('is-invalid');
+            document.getElementById('walkInCheckInError').textContent = '';
+          }
+        } else if (checkInDate < today) {
+          // Past date
+          checkInInput.classList.add('is-invalid');
+          document.getElementById('walkInCheckInError').textContent = 'Cannot select past dates for check-in';
+          isValid = false;
+        } else {
+          // Future date
+          checkInInput.classList.remove('is-invalid');
+          document.getElementById('walkInCheckInError').textContent = '';
+        }
+      }
+      
+      // Check if check-out is after check-in
+      if (checkIn && checkOut) {
+        const checkInDate = new Date(checkIn);
+        const checkOutDate = new Date(checkOut);
+        
+        if (checkOutDate <= checkInDate) {
+          checkOutInput.classList.add('is-invalid');
+          document.getElementById('walkInCheckOutError').textContent = 'Check-out must be after check-in date';
+          isValid = false;
+        } else {
+          checkOutInput.classList.remove('is-invalid');
+          document.getElementById('walkInCheckOutError').textContent = '';
+        }
+      }
+      
+      return isValid;
+    }
+
+
+    // Check room availability API
+    async function checkRoomAvailabilityAPI(roomType, checkIn, checkOut, requestedRooms = 1) {
+      try {
+        // Check if Firebase is available
+        if (window.firebaseBookingService && firebaseInitialized) {
+          console.log('Using Firebase for room availability check');
+          const result = await window.firebaseBookingService.checkRoomAvailability(roomType, checkIn, checkOut, requestedRooms);
+          return result;
+        } else {
+          console.log('Firebase not available, using fallback availability check');
+          
+          // Get correct room capacity based on room type
+          const roomCapacities = {
+            'Normal Non-AC Room': 3,   // 3 Normal Non-AC rooms
+            'Normal AC Room': 6,       // 6 Normal AC rooms  
+            'Deluxe AC Room': 2,       // 2 Deluxe AC rooms
+            // Legacy room types
+            'Standard Room': 6,
+            'Deluxe Room': 2,
+            'Premium Room': 2,
+            'Suite': 2
+          };
+          
+          const totalRooms = roomCapacities[roomType] || 1;
+          
+          // Fallback to mock availability logic
+          const unavailableDates = [
+            '2024-01-15', '2024-01-16', '2024-01-20', '2024-01-25'
+          ];
+          
+          const startDate = new Date(checkIn);
+          const endDate = new Date(checkOut);
+          
+          // Check if any date in the range is unavailable
+          for (let d = new Date(startDate); d < endDate; d.setDate(d.getDate() + 1)) {
+            const dateStr = d.toISOString().split('T')[0];
+            if (unavailableDates.includes(dateStr)) {
+              return {
+                available: false,
+                availableRooms: 0,
+                totalRooms: totalRooms,
+                message: 'Rooms not available for these dates'
+              };
+            }
+          }
+          
+          return {
+            available: true,
+            availableRooms: totalRooms,
+            totalRooms: totalRooms,
+            message: 'Rooms available'
+          };
+        }
+      } catch (error) {
+        console.error('Error checking room availability:', error);
+        // Return false on error to be safe
+        const roomCapacities = {
+          'Normal Non-AC Room': 3,   // 3 Normal Non-AC rooms
+          'Normal AC Room': 6,       // 6 Normal AC rooms  
+          'Deluxe AC Room': 2,       // 2 Deluxe AC rooms
+          'Standard Room': 6,
+          'Deluxe Room': 2,
+          'Premium Room': 2,
+          'Suite': 2
+        };
+        
+        const totalRooms = roomCapacities[roomType] || 1;
+        
+        return {
+          available: false,
+          availableRooms: 0,
+          totalRooms: totalRooms,
+          message: 'Error checking availability'
+        };
+      }
+    }
+
+    // Calculate walk-in booking total
+    function calculateWalkInTotal() {
+      const roomType = document.getElementById('walkInRoomType');
+      const roomCount = parseInt(document.getElementById('walkInRoomCount').value) || 1;
+      const checkIn = document.getElementById('walkInCheckIn').value;
+      const checkOut = document.getElementById('walkInCheckOut').value;
+
+      if (!roomType.value || !checkIn || !checkOut || !roomCount) {
+        updateWalkInSummary();
+        return;
+      }
+
+      const pricePerNight = parseInt(roomType.selectedOptions[0].dataset.price);
+      const startDate = new Date(checkIn);
+      const endDate = new Date(checkOut);
+      const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+      const subtotal = pricePerNight * nights * roomCount;
+      const gst = Math.round(subtotal * 0.05); // 5% GST (same as online bookings)
+      const total = subtotal + gst;
+
+      // Update summary
+      document.getElementById('summaryRoomType').textContent = roomType.value;
+      document.getElementById('summaryRoomCount').textContent = `${roomCount} room(s)`;
+      document.getElementById('summaryNights').textContent = `${nights} night(s)`;
+      document.getElementById('summaryPrice').textContent = pricePerNight.toLocaleString();
+      document.getElementById('summarySubtotal').textContent = subtotal.toLocaleString();
+      document.getElementById('summaryGST').textContent = gst.toLocaleString();
+      document.getElementById('summaryTotal').textContent = total.toLocaleString();
+
+      console.log(`Walk-in booking calculation: ${roomCount} room(s) × ${nights} nights × ₹${pricePerNight} = ₹${total}`);
+    }
+
+    // Update walk-in summary
+    function updateWalkInSummary() {
+      document.getElementById('summaryRoomType').textContent = '-';
+      document.getElementById('summaryRoomCount').textContent = '-';
+      document.getElementById('summaryNights').textContent = '-';
+      document.getElementById('summaryPrice').textContent = '-';
+      document.getElementById('summarySubtotal').textContent = '-';
+      document.getElementById('summaryGST').textContent = '-';
+      document.getElementById('summaryTotal').textContent = '-';
+    }
+
+    // Confirm walk-in booking
+    function confirmWalkInBooking() {
+      const form = document.getElementById('walkInBookingForm');
+      
+      // Validate required fields
+      const requiredFields = ['walkInGuestName', 'walkInPhone', 'walkInAdults', 'walkInRoomType', 'walkInRoomCount', 'walkInCheckIn', 'walkInCheckOut'];
+      const missingFields = [];
+      
+      requiredFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (!field.value.trim()) {
+          missingFields.push(field.labels[0].textContent);
+        }
+      });
+
+      if (missingFields.length > 0) {
+        alert(`❌ Please fill in the following required fields:\n• ${missingFields.join('\n• ')}`);
+        return;
+      }
+
+      // Validate email format if provided
+      const email = document.getElementById('walkInEmail').value;
+      if (email && !validateEmail(email)) {
+        document.getElementById('walkInEmail').classList.add('is-invalid');
+        document.getElementById('walkInEmailError').textContent = 'Please enter a valid email address';
+        alert('❌ Please enter a valid email address');
+        return;
+      }
+
+      // Validate phone number format
+      const phone = document.getElementById('walkInPhone').value;
+      if (!validatePhone(phone)) {
+        document.getElementById('walkInPhone').classList.add('is-invalid');
+        document.getElementById('walkInPhoneError').textContent = 'Phone number must be 10 digits starting with 6-9';
+        alert('❌ Phone number must be 10 digits starting with 6-9');
+        return;
+      }
+
+      // Validate dates
+      if (!validateWalkInDates()) {
+        alert('❌ Please check your dates');
+        return;
+      }
+
+      // Get booking data (same format as online bookings)
+      const bookingData = {
+        guestName: document.getElementById('walkInGuestName').value,
+        phone: document.getElementById('walkInPhone').value,
+        email: document.getElementById('walkInEmail').value,
+        adults: parseInt(document.getElementById('walkInAdults').value),
+        children: parseInt(document.getElementById('walkInChildren').value),
+        roomType: document.getElementById('walkInRoomType').value,
+        roomCount: parseInt(document.getElementById('walkInRoomCount').value),
+        arrivalDate: document.getElementById('walkInCheckIn').value,
+        departureDate: document.getElementById('walkInCheckOut').value,
+        specialRequests: document.getElementById('walkInSpecialRequests').value,
+        bookingType: 'WALK_IN',
+        bookingDate: new Date().toISOString(),
+        status: 'CONFIRMED',
+        paymentMethod: 'Walk-in',
+        paymentStatus: 'confirmed',
+        paymentDate: new Date().toISOString(),
+        // Add room type mapping for consistency
+        roomTypeText: document.getElementById('walkInRoomType').value,
+        // Add pricing information
+        roomRate: parseInt(document.getElementById('walkInRoomType').selectedOptions[0].dataset.price),
+        gst: 0, // Will be calculated (5% GST same as online bookings)
+        subtotal: 0, // Will be calculated
+        total: 0 // Will be calculated
+      };
+
+      // Calculate total (same format as online bookings)
+      const pricePerNight = parseInt(document.getElementById('walkInRoomType').selectedOptions[0].dataset.price);
+      const startDate = new Date(bookingData.arrivalDate);
+      const endDate = new Date(bookingData.departureDate);
+      const nights = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+      const subtotal = pricePerNight * nights * bookingData.roomCount;
+      const gst = Math.round(subtotal * 0.05); // 5% GST (same as online bookings)
+      const total = subtotal + gst;
+      
+      // Update booking data with calculated values
+      bookingData.subtotal = subtotal;
+      bookingData.gst = gst;
+      bookingData.total = total;
+      bookingData.nights = nights;
+
+      console.log('Walk-in booking data:', bookingData);
+
+      // Save to database
+      saveWalkInBooking(bookingData);
+    }
+
+    // Save walk-in booking
+    async function saveWalkInBooking(bookingData) {
+      try {
+        let bookingId;
+        
+        if (window.firebaseBookingService && firebaseInitialized) {
+          // Save to Firebase
+          const result = await window.firebaseBookingService.saveWalkInBooking(bookingData);
+          bookingId = result.bookingId;
+          console.log('Walk-in booking saved to Firebase:', result);
+        } else {
+          // Save to localStorage as fallback
+          bookingId = 'WI' + Date.now();
+          bookingData.bookingId = bookingId;
+          localStorage.setItem(`walkInBooking_${bookingId}`, JSON.stringify(bookingData));
+          console.log('Walk-in booking saved to localStorage:', bookingData);
+        }
+
+        // Show success message
+        const successMessage = `
+          ✅ Walk-in Booking Confirmed!
+          
+          Booking ID: ${bookingId}
+          Guest: ${bookingData.guestName}
+          Room: ${bookingData.roomType} (${bookingData.roomCount} room${bookingData.roomCount > 1 ? 's' : ''})
+          Check-in: ${bookingData.arrivalDate}
+          Check-out: ${bookingData.departureDate}
+          Duration: ${bookingData.nights} night${bookingData.nights > 1 ? 's' : ''}
+          Subtotal: ₹${bookingData.subtotal.toLocaleString()}
+          GST (5%): ₹${bookingData.gst.toLocaleString()}
+          Total: ₹${bookingData.total.toLocaleString()}
+          
+          The booking has been saved ${window.firebaseBookingService && firebaseInitialized ? 'to Firebase database' : 'to local storage'}.
+        `;
+        
+        alert(successMessage);
+
+        // Close modal and reset form
+        const modal = bootstrap.Modal.getInstance(document.getElementById('walkInModal'));
+        modal.hide();
+        
+        document.getElementById('walkInBookingForm').reset();
+        updateWalkInSummary();
+
+        console.log('Walk-in booking saved successfully:', bookingId);
+
+      } catch (error) {
+        console.error('Error saving walk-in booking:', error);
+        alert('❌ Error saving booking. Please try again.\n\nError: ' + error.message);
+      }
+    }
+
+  </script>
+
+
+
 </body>
+
+
 
 </html>

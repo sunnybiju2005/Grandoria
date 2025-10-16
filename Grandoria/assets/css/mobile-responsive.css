@@ -1,0 +1,692 @@
+/* Mobile Responsive Enhancements for GAURIKEERTHANA RESIDENCY */
+
+/* ============================================
+   MOBILE-FIRST RESPONSIVE DESIGN
+   ============================================ */
+
+/* Base Mobile Styles */
+@media (max-width: 768px) {
+  
+  /* ============================================
+     GLOBAL MOBILE IMPROVEMENTS
+     ============================================ */
+  
+  /* Improved touch targets */
+  button, .btn, a, input, select, textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Better text readability */
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  
+  /* Improved spacing */
+  .container {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  /* ============================================
+     HEADER & NAVIGATION MOBILE
+     ============================================ */
+  
+  .header {
+    position: relative;
+  }
+  
+  .topbar {
+    padding: 8px 0;
+    font-size: 12px;
+  }
+  
+  .topbar .contact-info {
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .topbar .contact-info i {
+    font-size: 11px;
+  }
+  
+  .topbar .social-links {
+    margin-top: 5px;
+  }
+  
+  .branding {
+    padding: 15px 0;
+  }
+  
+  .sitename {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  /* Mobile Navigation */
+  .navmenu {
+    background: var(--nav-mobile-background-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+  
+  .navmenu ul {
+    padding: 15px;
+  }
+  
+  .navmenu li {
+    margin: 8px 0;
+  }
+  
+  .navmenu a {
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .navmenu a:hover {
+    background: var(--accent-color);
+    color: var(--contrast-color);
+    transform: translateX(5px);
+  }
+  
+  /* ============================================
+     HERO SECTION MOBILE
+     ============================================ */
+  
+  .hero {
+    min-height: 60vh;
+    padding: 60px 0 40px;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+  
+  .hero p {
+    font-size: 16px;
+    margin-bottom: 25px;
+  }
+  
+  .hero .btn {
+    padding: 12px 25px;
+    font-size: 16px;
+    border-radius: 25px;
+  }
+  
+  /* ============================================
+     SECTIONS MOBILE
+     ============================================ */
+  
+  .section {
+    padding: 40px 0;
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+  }
+  
+  .section-subtitle {
+    font-size: 14px;
+    margin-bottom: 30px;
+  }
+  
+  /* ============================================
+     CARDS & CONTENT MOBILE
+     ============================================ */
+  
+  .card {
+    margin-bottom: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .card-body {
+    padding: 20px;
+  }
+  
+  .card-title {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  /* ============================================
+     FORMS MOBILE
+     ============================================ */
+  
+  .form-control, .form-select {
+    padding: 12px 15px;
+    font-size: 16px;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus, .form-select:focus {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.2rem rgba(47, 93, 80, 0.25);
+  }
+  
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--heading-color);
+  }
+  
+  .btn {
+    padding: 12px 20px;
+    font-size: 16px;
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+  
+  /* ============================================
+     BOOKING FORM MOBILE
+     ============================================ */
+  
+  .booking-grid {
+    display: block;
+  }
+  
+  .booking-form-section {
+    margin-bottom: 30px;
+  }
+  
+  .form-section {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+  }
+  
+  .form-section h4 {
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: var(--accent-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 10px;
+  }
+  
+  .form-grid {
+    display: block;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group.full-width {
+    width: 100%;
+  }
+  
+  /* Availability Status Mobile */
+  .availability-status {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+  }
+  
+  .availability-content {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .availability-text h6 {
+    font-size: 1rem;
+  }
+  
+  .availability-text p {
+    font-size: 14px;
+  }
+  
+  /* ============================================
+     ADMIN DASHBOARD MOBILE
+     ============================================ */
+  
+  .admin-navbar {
+    padding: 10px 0;
+  }
+  
+  .admin-navbar .navbar-brand {
+    font-size: 1.2rem;
+  }
+  
+  .stats-card {
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .stats-number {
+    font-size: 1.8rem;
+  }
+  
+  .booking-card {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .booking-card .row {
+    display: block;
+  }
+  
+  .booking-card .col-md-8,
+  .booking-card .col-md-4 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .search-filters {
+    padding: 20px;
+  }
+  
+  .search-filters .row {
+    display: block;
+  }
+  
+  .search-filters .col-md-4,
+  .search-filters .col-md-3,
+  .search-filters .col-md-2 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  /* ============================================
+     ROOM AVAILABILITY MOBILE
+     ============================================ */
+  
+  .room-availability {
+    padding: 20px;
+  }
+  
+  .availability-section {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .availability-item {
+    padding: 10px 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+  
+  /* ============================================
+     FOOTER MOBILE
+     ============================================ */
+  
+  .footer {
+    padding: 40px 0 20px;
+  }
+  
+  .footer-top {
+    padding: 30px 0;
+  }
+  
+  .footer-about {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .footer-links {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .footer-links h4 {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+  
+  .footer-links ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-links li {
+    margin: 8px 0;
+  }
+  
+  .footer-links a {
+    color: var(--nav-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .footer-links a:hover {
+    color: var(--nav-hover-color);
+  }
+  
+  .copyright {
+    padding: 20px 0;
+    text-align: center;
+  }
+  
+  .copyright .container {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* ============================================
+     MODALS MOBILE
+     ============================================ */
+  
+  .modal-dialog {
+    margin: 10px;
+    max-width: calc(100% - 20px);
+  }
+  
+  .modal-content {
+    border-radius: 15px;
+  }
+  
+  .modal-header {
+    padding: 20px;
+    border-bottom: 1px solid #dee2e6;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+  
+  .modal-footer {
+    padding: 20px;
+    border-top: 1px solid #dee2e6;
+  }
+  
+  /* ============================================
+     UTILITY CLASSES MOBILE
+     ============================================ */
+  
+  .text-center-mobile {
+    text-align: center;
+  }
+  
+  .mb-mobile-3 {
+    margin-bottom: 1rem;
+  }
+  
+  .p-mobile-3 {
+    padding: 1rem;
+  }
+  
+  /* Hide elements on mobile */
+  .d-mobile-none {
+    display: none !important;
+  }
+  
+  /* Show elements only on mobile */
+  .d-mobile-block {
+    display: block !important;
+  }
+  
+  .d-mobile-flex {
+    display: flex !important;
+  }
+}
+
+/* ============================================
+   TABLET STYLES (768px - 1024px)
+   ============================================ */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  
+  .container {
+    max-width: 750px;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  
+  .section-title {
+    font-size: 2rem;
+  }
+  
+  .booking-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  
+  .stats-card {
+    padding: 25px;
+  }
+  
+  .booking-card .row {
+    display: flex;
+  }
+  
+  .booking-card .col-md-8 {
+    flex: 0 0 66.666667%;
+    max-width: 66.666667%;
+  }
+  
+  .booking-card .col-md-4 {
+    flex: 0 0 33.333333%;
+    max-width: 33.333333%;
+  }
+}
+
+/* ============================================
+   LARGE MOBILE STYLES (480px - 768px)
+   ============================================ */
+
+@media (min-width: 481px) and (max-width: 768px) {
+  
+  .hero h1 {
+    font-size: 2.3rem;
+  }
+  
+  .section-title {
+    font-size: 1.9rem;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+  
+  .availability-content {
+    flex-direction: row;
+    gap: 12px;
+  }
+  
+  .booking-card .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .booking-card .col-md-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+}
+
+/* ============================================
+   SMALL MOBILE STYLES (320px - 480px)
+   ============================================ */
+
+@media (max-width: 480px) {
+  
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  
+  .hero {
+    min-height: 50vh;
+    padding: 40px 0 30px;
+  }
+  
+  .hero h1 {
+    font-size: 1.8rem;
+    line-height: 1.3;
+  }
+  
+  .hero p {
+    font-size: 14px;
+  }
+  
+  .section {
+    padding: 30px 0;
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+  }
+  
+  .form-section {
+    padding: 15px;
+  }
+  
+  .form-section h4 {
+    font-size: 1.1rem;
+  }
+  
+  .card-body {
+    padding: 15px;
+  }
+  
+  .btn {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+  
+  .stats-card {
+    padding: 15px;
+  }
+  
+  .stats-number {
+    font-size: 1.5rem;
+  }
+  
+  .booking-card {
+    padding: 12px;
+  }
+  
+  .modal-dialog {
+    margin: 5px;
+    max-width: calc(100% - 10px);
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 15px;
+  }
+}
+
+/* ============================================
+   LANDSCAPE MOBILE STYLES
+   ============================================ */
+
+@media (max-width: 768px) and (orientation: landscape) {
+  
+  .hero {
+    min-height: 40vh;
+    padding: 30px 0 20px;
+  }
+  
+  .hero h1 {
+    font-size: 2rem;
+  }
+  
+  .section {
+    padding: 30px 0;
+  }
+  
+  .navmenu {
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+}
+
+/* ============================================
+   ACCESSIBILITY IMPROVEMENTS
+   ============================================ */
+
+/* Focus indicators */
+button:focus,
+.btn:focus,
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid var(--accent-color);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .card {
+    border: 2px solid var(--heading-color);
+  }
+  
+  .btn {
+    border: 2px solid var(--accent-color);
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  .header,
+  .footer,
+  .btn,
+  .modal,
+  .navmenu {
+    display: none !important;
+  }
+  
+  .container {
+    max-width: 100%;
+    padding: 0;
+  }
+  
+  .section {
+    padding: 20px 0;
+    page-break-inside: avoid;
+  }
+  
+  .card {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}
