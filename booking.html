@@ -705,7 +705,9 @@
         
         // Calculate total nights and price
         const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
-        const totalPrice = nights * this.selectedRoom.price * this.selectedRoomCount;
+        const subtotal = nights * this.selectedRoom.price * this.selectedRoomCount;
+        const gst = Math.round(subtotal * 0.05); // 5% GST
+        const totalPrice = subtotal + gst;
         
         // Create booking object
         const booking = {
@@ -720,6 +722,8 @@
           roomCount: this.selectedRoomCount,
           adults: adults,
           children: children,
+          subtotal: subtotal,
+          gst: gst,
           total: totalPrice,
           status: 'confirmed',
           bookingType: 'ONLINE',

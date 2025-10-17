@@ -748,23 +748,9 @@
           bookingData.updatedAt = new Date();
           bookingData.bookingType = 'ONLINE'; // Ensure booking type is set
           
-          // Save confirmed booking to Firebase database (only successful transactions)
-          try {
-            if (window.firebaseBookingService) {
-              const bookingId = await window.firebaseBookingService.saveBooking(bookingData);
-              bookingData.firebaseId = bookingId;
-              console.log('Confirmed booking saved to Firebase with ID:', bookingId);
-            } else {
-              // Fallback to localStorage if Firebase is not available
-              window.localStorageFallback.saveBooking(bookingData);
-              console.log('Firebase not available, confirmed booking saved to localStorage fallback');
-            }
-          } catch (error) {
-            console.error('Error saving confirmed booking to Firebase:', error);
-            // Fallback to localStorage
-            window.localStorageFallback.saveBooking(bookingData);
-            console.log('Confirmed booking saved to localStorage due to Firebase error');
-          }
+          // Booking is already saved to Firebase from booking.html
+          // No need to save again here to prevent duplicates
+          console.log('Booking already saved to Firebase from booking page, skipping duplicate save');
           
           // Save confirmed booking locally for admin dashboard
           localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
