@@ -172,10 +172,21 @@ h6 {
   color: var(--contrast-color);
 }
 
+.header .topbar .contact-info a,
+.header .topbar .contact-info span {
+  color: var(--contrast-color);
+  text-decoration: none;
+}
+
 @media (max-width: 575px) {
 
   .header .topbar .contact-info i a,
   .header .topbar .contact-info i span {
+    font-size: 13px;
+  }
+
+  .header .topbar .contact-info a,
+  .header .topbar .contact-info span {
     font-size: 13px;
   }
 }
@@ -186,6 +197,15 @@ h6 {
 }
 
 .header .topbar .contact-info i a:hover {
+  color: var(--contrast-color);
+  text-decoration: underline;
+}
+
+.header .topbar .contact-info a {
+  transition: 0.3s;
+}
+
+.header .topbar .contact-info a:hover {
   color: var(--contrast-color);
   text-decoration: underline;
 }
