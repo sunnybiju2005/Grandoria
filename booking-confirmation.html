@@ -420,7 +420,7 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   
   <!-- Firebase Configuration -->
-  <script src="firebase-config-simple.js"></script>
+  <script src="firebase-service.js"></script>
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
@@ -984,7 +984,7 @@
       // Walk-in customer booking with Ctrl+B shortcut
       if (e.ctrlKey && e.key === 'b') {
         e.preventDefault();
-        openWalkInBookingModal();
+        window.open('walkin-booking.html', '_blank');
       }
     });
 
@@ -1025,6 +1025,12 @@
                   <div class="alert alert-success">
                     <i class="bi bi-check-circle me-2"></i>
                     <strong>Authentication Successful!</strong> You can now create walk-in bookings.
+                  </div>
+                  
+                  <!-- Firebase Connection Status -->
+                  <div id="firebaseStatus" class="alert alert-info">
+                    <i class="bi bi-cloud me-2"></i>
+                    <span id="firebaseStatusText">Checking Firebase connection...</span>
                   </div>
                   
                   <form id="walkInBookingForm">
@@ -1207,10 +1213,29 @@
           confirmButton.style.display = 'none';
         }
         
+        // Update Firebase status
+        updateFirebaseStatus();
+        
         console.log('Walk-in authentication successful');
       } else {
         alert('❌ Invalid password! Please enter the correct admin password.');
         document.getElementById('adminPassword').focus();
+      }
+    }
+    
+    // Update Firebase connection status
+    function updateFirebaseStatus() {
+      const statusDiv = document.getElementById('firebaseStatus');
+      const statusText = document.getElementById('firebaseStatusText');
+      
+      if (!statusDiv || !statusText) return;
+      
+      if (window.firebaseInitialized && window.firebaseBookingService) {
+        statusDiv.className = 'alert alert-success';
+        statusText.innerHTML = '<i class="bi bi-check-circle me-2"></i>✅ Firebase connected - Database access available';
+      } else {
+        statusDiv.className = 'alert alert-warning';
+        statusText.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>⚠️ Firebase not connected - Using local storage fallback';
       }
     }
 
@@ -1326,7 +1351,7 @@
         const roomTypeId = roomTypeMap[roomType] || roomType;
         
         // Check if Firebase is available
-        if (window.firebaseBookingService && firebaseInitialized) {
+        if (window.firebaseBookingService && window.firebaseInitialized) {
           console.log('Using Firebase for room availability check');
           console.log(`Checking availability for: ${roomType} (${roomTypeId})`);
           
@@ -1600,7 +1625,7 @@
         let bookingId;
         
         // Always try to save to Firebase (same database as online bookings)
-        if (window.firebaseBookingService && firebaseInitialized) {
+        if (window.firebaseBookingService && window.firebaseInitialized) {
           console.log('Using Firebase for walk-in booking save');
           
           // Generate booking ID for walk-in
@@ -1650,29 +1675,34 @@
     }
   </script>
 
-  <!-- Firebase CDN Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
-  
-  <!-- Firebase Service -->
-  <script src="firebase-service.js"></script>
+  <!-- Firebase scripts already loaded above -->
   
   <!-- Initialize Firebase Service -->
   <script>
     // Initialize Firebase and create booking service
-    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize Firebase with delay to ensure CDN scripts are loaded
+    setTimeout(function() {
       console.log('Initializing Firebase for booking confirmation page...');
       
       // Initialize Firebase
       if (initializeFirebase()) {
         // Create Firebase booking service
         window.firebaseBookingService = new FirebaseBookingService();
-        window.firebaseBookingService.init();
-        console.log('Firebase booking service initialized successfully');
+        const serviceInit = window.firebaseBookingService.init();
+        
+        if (serviceInit) {
+          window.firebaseInitialized = true; // Set this for walk-in booking checks
+          console.log('✅ Firebase booking service initialized successfully');
+          console.log('✅ Walk-in booking now uses SAME database as online bookings');
+        } else {
+          window.firebaseInitialized = false;
+          console.error('❌ Firebase booking service initialization failed');
+        }
       } else {
-        console.error('Failed to initialize Firebase');
+        window.firebaseInitialized = false;
+        console.error('❌ Failed to initialize Firebase');
       }
-    });
+    }, 1000); // 1 second delay
   </script>
 
 </body>

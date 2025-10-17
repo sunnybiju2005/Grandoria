@@ -196,6 +196,16 @@
       color: white;
     }
 
+    .btn-checkin {
+      background: #17a2b8;
+      color: white;
+    }
+
+    .btn-checkin:hover {
+      background: #138496;
+      color: white;
+    }
+
     .btn-confirm {
       background: #28a745;
       color: white;
@@ -391,6 +401,16 @@
           </div>
           <div class="col-md-3">
             <div class="mb-3">
+              <label for="bookingTypeFilter" class="form-label">Filter by Booking Type</label>
+              <select class="form-select" id="bookingTypeFilter">
+                <option value="all">All Booking Types</option>
+                <option value="ONLINE">Online Bookings</option>
+                <option value="WALK_IN">Walk-in Bookings</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
               <label for="roomTypeFilter" class="form-label">Filter by Room Type</label>
               <select class="form-select" id="roomTypeFilter">
                 <option value="all">All Room Types</option>
@@ -400,12 +420,46 @@
               </select>
             </div>
           </div>
-          <div class="col-md-2">
+        </div>
+        
+        <!-- Date Filter Row -->
+        <div class="row">
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="dateFromFilter" class="form-label">From Date</label>
+              <input type="date" class="form-control" id="dateFromFilter">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="dateToFilter" class="form-label">To Date</label>
+              <input type="date" class="form-control" id="dateToFilter">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="mb-3">
+              <label for="dateTypeFilter" class="form-label">Date Type</label>
+              <select class="form-select" id="dateTypeFilter">
+                <option value="arrival">Check-in Date</option>
+                <option value="departure">Check-out Date</option>
+                <option value="booking">Booking Date</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-3">
             <div class="mb-3">
               <label class="form-label">&nbsp;</label>
-              <button class="btn btn-primary w-100" onclick="applyFilters()">
-                <i class="bi bi-funnel me-1"></i>Filter
-              </button>
+              <div class="d-flex gap-2">
+                <button class="btn btn-primary flex-fill" onclick="applyFilters()">
+                  <i class="bi bi-funnel me-1"></i>Filter
+                </button>
+                <button class="btn btn-secondary" onclick="clearFilters()">
+                  <i class="bi bi-x-circle me-1"></i>Clear
+                </button>
+                <button class="btn btn-info" onclick="refreshBookings()" title="Refresh bookings from database">
+                  <i class="bi bi-arrow-clockwise me-1"></i>Refresh
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -544,6 +598,15 @@
       document.getElementById('searchInput').addEventListener('input', applyFilters);
       document.getElementById('statusFilter').addEventListener('change', applyFilters);
       document.getElementById('roomTypeFilter').addEventListener('change', applyFilters);
+      document.getElementById('bookingTypeFilter').addEventListener('change', applyFilters);
+      document.getElementById('dateFromFilter').addEventListener('change', applyFilters);
+      document.getElementById('dateToFilter').addEventListener('change', applyFilters);
+      document.getElementById('dateTypeFilter').addEventListener('change', applyFilters);
+    });
+
+    // Cleanup when page is unloaded
+    window.addEventListener('beforeunload', function() {
+      stopDatabaseSync();
     });
 
     function isAdminAuthenticated() {
@@ -601,6 +664,9 @@
         updateRoomAvailability();
         displayBookings();
 
+        // Start periodic database sync
+        startDatabaseSync();
+
       } catch (error) {
         console.error('Error loading bookings:', error);
         container.innerHTML = '<div class="no-bookings"><i class="bi bi-exclamation-triangle me-2"></i>Error loading bookings. Please try again.</div>';
@@ -627,6 +693,93 @@
       // or displayed in admin dashboard. They are only kept temporarily for retry purposes.
       
       return bookings;
+    }
+
+    // Database synchronization
+    let syncInterval;
+    let lastBookingCount = 0;
+
+    function startDatabaseSync() {
+      // Clear any existing interval
+      if (syncInterval) {
+        clearInterval(syncInterval);
+      }
+
+      // Set up periodic sync every 10 seconds
+      syncInterval = setInterval(async () => {
+        try {
+          if (window.firebaseBookingService) {
+            const currentBookings = await window.firebaseBookingService.getAllBookings();
+            
+            // Check if booking count changed
+            if (currentBookings.length !== lastBookingCount) {
+              console.log(`Database sync: Booking count changed from ${lastBookingCount} to ${currentBookings.length}`);
+              
+              // Update allBookings
+              allBookings = currentBookings;
+              
+              // Reapply current filters
+              applyFilters();
+              
+              // Update statistics
+              updateStatistics();
+              updateRoomAvailability();
+              
+              lastBookingCount = currentBookings.length;
+            }
+            
+            // Check for individual booking changes (removals)
+            const currentBookingIds = currentBookings.map(b => b.bookingId);
+            const existingBookingIds = allBookings.map(b => b.bookingId);
+            
+            // Find removed bookings
+            const removedBookings = existingBookingIds.filter(id => !currentBookingIds.includes(id));
+            
+            if (removedBookings.length > 0) {
+              console.log('Database sync: Removed bookings detected:', removedBookings);
+              
+              // Remove from allBookings
+              allBookings = allBookings.filter(b => !removedBookings.includes(b.bookingId));
+              
+              // Remove from filteredBookings
+              filteredBookings = filteredBookings.filter(b => !removedBookings.includes(b.bookingId));
+              
+              // Remove from UI
+              removedBookings.forEach(bookingId => {
+                const bookingCard = document.getElementById(`booking-${bookingId}`);
+                if (bookingCard) {
+                  bookingCard.style.transition = 'opacity 0.3s ease-out';
+                  bookingCard.style.opacity = '0';
+                  setTimeout(() => {
+                    if (bookingCard.parentNode) {
+                      bookingCard.remove();
+                    }
+                  }, 300);
+                }
+              });
+              
+              // Update statistics
+              updateStatistics();
+              updateRoomAvailability();
+              
+              console.log('Database sync: UI updated after booking removals');
+            }
+          }
+        } catch (error) {
+          console.error('Database sync error:', error);
+        }
+      }, 10000); // Sync every 10 seconds
+      
+      lastBookingCount = allBookings.length;
+      console.log('Database sync started - checking every 10 seconds');
+    }
+
+    function stopDatabaseSync() {
+      if (syncInterval) {
+        clearInterval(syncInterval);
+        syncInterval = null;
+        console.log('Database sync stopped');
+      }
     }
 
     function updateStatistics() {
@@ -735,6 +888,10 @@
       const searchTerm = document.getElementById('searchInput').value.toLowerCase();
       const statusFilter = document.getElementById('statusFilter').value;
       const roomTypeFilter = document.getElementById('roomTypeFilter').value;
+      const bookingTypeFilter = document.getElementById('bookingTypeFilter').value;
+      const dateFromFilter = document.getElementById('dateFromFilter').value;
+      const dateToFilter = document.getElementById('dateToFilter').value;
+      const dateTypeFilter = document.getElementById('dateTypeFilter').value;
 
       filteredBookings = allBookings.filter(booking => {
         const matchesSearch = !searchTerm || 
@@ -745,11 +902,92 @@
         const matchesStatus = statusFilter === 'all' || booking.status === statusFilter;
         
         const matchesRoomType = roomTypeFilter === 'all' || booking.roomType === roomTypeFilter;
+        
+        const matchesBookingType = bookingTypeFilter === 'all' || booking.bookingType === bookingTypeFilter;
 
-        return matchesSearch && matchesStatus && matchesRoomType;
+        // Date filtering
+        let matchesDate = true;
+        if (dateFromFilter || dateToFilter) {
+          let bookingDate;
+          
+          if (dateTypeFilter === 'arrival') {
+            bookingDate = booking.arrivalDate;
+          } else if (dateTypeFilter === 'departure') {
+            bookingDate = booking.departureDate;
+          } else if (dateTypeFilter === 'booking') {
+            bookingDate = booking.timestamp ? new Date(booking.timestamp).toISOString().split('T')[0] : 
+                         booking.createdAt ? new Date(booking.createdAt).toISOString().split('T')[0] : null;
+          }
+          
+          if (bookingDate) {
+            if (dateFromFilter && bookingDate < dateFromFilter) {
+              matchesDate = false;
+            }
+            if (dateToFilter && bookingDate > dateToFilter) {
+              matchesDate = false;
+            }
+          } else {
+            matchesDate = false; // No date available for this booking
+          }
+        }
+
+        return matchesSearch && matchesStatus && matchesRoomType && matchesBookingType && matchesDate;
       });
 
       displayBookings();
+    }
+
+    function clearFilters() {
+      // Clear all filter inputs
+      document.getElementById('searchInput').value = '';
+      document.getElementById('statusFilter').value = 'all';
+      document.getElementById('roomTypeFilter').value = 'all';
+      document.getElementById('bookingTypeFilter').value = 'all';
+      document.getElementById('dateFromFilter').value = '';
+      document.getElementById('dateToFilter').value = '';
+      document.getElementById('dateTypeFilter').value = 'arrival';
+      
+      // Reset filtered bookings to show all
+      filteredBookings = [...allBookings];
+      displayBookings();
+    }
+
+    async function refreshBookings() {
+      console.log('Manual refresh triggered');
+      
+      // Show loading state
+      const container = document.getElementById('bookingsContainer');
+      const originalContent = container.innerHTML;
+      container.innerHTML = '<div class="loading"><i class="bi bi-arrow-clockwise me-2"></i>Refreshing bookings...</div>';
+      
+      try {
+        // Reload bookings from database
+        if (window.firebaseBookingService) {
+          allBookings = await window.firebaseBookingService.getAllBookings();
+          console.log('Bookings refreshed from Firebase:', allBookings.length);
+        } else {
+          allBookings = loadBookingsFromLocalStorage();
+          console.log('Bookings refreshed from localStorage:', allBookings.length);
+        }
+        
+        // Reapply current filters
+        applyFilters();
+        
+        // Update statistics
+        updateStatistics();
+        updateRoomAvailability();
+        
+        console.log('Manual refresh completed successfully');
+        
+      } catch (error) {
+        console.error('Error refreshing bookings:', error);
+        container.innerHTML = '<div class="error"><i class="bi bi-exclamation-triangle me-2"></i>Error refreshing bookings. Please try again.</div>';
+        
+        // Restore original content after 3 seconds
+        setTimeout(() => {
+          container.innerHTML = originalContent;
+        }, 3000);
+      }
     }
 
     function displayBookings() {
@@ -767,7 +1005,13 @@
           <div class="row">
             <div class="col-md-8">
               <div class="d-flex justify-content-between align-items-start mb-3">
-                <h5 class="mb-0">${booking.guestName}</h5>
+                <div>
+                  <h5 class="mb-0">${booking.guestName}</h5>
+                  <small class="text-muted">
+                    <i class="bi bi-${booking.bookingType === 'WALK_IN' ? 'person-walking' : 'laptop'} me-1"></i>
+                    ${booking.bookingType === 'WALK_IN' ? 'Walk-in' : 'Online'} Booking
+                  </small>
+                </div>
                 <span class="status-badge status-${booking.status}">
                   ${getStatusText(booking.status)}
                 </span>
@@ -809,6 +1053,9 @@
                   <i class="bi bi-eye me-1"></i>View Details
                 </button>
                 ${booking.status === 'confirmed' ? `
+                  <button class="btn btn-action btn-checkin mb-1" onclick="checkInBooking('${booking.bookingId}')" id="checkin-btn-${booking.bookingId}">
+                    <i class="bi bi-check-circle me-1"></i>Check In
+                  </button>
                   <button class="btn btn-action btn-cancel mb-1" onclick="cancelBooking('${booking.bookingId}')" id="cancel-btn-${booking.bookingId}">
                     <i class="bi bi-x-circle me-1"></i>Cancel Booking
                   </button>
@@ -939,6 +1186,110 @@
         if (cancelButton) {
           cancelButton.disabled = false;
           cancelButton.innerHTML = '<i class="bi bi-x-circle me-1"></i>Cancel Booking';
+        }
+      }
+    }
+
+    async function checkInBooking(bookingId) {
+      if (!confirm('Are you sure you want to check in this guest? This will remove the booking from the dashboard.')) {
+        return;
+      }
+
+      // Disable the check-in button immediately to prevent multiple clicks
+      const checkInButton = document.getElementById(`checkin-btn-${bookingId}`);
+      if (checkInButton) {
+        checkInButton.disabled = true;
+        checkInButton.innerHTML = '<i class="bi bi-hourglass-split me-1"></i>Checking In...';
+      }
+
+      try {
+        console.log(`Attempting to check in booking: ${bookingId}`);
+        
+        // Find the booking to check in
+        const bookingToCheckIn = allBookings.find(b => b.bookingId === bookingId);
+        
+        if (!bookingToCheckIn) {
+          alert('Booking not found!');
+          if (checkInButton) {
+            checkInButton.disabled = false;
+            checkInButton.innerHTML = '<i class="bi bi-check-circle me-1"></i>Check In';
+          }
+          return;
+        }
+
+        console.log('Found booking to check in:', bookingToCheckIn);
+
+        // INSTANT DATABASE REMOVAL FIRST
+        try {
+          // Remove from Firebase IMMEDIATELY
+          if (window.firebaseBookingService) {
+            await window.firebaseBookingService.deleteBooking(bookingId);
+            console.log('Booking deleted from Firebase instantly after check-in');
+          }
+          
+          // Clean up localStorage IMMEDIATELY
+          const keysToCheck = ['confirmedBooking', 'failedBooking', 'currentBooking'];
+          keysToCheck.forEach(key => {
+            const stored = localStorage.getItem(key);
+            if (stored && stored !== 'null') {
+              try {
+                const parsed = JSON.parse(stored);
+                if (parsed && parsed.bookingId === bookingId) {
+                  localStorage.removeItem(key);
+                  console.log(`Booking removed from localStorage key: ${key} instantly`);
+                }
+              } catch (e) {
+                console.error(`Error parsing ${key}:`, e);
+              }
+            }
+          });
+          
+          console.log('Database cleanup completed instantly');
+        } catch (dbError) {
+          console.error('Database removal error:', dbError);
+          alert('Error removing booking from database. Please try again.');
+          if (checkInButton) {
+            checkInButton.disabled = false;
+            checkInButton.innerHTML = '<i class="bi bi-check-circle me-1"></i>Check In';
+          }
+          return;
+        }
+
+        // IMMEDIATE UI UPDATE - Remove from display
+        const bookingCard = document.getElementById(`booking-${bookingId}`);
+        if (bookingCard) {
+          // Add fade-out effect
+          bookingCard.style.transition = 'opacity 0.3s ease-out';
+          bookingCard.style.opacity = '0';
+          
+          setTimeout(() => {
+            bookingCard.remove();
+            console.log('Booking card removed from DOM after check-in');
+          }, 300);
+        }
+
+        // Remove from arrays immediately
+        const initialCount = allBookings.length;
+        allBookings = allBookings.filter(b => b.bookingId !== bookingId);
+        filteredBookings = filteredBookings.filter(b => b.bookingId !== bookingId);
+        
+        console.log(`Booking removed from arrays after check-in. Before: ${initialCount}, After: ${allBookings.length}`);
+
+        // Update statistics and availability immediately
+        updateStatistics();
+        updateRoomAvailability();
+        
+        // Show success message immediately
+        alert(`Guest ${bookingToCheckIn.guestName} has been checked in successfully! Booking removed from dashboard.`);
+        
+      } catch (error) {
+        console.error('Error checking in booking:', error);
+        alert('Error checking in booking. Please try again.');
+        
+        // Re-enable button on error
+        if (checkInButton) {
+          checkInButton.disabled = false;
+          checkInButton.innerHTML = '<i class="bi bi-check-circle me-1"></i>Check In';
         }
       }
     }

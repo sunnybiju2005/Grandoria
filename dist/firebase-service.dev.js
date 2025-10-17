@@ -85,7 +85,7 @@ function () {
   }, {
     key: "saveBooking",
     value: function saveBooking(bookingData) {
-      var bookingRef;
+      var now, bookingRef;
       return regeneratorRuntime.async(function saveBooking$(_context) {
         while (1) {
           switch (_context.prev = _context.next) {
@@ -99,30 +99,33 @@ function () {
 
             case 2:
               _context.prev = 2;
-              _context.next = 5;
+              // Use Firebase Timestamp for consistency
+              now = firebase.firestore.Timestamp.now();
+              _context.next = 6;
               return regeneratorRuntime.awrap(db.collection(this.collection).add(_objectSpread({}, bookingData, {
-                createdAt: new Date(),
-                updatedAt: new Date(),
-                status: 'confirmed'
+                createdAt: now,
+                updatedAt: now,
+                // Only set status to 'confirmed' if not already set
+                status: bookingData.status || 'confirmed'
               })));
 
-            case 5:
+            case 6:
               bookingRef = _context.sent;
               console.log('Booking saved with ID: ', bookingRef.id);
               return _context.abrupt("return", bookingRef.id);
 
-            case 10:
-              _context.prev = 10;
+            case 11:
+              _context.prev = 11;
               _context.t0 = _context["catch"](2);
               console.error('Error saving booking: ', _context.t0);
               throw _context.t0;
 
-            case 14:
+            case 15:
             case "end":
               return _context.stop();
           }
         }
-      }, null, this, [[2, 10]]);
+      }, null, this, [[2, 11]]);
     } // Update booking status
 
   }, {

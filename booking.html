@@ -811,8 +811,30 @@
       }
     }
 
-    // Initialize the original booking system when page loads
+    // Initialize Firebase and booking system when page loads
     document.addEventListener('DOMContentLoaded', function() {
+      console.log('Initializing Firebase for online booking page...');
+      
+      // Initialize Firebase
+      if (initializeFirebase()) {
+        // Create Firebase booking service
+        window.firebaseBookingService = new FirebaseBookingService();
+        const serviceInit = window.firebaseBookingService.init();
+        
+        if (serviceInit) {
+          window.firebaseInitialized = true; // Set this for online booking checks
+          console.log('✅ Firebase booking service initialized successfully');
+          console.log('✅ Online booking now uses SAME database as walk-in bookings');
+        } else {
+          window.firebaseInitialized = false;
+          console.error('❌ Firebase booking service initialization failed');
+        }
+      } else {
+        window.firebaseInitialized = false;
+        console.error('❌ Failed to initialize Firebase');
+      }
+      
+      // Initialize the booking system
       new OriginalBookingSystem();
     });
   </script>

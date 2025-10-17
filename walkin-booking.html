@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Walk-in Customer Booking - Gauri Keerthana Residency</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .walkin-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        
+        .walkin-header {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            border-radius: 20px 20px 0 0;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .walkin-header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+        
+        .walkin-header p {
+            margin: 10px 0 0 0;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .walkin-body {
+            padding: 40px;
+        }
+        
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 2px solid #e9ecef;
+            padding: 12px 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+        }
+        
+        .btn {
+            border-radius: 10px;
+            padding: 12px 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+        }
+        
+        .alert {
+            border-radius: 10px;
+            border: none;
+        }
+        
+        .room-availability {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .booking-summary {
+            background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+        
+        .loading {
+            display: none;
+        }
+        
+        .loading.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back Button -->
+    <button class="btn btn-outline-light back-btn" onclick="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>Back
+    </button>
+
+    <div class="container">
+        <div class="walkin-container">
+            <!-- Header -->
+            <div class="walkin-header">
+                <h1><i class="bi bi-person-walking me-3"></i>Walk-in Booking</h1>
+                <p>Create booking for walk-in customers</p>
+            </div>
+            
+            <!-- Body -->
+            <div class="walkin-body">
+                <!-- Firebase Connection Status -->
+                <div id="firebaseStatus" class="alert alert-info">
+                    <i class="bi bi-cloud me-2"></i>
+                    <span id="firebaseStatusText">Checking Firebase connection...</span>
+                </div>
+                
+                <!-- Authentication Section -->
+                <div id="authSection">
+                    <div class="alert alert-warning">
+                        <i class="bi bi-shield-lock me-2"></i>
+                        <strong>Authentication Required</strong><br>
+                        Enter admin password to access walk-in booking system.
+                    </div>
+                    <div class="mb-3">
+                        <label for="adminPassword" class="form-label">Admin Password</label>
+                        <input type="password" class="form-control" id="adminPassword" placeholder="Enter admin password">
+                    </div>
+                    <button type="button" class="btn btn-success" onclick="authenticateWalkIn()">
+                        <i class="bi bi-unlock me-2"></i>Authenticate
+                    </button>
+                </div>
+                
+                <!-- Booking Form Section -->
+                <div id="bookingSection" style="display: none;">
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle me-2"></i>
+                        <strong>Authentication Successful!</strong> You can now create walk-in bookings.
+                    </div>
+                    
+                    <form id="walkInBookingForm">
+                        <!-- Guest Information -->
+                        <h4 class="mb-3"><i class="bi bi-person me-2"></i>Guest Information</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInGuestName" class="form-label">Guest Name *</label>
+                                    <input type="text" class="form-control" id="walkInGuestName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInPhone" class="form-label">Phone Number *</label>
+                                    <input type="tel" class="form-control" id="walkInPhone" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="walkInEmail">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInAdults" class="form-label">Number of Adults *</label>
+                                    <select class="form-select" id="walkInAdults" required>
+                                        <option value="">Select Adults</option>
+                                        <option value="1">1 Adult</option>
+                                        <option value="2">2 Adults</option>
+                                        <option value="3">3 Adults</option>
+                                        <option value="4">4 Adults</option>
+                                        <option value="5">5 Adults</option>
+                                        <option value="6">6 Adults</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInChildren" class="form-label">Number of Children</label>
+                                    <select class="form-select" id="walkInChildren">
+                                        <option value="0">No Children</option>
+                                        <option value="1">1 Child</option>
+                                        <option value="2">2 Children</option>
+                                        <option value="3">3 Children</option>
+                                        <option value="4">4 Children</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Room Information -->
+                        <h4 class="mb-3 mt-4"><i class="bi bi-house me-2"></i>Room Information</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInRoomType" class="form-label">Room Type *</label>
+                                    <select class="form-select" id="walkInRoomType" required onchange="checkRoomAvailability()">
+                                        <option value="">Select Room Type</option>
+                                        <option value="Normal Non-AC Room" data-price="1000">Normal Non-AC Room - ₹1,000/night</option>
+                                        <option value="Normal AC Room" data-price="2000">Normal AC Room - ₹2,000/night</option>
+                                        <option value="Deluxe AC Room" data-price="3000">Deluxe AC Room - ₹3,000/night</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInRoomCount" class="form-label">Number of Rooms *</label>
+                                    <select class="form-select" id="walkInRoomCount" required onchange="onRoomCountChange()">
+                                        <option value="">Select Rooms</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Dates -->
+                        <h4 class="mb-3 mt-4"><i class="bi bi-calendar me-2"></i>Dates</h4>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInCheckIn" class="form-label">Check-in Date *</label>
+                                    <input type="date" class="form-control" id="walkInCheckIn" required onchange="checkRoomAvailability()">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="walkInCheckOut" class="form-label">Check-out Date *</label>
+                                    <input type="date" class="form-control" id="walkInCheckOut" required onchange="checkRoomAvailability()">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Room Availability Status -->
+                        <div id="roomAvailabilityStatus" class="room-availability" style="display: none;">
+                            <h5><i class="bi bi-info-circle me-2"></i>Room Availability</h5>
+                            <div id="availabilityMessage"></div>
+                        </div>
+                        
+                        <!-- Special Requests -->
+                        <h4 class="mb-3 mt-4"><i class="bi bi-chat-text me-2"></i>Special Requests</h4>
+                        <div class="mb-3">
+                            <label for="walkInSpecialRequests" class="form-label">Special Requests</label>
+                            <textarea class="form-control" id="walkInSpecialRequests" rows="3" placeholder="Any special requests or notes..."></textarea>
+                        </div>
+                        
+                        <!-- Booking Summary -->
+                        <div id="bookingSummary" class="booking-summary" style="display: none;">
+                            <h5><i class="bi bi-receipt me-2"></i>Booking Summary</h5>
+                            <div id="summaryContent"></div>
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <div class="text-center mt-4">
+                            <button type="button" class="btn btn-success btn-lg" id="confirmWalkInBooking" onclick="handleConfirmClick()" style="display: none;">
+                                <i class="bi bi-check-circle me-2"></i>Confirm Walk-in Booking
+                            </button>
+                            
+                            <!-- Force Enable Button -->
+                            <button type="button" class="btn btn-info btn-sm ms-2" onclick="forceEnableButton()" id="forceEnableButton">
+                                <i class="bi bi-unlock me-2"></i>Enable Button
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <!-- Loading Indicator -->
+                <div id="loadingIndicator" class="loading text-center">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-2">Processing booking...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Firebase CDN Scripts -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    
+    <!-- Firebase Service -->
+    <script src="firebase-service.js"></script>
+    
+    <script>
+        // Initialize Firebase with delay
+        setTimeout(function() {
+            console.log('Initializing Firebase for walk-in booking page...');
+            
+            if (initializeFirebase()) {
+                window.firebaseBookingService = new FirebaseBookingService();
+                const serviceInit = window.firebaseBookingService.init();
+                
+                if (serviceInit) {
+                    window.firebaseInitialized = true;
+                    console.log('✅ Firebase booking service initialized successfully');
+                    updateFirebaseStatus();
+                } else {
+                    window.firebaseInitialized = false;
+                    console.error('❌ Firebase booking service initialization failed');
+                    updateFirebaseStatus();
+                }
+            } else {
+                window.firebaseInitialized = false;
+                console.error('❌ Failed to initialize Firebase');
+                updateFirebaseStatus();
+            }
+        }, 1000);
+        
+        // Set minimum dates
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('walkInCheckIn').min = today;
+            document.getElementById('walkInCheckOut').min = today;
+        });
+        
+        // Go back function
+        function goBack() {
+            window.history.back();
+        }
+        
+        // Update Firebase connection status
+        function updateFirebaseStatus() {
+            const statusDiv = document.getElementById('firebaseStatus');
+            const statusText = document.getElementById('firebaseStatusText');
+            
+            if (!statusDiv || !statusText) return;
+            
+            if (window.firebaseInitialized && window.firebaseBookingService) {
+                statusDiv.className = 'alert alert-success';
+                statusText.innerHTML = '<i class="bi bi-check-circle me-2"></i>✅ Firebase connected - Database access available';
+            } else {
+                statusDiv.className = 'alert alert-warning';
+                statusText.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>⚠️ Firebase not connected - Using local storage fallback';
+            }
+        }
+        
+        // Authenticate walk-in booking access
+        function authenticateWalkIn() {
+            const password = document.getElementById('adminPassword').value;
+            
+            if (password === 'admin') {
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('bookingSection').style.display = 'block';
+                
+                // Show force enable button
+                const forceEnableButton = document.getElementById('forceEnableButton');
+                if (forceEnableButton) {
+                    forceEnableButton.style.display = 'inline-block';
+                }
+                
+                // Initially disable confirm button
+                const confirmButton = document.getElementById('confirmWalkInBooking');
+                if (confirmButton) {
+                    confirmButton.disabled = true;
+                    confirmButton.style.display = 'none';
+                }
+                
+                console.log('Walk-in authentication successful');
+            } else {
+                alert('❌ Invalid password! Please enter the correct admin password.');
+                document.getElementById('adminPassword').focus();
+            }
+        }
+        
+        // Handle confirm button click
+        function handleConfirmClick() {
+            console.log('🔘 handleConfirmClick called');
+            
+            const button = document.getElementById('confirmWalkInBooking');
+            console.log('🔍 Button element:', button);
+            console.log('🔍 Button disabled:', button ? button.disabled : 'BUTTON NOT FOUND');
+            console.log('🔍 Button visible:', button ? button.style.display : 'BUTTON NOT FOUND');
+            
+            if (!button) {
+                console.error('❌ Confirm button not found!');
+                alert('❌ Confirm button not found! Please refresh the page.');
+                return;
+            }
+            
+            // Force enable button if it's disabled
+            if (button.disabled) {
+                console.log('⚠️ Button was disabled, forcing enable...');
+                button.disabled = false;
+            }
+            
+            // Force show button if it's hidden
+            if (button.style.display === 'none') {
+                console.log('⚠️ Button was hidden, forcing show...');
+                button.style.display = 'inline-block';
+            }
+            
+            // Call the actual confirm function
+            confirmWalkInBooking();
+        }
+        
+        // Force enable button function
+        function forceEnableButton() {
+            const button = document.getElementById('confirmWalkInBooking');
+            if (button) {
+                button.style.display = 'inline-block';
+                button.disabled = false;
+                console.log('✅ Button forced to be enabled and visible');
+                alert('✅ Button is now enabled and visible!');
+            } else {
+                console.error('❌ Button not found!');
+                alert('❌ Button not found!');
+            }
+        }
+        
+        // Check room availability for walk-in customers
+        async function checkRoomAvailability() {
+            const roomType = document.getElementById('walkInRoomType').value;
+            const checkIn = document.getElementById('walkInCheckIn').value;
+            const checkOut = document.getElementById('walkInCheckOut').value;
+            
+            if (!roomType || !checkIn || !checkOut) {
+                document.getElementById('roomAvailabilityStatus').style.display = 'none';
+                return;
+            }
+            
+            const availabilityDiv = document.getElementById('roomAvailabilityStatus');
+            const messageSpan = document.getElementById('availabilityMessage');
+            
+            availabilityDiv.style.display = 'block';
+            messageSpan.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Checking availability...';
+            availabilityDiv.className = 'room-availability alert alert-info';
+            
+            try {
+                const result = await checkRoomAvailabilityAPI(roomType, checkIn, checkOut, 1);
+                
+                if (result.available && result.availableRooms > 0) {
+                    messageSpan.innerHTML = `<i class="bi bi-check-circle me-2"></i>✅ ${result.availableRooms} ${roomType}(s) available! (${result.availableRooms}/${result.totalRooms} total available)`;
+                    availabilityDiv.className = 'room-availability alert alert-success';
+                    
+                    // Update room count options
+                    updateRoomCountOptions(result.availableRooms);
+                } else {
+                    messageSpan.innerHTML = `<i class="bi bi-x-circle me-2"></i>❌ No ${roomType}(s) available for selected dates. Please try different dates or room type.`;
+                    availabilityDiv.className = 'room-availability alert alert-danger';
+                    
+                    // Clear room count options
+                    const roomCountSelect = document.getElementById('walkInRoomCount');
+                    roomCountSelect.innerHTML = '<option value="">No rooms available</option>';
+                    roomCountSelect.disabled = true;
+                }
+            } catch (error) {
+                console.error('Error checking availability:', error);
+                messageSpan.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>⚠️ Error checking availability. Please try again.';
+                availabilityDiv.className = 'room-availability alert alert-warning';
+            }
+        }
+        
+        // Check room availability API
+        async function checkRoomAvailabilityAPI(roomType, checkIn, checkOut, requestedRooms = 1) {
+            try {
+                // Map room type names to database IDs
+                const roomTypeMap = {
+                    'Normal Non-AC Room': 'normal-non-ac',
+                    'Normal AC Room': 'normal-ac',
+                    'Deluxe AC Room': 'deluxe-ac'
+                };
+                
+                const roomTypeId = roomTypeMap[roomType];
+                if (!roomTypeId) {
+                    throw new Error('Invalid room type');
+                }
+                
+                // Room capacities
+                const roomCapacities = {
+                    'normal-non-ac': 3,
+                    'normal-ac': 6,
+                    'deluxe-ac': 2
+                };
+                
+                const totalCapacity = roomCapacities[roomTypeId];
+                
+                if (window.firebaseBookingService && window.firebaseInitialized) {
+                    console.log('✅ WALK-IN BOOKING: Using SAME Firebase database as online bookings');
+                    console.log(`🔍 Checking availability for: ${roomType} (${roomTypeId})`);
+                    
+                    const allBookings = await window.firebaseBookingService.getAllBookings();
+                    console.log(`📊 Total bookings in database: ${allBookings.length} (includes both online and walk-in bookings)`);
+                    
+                    const onlineBookings = allBookings.filter(b => b.bookingType === 'ONLINE');
+                    const walkInBookings = allBookings.filter(b => b.bookingType === 'WALK_IN');
+                    console.log(`📱 Online bookings: ${onlineBookings.length}`);
+                    console.log(`🚶 Walk-in bookings: ${walkInBookings.length}`);
+                    
+                    // Find conflicting bookings (from BOTH online and walk-in)
+                    const conflictingBookings = allBookings.filter(booking => {
+                        return booking.roomType === roomTypeId && 
+                               booking.status === 'confirmed' &&
+                               datesOverlap(checkIn, checkOut, booking.arrivalDate, booking.departureDate);
+                    });
+                    
+                    console.log(`⚠️ Found ${conflictingBookings.length} conflicting bookings (from both online and walk-in bookings)`);
+                    
+                    const totalBookedRooms = conflictingBookings.reduce((sum, booking) => {
+                        return sum + (booking.roomCount || 1);
+                    }, 0);
+                    
+                    const availableRooms = Math.max(0, totalCapacity - totalBookedRooms);
+                    
+                    console.log('📊 UNIFIED AVAILABILITY CHECK RESULT (Online + Walk-in):');
+                    console.log(`  🏠 Room Type: ${roomType} (${roomTypeId})`);
+                    console.log(`  📦 Total Capacity: ${totalCapacity}`);
+                    console.log(`  ⚠️ Conflicting Bookings: ${conflictingBookings.length} (from both booking types)`);
+                    console.log(`  📋 Total Booked Rooms: ${totalBookedRooms} (online + walk-in combined)`);
+                    console.log(`  ✅ Available Rooms: ${availableRooms} (after accounting for ALL bookings)`);
+                    
+                    return {
+                        available: availableRooms >= requestedRooms,
+                        availableRooms: availableRooms,
+                        totalRooms: totalCapacity,
+                        conflictingBookings: conflictingBookings.length,
+                        roomType: roomType,
+                        roomTypeId: roomTypeId
+                    };
+                } else {
+                    console.log('❌ Firebase not available, using fallback availability check');
+                    return {
+                        available: true,
+                        availableRooms: totalCapacity,
+                        totalRooms: totalCapacity,
+                        conflictingBookings: 0,
+                        roomType: roomType,
+                        roomTypeId: roomTypeId
+                    };
+                }
+            } catch (error) {
+                console.error('Error in checkRoomAvailabilityAPI:', error);
+                throw error;
+            }
+        }
+        
+        // Update room count options
+        function updateRoomCountOptions(maxAvailable) {
+            const roomCountSelect = document.getElementById('walkInRoomCount');
+            const confirmButton = document.getElementById('confirmWalkInBooking');
+            const currentValue = roomCountSelect.value;
+            
+            // Clear existing options
+            roomCountSelect.innerHTML = '<option value="">Select Rooms</option>';
+            roomCountSelect.disabled = false;
+            
+            if (maxAvailable > 0) {
+                // Add options for available rooms (1 to max available)
+                for (let i = 1; i <= maxAvailable; i++) {
+                    const option = document.createElement('option');
+                    option.value = i;
+                    option.textContent = `${i} Room${i > 1 ? 's' : ''}`;
+                    if (currentValue && parseInt(currentValue) === i) {
+                        option.selected = true;
+                    }
+                    roomCountSelect.appendChild(option);
+                }
+                
+                // Enable confirm button if rooms are available
+                if (confirmButton) {
+                    confirmButton.disabled = false;
+                    confirmButton.style.display = 'inline-block';
+                }
+            } else {
+                roomCountSelect.innerHTML = '<option value="">No rooms available</option>';
+                roomCountSelect.disabled = true;
+                
+                if (confirmButton) {
+                    confirmButton.disabled = true;
+                    confirmButton.style.display = 'none';
+                }
+            }
+        }
+        
+        // Handle room count change
+        function onRoomCountChange() {
+            const roomCount = parseInt(document.getElementById('walkInRoomCount').value) || 0;
+            const confirmButton = document.getElementById('confirmWalkInBooking');
+            
+            // Enable/disable confirm button based on room count selection
+            if (confirmButton) {
+                if (roomCount > 0) {
+                    confirmButton.disabled = false;
+                    confirmButton.style.display = 'inline-block';
+                } else {
+                    confirmButton.disabled = true;
+                    confirmButton.style.display = 'none';
+                }
+            }
+            
+            // Calculate total when room count changes
+            calculateWalkInTotal();
+        }
+        
+        // Calculate total for walk-in booking
+        function calculateWalkInTotal() {
+            const roomType = document.getElementById('walkInRoomType');
+            const roomCount = parseInt(document.getElementById('walkInRoomCount').value) || 1;
+            const checkIn = document.getElementById('walkInCheckIn').value;
+            const checkOut = document.getElementById('walkInCheckOut').value;
+            
+            if (roomType.value && checkIn && checkOut) {
+                const pricePerNight = parseInt(roomType.selectedOptions[0].dataset.price);
+                const nights = Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24));
+                const total = roomCount * nights * pricePerNight;
+                
+                updateWalkInSummary(roomCount, nights, pricePerNight, total);
+            }
+        }
+        
+        // Update walk-in booking summary
+        function updateWalkInSummary(roomCount, nights, pricePerNight, total) {
+            const summaryDiv = document.getElementById('bookingSummary');
+            const summaryContent = document.getElementById('summaryContent');
+            
+            if (roomCount > 0 && nights > 0) {
+                summaryDiv.style.display = 'block';
+                summaryContent.innerHTML = `
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Rooms:</strong> ${roomCount} × ${nights} nights</p>
+                            <p><strong>Price per night:</strong> ₹${pricePerNight.toLocaleString()}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Subtotal:</strong> ₹${(roomCount * nights * pricePerNight).toLocaleString()}</p>
+                            <h5><strong>Total: ₹${total.toLocaleString()}</strong></h5>
+                        </div>
+                    </div>
+                `;
+            } else {
+                summaryDiv.style.display = 'none';
+            }
+        }
+        
+        // Confirm walk-in booking
+        async function confirmWalkInBooking() {
+            try {
+                // Show loading immediately
+                document.getElementById('loadingIndicator').classList.add('show');
+                document.getElementById('confirmWalkInBooking').disabled = true;
+                
+                const form = document.getElementById('walkInBookingForm');
+                const formData = new FormData(form);
+                
+                // Validate required fields
+                const requiredFields = ['walkInGuestName', 'walkInPhone', 'walkInAdults', 'walkInRoomType', 'walkInRoomCount', 'walkInCheckIn', 'walkInCheckOut'];
+                const missingFields = [];
+                
+                requiredFields.forEach(fieldId => {
+                    const field = document.getElementById(fieldId);
+                    if (!field.value.trim()) {
+                        missingFields.push(field.labels[0].textContent);
+                    }
+                });
+                
+                if (missingFields.length > 0) {
+                    document.getElementById('loadingIndicator').classList.remove('show');
+                    document.getElementById('confirmWalkInBooking').disabled = false;
+                    alert(`❌ Please fill in the following required fields:\n• ${missingFields.join('\n• ')}`);
+                    return;
+                }
+            
+            // FINAL AVAILABILITY CHECK - Prevent overbooking
+            const roomType = document.getElementById('walkInRoomType').value;
+            const roomCount = parseInt(document.getElementById('walkInRoomCount').value);
+            const checkIn = document.getElementById('walkInCheckIn').value;
+            const checkOut = document.getElementById('walkInCheckOut').value;
+            
+            
+            try {
+                const availabilityResult = await checkRoomAvailabilityAPI(roomType, checkIn, checkOut, roomCount);
+                
+                if (!availabilityResult.available || availabilityResult.availableRooms < roomCount) {
+                    const errorMsg = `❌ OVERBOOKING PREVENTED!\n\nOnly ${availabilityResult.availableRooms} room(s) available, but trying to book ${roomCount} room(s).\n\nPlease select fewer rooms or try different dates.`;
+                    alert(errorMsg);
+                    return;
+                }
+            } catch (error) {
+                console.error('❌ Error during final availability check:', error);
+                alert('❌ Error checking room availability. Please try again.');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loadingIndicator').classList.add('show');
+            document.getElementById('confirmWalkInBooking').disabled = true;
+            
+            // Prepare booking data
+            const roomTypeDisplay = document.getElementById('walkInRoomType').value;
+            const roomTypeMap = {
+                'Normal Non-AC Room': 'normal-non-ac',
+                'Normal AC Room': 'normal-ac',
+                'Deluxe AC Room': 'deluxe-ac'
+            };
+            
+            const bookingData = {
+                guestName: document.getElementById('walkInGuestName').value,
+                phone: document.getElementById('walkInPhone').value,
+                email: document.getElementById('walkInEmail').value,
+                adults: parseInt(document.getElementById('walkInAdults').value),
+                children: parseInt(document.getElementById('walkInChildren').value),
+                roomType: roomTypeMap[roomTypeDisplay],
+                roomTypeDisplay: roomTypeDisplay,
+                roomCount: parseInt(document.getElementById('walkInRoomCount').value),
+                arrivalDate: document.getElementById('walkInCheckIn').value,
+                departureDate: document.getElementById('walkInCheckOut').value,
+                specialRequests: document.getElementById('walkInSpecialRequests').value,
+                bookingType: 'WALK_IN',
+                status: 'confirmed'
+            };
+            
+            const pricePerNight = parseInt(document.getElementById('walkInRoomType').selectedOptions[0].dataset.price);
+            const nights = Math.ceil((new Date(bookingData.departureDate) - new Date(bookingData.arrivalDate)) / (1000 * 60 * 60 * 24));
+            bookingData.total = bookingData.roomCount * nights * pricePerNight;
+            
+            
+                // Save booking
+                await saveWalkInBooking(bookingData);
+                
+            } catch (error) {
+                console.error('❌ Error in confirmWalkInBooking:', error);
+                document.getElementById('loadingIndicator').classList.remove('show');
+                document.getElementById('confirmWalkInBooking').disabled = false;
+                alert('❌ Error processing booking: ' + error.message);
+            }
+        }
+        
+        // Save walk-in booking to database
+        async function saveWalkInBooking(bookingData) {
+            try {
+                let bookingId;
+                
+                if (window.firebaseBookingService && window.firebaseInitialized) {
+                    // Generate booking ID for walk-in
+                    bookingId = 'WI-' + Date.now();
+                    bookingData.bookingId = bookingId;
+                    
+                    // Use the same saveBooking method as online bookings
+                    const result = await window.firebaseBookingService.saveBooking(bookingData);
+                    console.log('Walk-in booking saved to Firebase with ID:', result);
+                } else {
+                    console.error('Firebase not available - cannot save walk-in booking');
+                    alert('❌ Error: Cannot save walk-in booking. Firebase service not available. Please try again.');
+                    return;
+                }
+                
+                // Hide loading
+                document.getElementById('loadingIndicator').classList.remove('show');
+                
+                // Show success message
+                alert(`
+                    ✅ Walk-in Booking Confirmed!
+                    
+                    Booking ID: ${bookingId}
+                    Guest: ${bookingData.guestName}
+                    Room: ${bookingData.roomTypeDisplay} (${bookingData.roomCount} room(s))
+                    Dates: ${bookingData.arrivalDate} to ${bookingData.departureDate}
+                    Total: ₹${bookingData.total.toLocaleString()}
+                    
+                    The booking has been saved ${window.firebaseBookingService && window.firebaseInitialized ? 'to Firebase database' : 'to local storage'}.
+                `);
+                
+                // Reset form
+                document.getElementById('walkInBookingForm').reset();
+                document.getElementById('roomAvailabilityStatus').style.display = 'none';
+                document.getElementById('bookingSummary').style.display = 'none';
+                document.getElementById('confirmWalkInBooking').style.display = 'none';
+                
+                
+            } catch (error) {
+                console.error('Error saving walk-in booking:', error);
+                document.getElementById('loadingIndicator').classList.remove('show');
+                document.getElementById('confirmWalkInBooking').disabled = false;
+                alert('❌ Error saving walk-in booking. Please try again.');
+            }
+        }
+        
+        // Helper function to check if two date ranges overlap
+        function datesOverlap(start1, end1, start2, end2) {
+            const s1 = new Date(start1);
+            const e1 = new Date(end1);
+            const s2 = new Date(start2);
+            const e2 = new Date(end2);
+            
+            return s1 < e2 && s2 < e1;
+        }
+    </script>
+</body>
+</html>

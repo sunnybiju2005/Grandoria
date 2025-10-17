@@ -75,11 +75,15 @@ class FirebaseBookingService {
     }
 
     try {
+      // Use Firebase Timestamp for consistency
+      const now = firebase.firestore.Timestamp.now();
+      
       const bookingRef = await db.collection(this.collection).add({
         ...bookingData,
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        status: 'confirmed'
+        createdAt: now,
+        updatedAt: now,
+        // Only set status to 'confirmed' if not already set
+        status: bookingData.status || 'confirmed'
       });
       
       console.log('Booking saved with ID: ', bookingRef.id);
