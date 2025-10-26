@@ -24,6 +24,9 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <!-- Razorpay SDK -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
 
@@ -620,43 +623,14 @@
                 <h5 class="modal-title">Choose Payment Method</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <div class="modal-body">
-                <div class="row">
-                  <div class="col-md-6">
+              <div class="modal-body text-center">
+                <div class="row justify-content-center">
+                  <div class="col-md-8">
                     <div class="payment-option" onclick="selectPaymentMethod('razorpay')">
                       <div class="payment-card">
                         <i class="bi bi-credit-card-fill text-primary"></i>
                         <h6>Razorpay</h6>
-                        <p>Credit/Debit Cards, UPI, Net Banking</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="payment-option" onclick="selectPaymentMethod('payu')">
-                      <div class="payment-card">
-                        <i class="bi bi-wallet-fill text-success"></i>
-                        <h6>PayU</h6>
-                        <p>Cards, UPI, Wallets, EMI</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="row mt-3">
-                  <div class="col-md-6">
-                    <div class="payment-option" onclick="selectPaymentMethod('phonepe')">
-                      <div class="payment-card">
-                        <i class="bi bi-phone-fill text-info"></i>
-                        <h6>PhonePe</h6>
-                        <p>UPI, Cards, Wallets</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="payment-option" onclick="selectPaymentMethod('paytm')">
-                      <div class="payment-card">
-                        <i class="bi bi-wallet2 text-warning"></i>
-                        <h6>Paytm</h6>
-                        <p>Paytm Wallet, UPI, Cards</p>
+                        <p>Credit/Debit Cards, UPI, Net Banking, Wallets</p>
                       </div>
                     </div>
                   </div>
@@ -703,19 +677,77 @@
       };
 
       function redirectToPaymentGateway(method, bookingData) {
-        // Create payment gateway URL with booking data
-        const paymentUrl = createPaymentUrl(method, bookingData);
-        
         // Show loading message
         document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing Payment...';
         document.getElementById('proceed-payment').disabled = true;
 
-        // Simulate payment gateway redirect
-        setTimeout(() => {
-          // In a real implementation, this would redirect to the actual payment gateway
-          // For demo purposes, we'll simulate a successful payment
-          simulatePaymentSuccess(bookingData);
-        }, 2000);
+        // Razorpay integration
+        // Replace 'YOUR_KEY_ID' with your actual Razorpay Key ID from Razorpay Dashboard
+        const razorpayKey = 'rzp_test_YOUR_KEY_ID'; // Change this to your actual Razorpay Key
+        
+        const options = {
+          key: razorpayKey,
+          amount: bookingData.total * 100, // Amount in paise
+          currency: 'INR',
+          name: 'GAURIKEERTHANA RESIDENCY',
+          description: 'Hotel Booking Payment',
+          image: 'https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png',
+          order_id: bookingData.bookingId, // This should be created on your server
+          handler: function (response) {
+            // Payment successful
+            bookingData.status = 'confirmed';
+            bookingData.paymentStatus = 'success';
+            bookingData.paymentId = response.razorpay_payment_id;
+            bookingData.paymentDate = new Date().toISOString();
+            bookingData.createdAt = new Date();
+            bookingData.updatedAt = new Date();
+            bookingData.bookingType = 'ONLINE';
+            
+            // Save confirmed booking locally for admin dashboard
+            localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
+            localStorage.removeItem('currentBooking');
+            
+            // Show success message
+            showPaymentSuccess(bookingData);
+          },
+          prefill: {
+            name: bookingData.guestName,
+            email: bookingData.email,
+            contact: bookingData.phone
+          },
+          notes: {
+            booking_id: bookingData.bookingId,
+            check_in: bookingData.arrivalDate,
+            check_out: bookingData.departureDate
+          },
+          theme: {
+            color: '#007bff'
+          },
+          modal: {
+            ondismiss: function() {
+              // Payment modal closed
+              document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+              document.getElementById('proceed-payment').disabled = false;
+              alert('Payment cancelled. Please try again.');
+            }
+          }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.on('payment.failed', function (response) {
+          // Payment failed
+          bookingData.status = 'payment_failed';
+          bookingData.paymentStatus = 'failed';
+          bookingData.paymentDate = new Date().toISOString();
+          bookingData.failureReason = response.error.description || 'Payment failed';
+          
+          localStorage.setItem('failedBooking', JSON.stringify(bookingData));
+          localStorage.removeItem('currentBooking');
+          
+          showPaymentFailure(bookingData);
+        });
+        
+        rzp.open();
       }
 
       function createPaymentUrl(method, bookingData) {
