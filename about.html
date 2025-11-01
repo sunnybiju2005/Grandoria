@@ -1,64 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>About - GAURIKEERTHANA RESIDENCY</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
 
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Favicons -->
+  <link href="https://imgs.search.brave.com/fGQUDl7YLj-ORXZoHNRQ4cvfdd9zGBST5diK1EnLiYA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cucG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMi9HLUxl/dHRlci1QTkctSW1h/Z2UucG5n" rel="icon">
+  <link href="https://imgs.search.brave.com/fGQUDl7YLj-ORXZoHNRQ4cvfdd9zGBST5diK1EnLiYA/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cucG5nYWxsLmNvbS93/cC1jb250ZW50L3Vw/bG9hZHMvMi9HLUxl/dHRlci1QTkctSW1h/Z2UucG5n" rel="apple-touch-icon">
 
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
 
-  <!-- AOS Animation Library -->
-  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <!-- Vendor CSS Files -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="assets/css/main.css" rel="stylesheet">
+  <link href="assets/css/mobile-responsive.css" rel="stylesheet">
 
   <style>
     :root {
       --brand-green: #2f5d50;
     }
 
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* Navbar */
-    .top-bar {
-      background: var(--brand-green);
-      color: #fff;
-      font-size: 14px;
-      padding: 5px 0;
-    }
-
-    .top-bar a {
-      color: #fff;
-      margin-right: 15px;
-      text-decoration: none;
-    }
-
-    .navbar {
-      background: var(--brand-green);
-    }
-
-    .navbar-brand {
-      font-weight: 700;
-      color: #fff;
-      font-size: 22px;
-      letter-spacing: 1px;
-    }
-
-    .navbar-nav .nav-link {
-      color: #fff;
-      font-weight: 500;
-      margin-left: 20px;
-    }
-
-    .navbar-nav .nav-link.active {
-      color: #ffd700;
-    }
-
-    /* About Section */
     .about .badge span {
       background: var(--brand-green);
       color: #fff;
@@ -86,7 +59,6 @@
       border-radius: 12px;
     }
 
-    /* Rooms Section */
     .rooms-showcase .description-title {
       color: var(--brand-green);
       font-weight: 600;
@@ -129,14 +101,6 @@
       font-size: 18px;
     }
 
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: var(--brand-green);
-      color: #fff;
-      margin-top: 40px;
-    }
-
     .btn-brand {
       background: var(--brand-green);
       color: #fff;
@@ -160,147 +124,242 @@
   </style>
 </head>
 
-<body>
+<body class="about-page">
 
-  <!-- Top Bar -->
-  <div class="top-bar text-center text-md-start px-3">
-    <div class="d-flex justify-content-between align-items-center flex-wrap">
-      <div>
-        <i class="bi bi-envelope"></i> <a href="mailto:Gaurikeerthanagyyr@gmail.com">Gaurikeerthanagyyr@gmail.com</a>
-        <i class="bi bi-telephone ms-3"></i> <a href="tel:+91994779277">+91 994779277</a> , <a href="tel:+914872081979">+91 4872081979</a>
-      </div>
-      <div>
-        <a href="https://instagram.com/gaurikeerthanaresidency_"><i class="bi bi-instagram"></i></a>
-        <a href="https://wa.me/919947792777" class="ms-3"><i class="bi bi-whatsapp"></i></a>
-      </div>
-    </div>
-  </div>
+  <header id="header" class="header sticky-top">
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg">
-    <div class="container">
-      <a class="navbar-brand" href="#">GAURIKEERTHANA</a>
-      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="bi bi-list"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav ms-auto">
-          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-          <li class="nav-item"><a class="nav-link active" href="about.html">About</a></li>
-          <li class="nav-item"><a class="nav-link" href="rooms.html">Rooms</a></li>
-          <li class="nav-item"><a class="nav-link" href="amenities.html">Amenities</a></li>
-          <li class="nav-item"><a class="nav-link" href="location.html">Location</a></li>
-          <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
-  <!-- About Section -->
-  <section id="about" class="about section py-5">
-    <div class="container" data-aos="fade-up">
-      <div class="row align-items-center">
-
-        <!-- Images -->
-        <div class="col-lg-5 mb-4 mb-lg-0">
-          <div class="image-stack">
-            <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Residency" class="img-fluid rounded-3 shadow">
-            <div class="secondary-image" data-aos="fade-up" data-aos-delay="300">
-              <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Residency Room" class="img-fluid shadow">
-            </div>
-          </div>
+    <div class="topbar d-flex align-items-center dark-background">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <a href="mailto:Gaurikeerthanagvyr@gmail.com">Gaurikeerthanagvyr@gmail.com</a>
+          <span class="ms-4">+91 994779277 , +91 4872081979</span>
         </div>
-
-        <!-- Content -->
-        <div class="col-lg-7">
-          <div class="content-wrapper" data-aos="fade-left">
-            <div class="badge mb-3"><span>About Us</span></div>
-            <h2>Welcome to GAURIKEERTHANA RESIDENCY</h2>
-            <p class="lead">
-              At GAURIKEERTHANA RESIDENCY, we believe a stay in Guruvayoor should feel warm, simple, and homely.
-            </p>
-            <p>
-              Located just moments away from the sacred Guruvayoor Temple, we offer comfortable rooms with essential amenities. Whether you’re here for darshan, traveling with family, or visiting, our rooms are designed for convenience and peace of mind.
-            </p>
-            <p>
-              What makes us special is the care and attention – clean rooms, a friendly smile, and the comfort of feeling at home.
-            </p>
-          </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+          <a href="https://instagram.com/gaurikeerthanaresidency_" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="https://wa.me/919947792777" class="Whatsapp"><i class="bi bi-whatsapp"></i></a>
         </div>
-
       </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-cente">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="index.html" class="logo d-flex align-items-center">
+          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png" alt="Gaurikeerthana Logo" class="logo-img" style="height: 50px; margin-right: 15px;">
+          <h1 class="sitename">GAURIKEERTHANA</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active">About</a></li>
+            <li><a href="rooms.html">Rooms</a></li>
+            <li><a href="amenities.html">Amenities</a></li>
+            <li><a href="location.html">Location</a></li>
+            <li class="dropdown"><a href="#"><span>Pages</span></a>
+              <ul>
+                <li><a href="room-details.html">Room Details</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="booking.html">Booking</a></li>
+                <li><a href="terms.html">Terms Page</a></li>
+              </ul>
+            </li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+
     </div>
-  </section>
 
-  <!-- Rooms Section -->
-  <section id="rooms-showcase" class="rooms-showcase section py-5 bg-light">
-    <div class="container text-center mb-4" data-aos="fade-up">
-      <span class="description-title">Our Rooms</span>
-      <h2>Comfortable & Affordable Stays</h2>
-      <p>Choose from our cozy rooms, designed to make your stay peaceful and homely.</p>
-    </div>
+  </header>
 
-    <div class="container" data-aos="fade-up">
-      <div class="row gy-4">
+  <main class="main">
 
-        <!-- Classic Room -->
-        <div class="col-lg-4 col-md-6">
-          <div class="minimal-room-card">
-            <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Classic Room">
-            <div class="room-summary">
-              <h5>Classic Double Room</h5>
-              <div class="basic-amenities">
-                <i class="bi bi-wifi"></i>
-                <i class="bi bi-tv"></i>
-                <i class="bi bi-fan"></i>
+    <!-- Page Title -->
+    <div class="page-title light-background">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">About Us</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="index.html">Home</a></li>
+            <li class="current">About</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+      <div class="container" data-aos="fade-up">
+        <div class="row align-items-center">
+
+          <!-- Images -->
+          <div class="col-lg-5 mb-4 mb-lg-0">
+            <div class="image-stack">
+              <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Residency" class="img-fluid rounded-3 shadow">
+              <div class="secondary-image" data-aos="fade-up" data-aos-delay="300">
+                <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Residency Room" class="img-fluid shadow">
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Deluxe Room -->
-        <div class="col-lg-4 col-md-6">
-          <div class="minimal-room-card">
-            <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Deluxe Room">
-            <div class="room-summary">
-              <h5>Deluxe Room</h5>
-              <div class="basic-amenities">
-                <i class="bi bi-wifi"></i>
-                <i class="bi bi-snow"></i>
-                <i class="bi bi-telephone"></i>
+          <!-- Content -->
+          <div class="col-lg-7">
+            <div class="content-wrapper" data-aos="fade-left">
+              <div class="badge mb-3"><span>About Us</span></div>
+              <h2>Welcome to GAURIKEERTHANA RESIDENCY</h2>
+              <p class="lead">
+                At GAURIKEERTHANA RESIDENCY, we believe a stay in Guruvayoor should feel warm, simple, and homely.
+              </p>
+              <p>
+                Located just moments away from the sacred Guruvayoor Temple, we offer comfortable rooms with essential amenities. Whether you're here for darshan, traveling with family, or visiting, our rooms are designed for convenience and peace of mind.
+              </p>
+              <p>
+                What makes us special is the care and attention – clean rooms, a friendly smile, and the comfort of feeling at home.
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Rooms Section -->
+    <section id="rooms-showcase" class="rooms-showcase section light-background">
+      <div class="container text-center mb-4" data-aos="fade-up">
+        <span class="description-title">Our Rooms</span>
+        <h2>Comfortable & Affordable Stays</h2>
+        <p>Choose from our cozy rooms, designed to make your stay peaceful and homely.</p>
+      </div>
+
+      <div class="container" data-aos="fade-up">
+        <div class="row gy-4">
+
+          <!-- Classic Room -->
+          <div class="col-lg-4 col-md-6">
+            <div class="minimal-room-card">
+              <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Classic Room">
+              <div class="room-summary">
+                <h5>Classic Double Room</h5>
+                <div class="basic-amenities">
+                  <i class="bi bi-wifi"></i>
+                  <i class="bi bi-tv"></i>
+                  <i class="bi bi-fan"></i>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Family Room -->
-        <div class="col-lg-4 col-md-6">
-          <div class="minimal-room-card">
-            <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Family Room">
-            <div class="room-summary">
-              <h5>Family Room</h5>
-              <div class="basic-amenities">
-                <i class="bi bi-people"></i>
-                <i class="bi bi-wifi"></i>
-                <i class="bi bi-tv"></i>
+          <!-- Deluxe Room -->
+          <div class="col-lg-4 col-md-6">
+            <div class="minimal-room-card">
+              <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758381639/ix4nbwbcpm2nque7wsrx.webp" alt="Deluxe Room">
+              <div class="room-summary">
+                <h5>Deluxe Room</h5>
+                <div class="basic-amenities">
+                  <i class="bi bi-wifi"></i>
+                  <i class="bi bi-snow"></i>
+                  <i class="bi bi-telephone"></i>
+                </div>
               </div>
             </div>
           </div>
+
+          <!-- Family Room -->
+          <div class="col-lg-4 col-md-6">
+            <div class="minimal-room-card">
+              <img src="https://res.cloudinary.com/dwr3ssg8e/image/upload/v1758382111/rfz6s13xzyodrgttsi3d.jpg" alt="Family Room">
+              <div class="room-summary">
+                <h5>Family Room</h5>
+                <div class="basic-amenities">
+                  <i class="bi bi-people"></i>
+                  <i class="bi bi-wifi"></i>
+                  <i class="bi bi-tv"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer position-relative dark-background">
+
+    <div class="footer-top">
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6 footer-about">
+            <a href="index.html" class="logo d-flex align-items-center">
+              <span class="sitename">GAURIKEERTHANA RESIDENCY</span>
+            </a>
+            <div class="footer-contact pt-3">
+              <p>GAURIKEERTHANA RESIDENCY</p>
+              <p>Gaurikeerthana, Kerala, India</p>
+              <p class="mt-3"><strong>Phone:</strong> <span>+91 994779277 , +91 4872081979</span></p>
+              <p><strong>Email:</strong> <span>Gaurikeerthanagvyr@gmail.com</span></p>
+            </div>
+          </div>
+
+          <div class="col-lg-2 col-md-3 footer-links">
+            <h4>Useful Links</h4>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About us</a></li>
+              <li><a href="terms.html">Privacy policy</a></li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright text-center">
+      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+
+        <div class="d-flex flex-column align-items-center align-items-lg-start">
+          <div>
+            © Copyright <strong><span>MyWebsite</span></strong>. All Rights Reserved
+          </div>
+          <div class="credits">
+            <!-- All the links in the footer should remain intact. -->
+            <!-- You can delete the links only if you purchased the pro version. -->
+            <!-- Licensing information: https://bootstrapmade.com/license/ -->
+            <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/herobiz-bootstrap-business-template/ -->
+            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+          </div>
+        </div>
+
+        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
+          <a href="https://instagram.com/gaurikeerthanaresidency_"><i class="bi bi-instagram"></i></a>
+          <a href="https://wa.me/919947792777"><i class="bi bi-whatsapp"></i></a>
         </div>
 
       </div>
     </div>
-  </section>
 
-  <footer>
-    <p>© 2025 GAURIKEERTHANA RESIDENCY. All Rights Reserved.</p>
   </footer>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
-  <script>
-    AOS.init();
-  </script>
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="assets/vendor/aos/aos.js"></script>
+  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="assets/js/main.js"></script>
+
 </body>
 </html>
