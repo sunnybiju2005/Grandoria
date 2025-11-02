@@ -1,0 +1,37 @@
+{
+  "name": "gaurikeerthana-api",
+  "version": "1.0.0",
+  "description": "REST API for Gaurikeerthana Residency hotel booking system - Billing Software Integration",
+  "main": "api-server.js",
+  "scripts": {
+    "start": "node api-server.js",
+    "dev": "nodemon api-server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hotel",
+    "booking",
+    "api",
+    "firebase",
+    "billing",
+    "residency"
+  ],
+  "author": "Gaurikeerthana Residency",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "firebase-admin": "^12.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}
+
+
+
