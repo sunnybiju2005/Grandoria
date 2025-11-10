@@ -295,7 +295,8 @@
 
 <body class="index-page">
 
-
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay"></div>
 
   <header id="header" class="header sticky-top">
 
@@ -304,6 +305,12 @@
     <div class="topbar d-flex align-items-center dark-background">
 
       <div class="container d-flex justify-content-center justify-content-md-between">
+
+        <!-- Mobile Logo (shown only on mobile) -->
+        <div class="logo-mobile d-md-none">
+          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png" alt="Gaurikeerthana Logo" class="logo-img">
+          <h1 class="sitename">GAURIKEERTHANA</h1>
+        </div>
 
         <div class="contact-info d-flex align-items-center">
 
@@ -343,7 +350,8 @@
 
         </a>
 
-
+        <!-- Mobile Navigation Toggle Button -->
+        <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
 
         <nav id="navmenu" class="navmenu">
 
@@ -359,7 +367,7 @@
 
             <li><a href="location.html">Location</a></li>
 
-            <li class="dropdown"><a href="#"><span>Pages</span></a>
+            <li class="dropdown"><a href="#"><span>Pages</span> <i class="bi bi-chevron-down ms-2"></i></a>
 
               <ul>
 

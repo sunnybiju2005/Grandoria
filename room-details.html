@@ -26,6 +26,9 @@
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
+  
+  <!-- Mobile Responsive CSS -->
+  <link href="assets/css/mobile-responsive.css" rel="stylesheet">
 
   <!-- Custom Styles for Room Details -->
   <style>
@@ -121,13 +124,21 @@
 
 <body class="room-details-page">
 
+  <!-- Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay"></div>
+
   <header id="header" class="header sticky-top">
 
     <div class="topbar d-flex align-items-center dark-background">
       <div class="container d-flex justify-content-center justify-content-md-between">
+        <!-- Mobile Logo (shown only on mobile) -->
+        <div class="logo-mobile d-md-none">
+          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png" alt="Gaurikeerthana Logo" class="logo-img">
+          <h1 class="sitename">GAURIKEERTHANA</h1>
+        </div>
         <div class="contact-info d-flex align-items-center">
-          <i><a href="mailto:Gaurikeerthanagvyr@gmail.com">Gaurikeerthanagvyr@gmail.com</a></i>
-          <i><span class="ms-4">+91 994779277 , +91 4872081979</span></i>
+          <a href="mailto:Gaurikeerthanagvyr@gmail.com">Gaurikeerthanagvyr@gmail.com</a>
+          <span class="ms-4">+91 994779277 , +91 4872081979</span>
         </div>
         <div class="social-links d-none d-md-flex align-items-center">
           <a href="https://instagram.com/gaurikeerthanaresidency_" class="instagram"><i class="bi bi-instagram"></i></a>
@@ -145,6 +156,9 @@
           <h1 class="sitename">GAURIKEERTHANA</h1>
         </a>
 
+        <!-- Mobile Navigation Toggle Button -->
+        <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
+
         <nav id="navmenu" class="navmenu">
           <ul>
             <li><a href="index.html">Home</a></li>
@@ -152,7 +166,7 @@
             <li><a href="rooms.html">Rooms</a></li>
             <li><a href="amenities.html">Amenities</a></li>
             <li><a href="location.html">Location</a></li>
-            <li class="dropdown"><a href="#"><span>Pages</span></a>
+            <li class="dropdown"><a href="#"><span>Pages</span> <i class="bi bi-chevron-down ms-2"></i></a>
               <ul>
                 <li><a href="room-details.html" class="active">Room Details</a></li>
                 <li><a href="gallery.html">Gallery</a></li>

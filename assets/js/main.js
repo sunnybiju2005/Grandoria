@@ -23,40 +23,154 @@
   window.addEventListener('load', toggleScrolled);
 
   /**
-   * Mobile nav toggle
+   * Mobile nav toggle - SIMPLIFIED AND ROBUST
    */
   const mobileNavToggleBtn = document.querySelector('.mobile-nav-toggle');
+  const body = document.body;
+  const overlay = document.querySelector('.mobile-nav-overlay');
 
   function mobileNavToogle() {
-    document.querySelector('body').classList.toggle('mobile-nav-active');
-    mobileNavToggleBtn.classList.toggle('bi-list');
-    mobileNavToggleBtn.classList.toggle('bi-x');
+    const isActive = body.classList.contains('mobile-nav-active');
+    
+    if (isActive) {
+      // Closing - add closing animation class
+      body.classList.remove('mobile-nav-active');
+      if (mobileNavToggleBtn) {
+        mobileNavToggleBtn.classList.remove('bi-x');
+        mobileNavToggleBtn.classList.add('bi-list');
+      }
+    } else {
+      // Opening
+      body.classList.add('mobile-nav-active');
+      if (mobileNavToggleBtn) {
+        mobileNavToggleBtn.classList.remove('bi-list');
+        mobileNavToggleBtn.classList.add('bi-x');
+      }
+    }
   }
+  
   if (mobileNavToggleBtn) {
-    mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
+    mobileNavToggleBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      mobileNavToogle();
+    });
+    
+    // Also handle touch events
+    mobileNavToggleBtn.addEventListener('touchend', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      mobileNavToogle();
+    });
   }
-
-  /**
-   * Hide mobile nav on same-page/hash links
-   */
-  document.querySelectorAll('#navmenu a').forEach(navmenu => {
-    navmenu.addEventListener('click', () => {
-      if (document.querySelector('.mobile-nav-active')) {
+  
+  // Close menu when clicking overlay
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (body.classList.contains('mobile-nav-active')) {
         mobileNavToogle();
       }
     });
+    
+    overlay.addEventListener('touchend', function(e) {
+      if (body.classList.contains('mobile-nav-active')) {
+        e.preventDefault();
+        mobileNavToogle();
+      }
+    });
+  }
 
-  });
+  /**
+   * Setup navigation links - SIMPLIFIED APPROACH
+   */
+  function setupNavigationLinks() {
+    const navLinks = document.querySelectorAll('#navmenu a');
+    
+    navLinks.forEach(link => {
+      // Remove old listeners by cloning
+      const newLink = link.cloneNode(true);
+      link.parentNode.replaceChild(newLink, link);
+      
+      // Click handler
+      newLink.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        const isDropdown = this.closest('.dropdown') && href === '#';
+        
+        // Don't prevent default for dropdown toggles
+        if (isDropdown) {
+          return; // Let dropdown handler manage this
+        }
+        
+        // For regular links, close menu after navigation
+        if (body.classList.contains('mobile-nav-active')) {
+          if (href && href !== '#' && !href.startsWith('javascript:')) {
+            // Close menu after a short delay to allow navigation
+            setTimeout(() => {
+              if (body.classList.contains('mobile-nav-active')) {
+                mobileNavToogle();
+              }
+            }, 200);
+          } else {
+            // Same page anchor - close immediately
+            mobileNavToogle();
+          }
+        }
+      }, true); // Capture phase
+      
+      // Touch handler for better mobile support
+      newLink.addEventListener('touchend', function(e) {
+        // Only handle if it's a regular link (not dropdown)
+        const href = this.getAttribute('href');
+        if (href && href !== '#') {
+          e.stopPropagation();
+          // Trigger click
+          this.click();
+        }
+      }, { passive: true });
+    });
+  }
+  
+  // Setup on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupNavigationLinks);
+  } else {
+    setupNavigationLinks();
+  }
+
+  /**
+   * Close mobile nav when clicking outside - SIMPLIFIED
+   */
+  document.addEventListener('click', (e) => {
+    if (!body.classList.contains('mobile-nav-active')) return;
+    
+    const navmenu = document.querySelector('#navmenu');
+    const toggleBtn = document.querySelector('.mobile-nav-toggle');
+    const clickedInsideNav = navmenu && navmenu.contains(e.target);
+    const clickedToggle = toggleBtn && toggleBtn.contains(e.target);
+    
+    // Close if clicking outside menu and toggle button
+    if (!clickedInsideNav && !clickedToggle) {
+      mobileNavToogle();
+    }
+  }, true); // Use capture phase
 
   /**
    * Toggle mobile nav dropdowns
    */
-  document.querySelectorAll('.navmenu .toggle-dropdown').forEach(navmenu => {
-    navmenu.addEventListener('click', function(e) {
-      e.preventDefault();
-      this.parentNode.classList.toggle('active');
-      this.parentNode.nextElementSibling.classList.toggle('dropdown-active');
-      e.stopImmediatePropagation();
+  document.querySelectorAll('.navmenu .dropdown > a').forEach(dropdownLink => {
+    dropdownLink.addEventListener('click', function(e) {
+      // Only prevent default on mobile
+      if (window.innerWidth < 1200) {
+        e.preventDefault();
+        const dropdown = this.parentNode;
+        const dropdownMenu = dropdown.querySelector('ul');
+        
+        dropdown.classList.toggle('active');
+        if (dropdownMenu) {
+          dropdownMenu.classList.toggle('dropdown-active');
+        }
+        e.stopImmediatePropagation();
+      }
     });
   });
 
