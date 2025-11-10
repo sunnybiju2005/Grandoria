@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
-  <title>Amenities - GAURIKEERTHANA Bootstrap Template</title>
+  <title>Amenities - GAURIKEERTHANA RESIDENCY</title>
   <meta name="description" content="">
   <meta name="keywords" content="">
 
@@ -29,14 +29,55 @@
   
   <!-- Mobile Responsive CSS -->
   <link href="assets/css/mobile-responsive.css" rel="stylesheet">
+  <!-- New Mobile Navigation CSS -->
+  <link href="assets/css/mobile-nav-new.css" rel="stylesheet">
+
+  <!-- =======================================================
+  * Template Name: Gaurikeerthana
+  * Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
+  * Updated: Jul 29 2025 with Bootstrap v5.3.7
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
 </head>
 
 <body class="amenities-page">
+
+  <!-- New Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay-new"></div>
+  
+  <!-- New Mobile Navigation Sidebar -->
+  <nav class="mobile-nav-sidebar">
+    <div class="mobile-nav-header">
+      <h3>Menu</h3>
+      <button class="mobile-nav-close" aria-label="Close navigation menu">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav-menu">
+      <li><a href="amenities.html" class="active">Amenities</a></li>
+      <li><a href="location.html">Location</a></li>
+      <li class="mobile-nav-dropdown">
+        <a href="#">
+          <span>Pages</span>
+          <i class="bi bi-chevron-down mobile-nav-dropdown-icon"></i>
+        </a>
+        <ul class="mobile-nav-submenu">
+          <li><a href="room-details.html">Room Details</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="terms.html">Terms Page</a></li>
+        </ul>
+      </li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
 
   <!-- Mobile Navigation Overlay -->
   <div class="mobile-nav-overlay"></div>
 
   <header id="header" class="header sticky-top">
+
     <div class="topbar d-flex align-items-center dark-background">
       <div class="container d-flex justify-content-center justify-content-md-between">
         <!-- Mobile Logo (shown only on mobile) -->
@@ -50,20 +91,23 @@
         </div>
         <div class="social-links d-none d-md-flex align-items-center">
           <a href="https://instagram.com/gaurikeerthanaresidency_" class="instagram"><i class="bi bi-instagram"></i></a>
-          <a href="https://wa.me/919947792777" class="Whattsapp"><i class="bi bi-whatsapp"></i></a>
+          <a href="https://wa.me/919947792777" class="Whatsapp"><i class="bi bi-whatsapp"></i></a>
         </div>
       </div>
     </div><!-- End Top Bar -->
 
-    <div class="branding d-flex align-items-center">
+    <div class="branding d-flex align-items-cente">
+
       <div class="container position-relative d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
           <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png" alt="Gaurikeerthana Logo" class="logo-img" style="height: 50px; margin-right: 15px;">
           <h1 class="sitename">GAURIKEERTHANA</h1>
         </a>
 
-        <!-- Mobile Navigation Toggle Button -->
-        <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
+        <!-- New Mobile Navigation Button -->
+        <button class="mobile-nav-btn" aria-label="Toggle navigation menu">
+          <i class="bi bi-list"></i>
+        </button>
 
         <nav id="navmenu" class="navmenu">
           <ul>
@@ -83,11 +127,14 @@
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </nav>
+
       </div>
     </div>
+
   </header>
 
   <main class="main">
+
     <!-- Page Title -->
     <div class="page-title light-background">
       <div class="container d-lg-flex justify-content-between align-items-center">
@@ -104,116 +151,73 @@
     <!-- Amenities Section -->
     <section id="amenities" class="amenities section">
       <div class="container" data-aos="fade-up" data-aos-delay="100">
-        <div class="row gy-4">
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
-            <div class="amenity-card">
-              <div class="amenity-image">
-                <img src="https://imgs.search.brave.com/7mkZhw8AJ-16LUNWH7a5bcSfB_R90ukfJy1lpK337k4/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9pbnRl/cmlvLmNvbS9tZWRp/YS93eXNpd3lnL0NM/UC9NZXRhbF9CZWRz/LmpwZw" alt="Rooftop Pool" class="img-fluid">
-              </div>
-              <div class="amenity-content">
-                <h3>Comfortable Beds</h3>
-                <p>Our rooms feature comfortable beds designed for a restful and relaxing stay.</p>
-              </div>
-            </div>
-          </div>
 
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="300">
-            <div class="amenity-card">
-              <div class="amenity-image">
-                <img src="https://imgs.search.brave.com/2DV-lnF-KkUyDpOqbCzyeAfkvmwRAjnONMZOyvUoQes/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93d3cu/cmViYXRoLmNvbS91/cGxvYWRzLzIwMjQv/MDIvd2hpdGUtY2Fs/Y3V0dGEtdHJhbnNp/dGlvbmFsLXN0eWxl/LTYwMHgzNTAuanBn" alt="Spa Wellness" class="img-fluid">
-              </div>
-              <div class="amenity-content">
-                <h3>Private Bathroom</h3>
-                <p>"Each room features a private bathroom for your comfort and convenience."</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="400">
-            <div class="amenity-card">
-              <div class="amenity-image">
-                <img src="https://imgs.search.brave.com/V34-kQAvR2mTBdxYlJ2hqmJ3IfRbcoIznLR6iN7aXoc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90ZXNj/b21hb25saW5lLmNv/bS9faXB4L3dfOTMw/LGZfd2VicC9odHRw/czovL3N0b3JlLnRl/c2NvbWFvbmxpbmUu/Y29tL21lZGlhL2lt/YWdlLzk1Lzg5L2Nm/YmUyMjI0YWI1NmU5/NWQyMDgwNTRkZjhl/ZDQuanBn" alt="Fine Dining" class="img-fluid">
-              </div>
-              <div class="amenity-content">
-                <h3>TEA/COFFE<br>(maker in room)</h3>
-                <p>"Each room comes with a tea/coffee maker and kettle for your convenience."</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-lg-6" data-aos="fade-up" data-aos-delay="500">
-            <div class="amenity-card">
-              <div class="amenity-image">
-                <img src="https://imgs.search.brave.com/lVIKGutsONjUzhO__WW2PnHAvZqwKQGYiQ7IpjvSKxk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90aGVz/dnN5c3RlbXMuY29t/L3dwLWNvbnRlbnQv/dXBsb2Fkcy8yMDI1/LzAxL2NjLWNhbWVy/YS1tYWluLTEuanBn" alt="Fitness Center" class="img-fluid">
-              </div>
-              <div class="amenity-content">
-                <h3>24/7 CCTV SURVILANCE</h3>
-                <p>"Our property is monitored with 24/7 CCTV surveillance for guest safety."</p>
-              </div>
-            </div>
-          </div>
+        <!-- Section Header -->
+        <div class="section-header text-center mb-5">
+          <h2>Our Amenities & Facilities</h2>
+          <p>Experience comfort and convenience with our world-class amenities</p>
         </div>
 
-        <div class="row mt-5" data-aos="fade-up" data-aos-delay="600">
-          <div class="col-12">
-            <div class="amenities-grid">
-              <h3 class="text-center mb-4">Additional </h3>
-              <div class="row g-4">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-wifi"></i></div>
-                    <h4>Free Wi-Fi</h4>
-                    <p>High-speed internet throughout the property</p>
-                  </div>
+        <!-- Amenities Grid -->
+        <div class="amenities-grid">
+          <div class="row g-4">
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="bi bi-wifi"></i>
                 </div>
+                <h4>Free Wi-Fi</h4>
+                <p>High-speed internet connectivity throughout the property</p>
+              </div>
+            </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-car-front"></i></div>
-                    <h4>Parking Space</h4>
-                    <p>Huge parking space available</p>
-                  </div>
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="bi bi-car-front"></i>
                 </div>
+                <h4>Parking Space</h4>
+                <p>Secure parking facilities available for all guests</p>
+              </div>
+            </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-tv"></i></div>
-                    <h4>TV</h4>
-                    <p>Scheduled transfers to major airports</p>
-                  </div>
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="300">
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="bi bi-clock"></i>
                 </div>
+                <h4>24/7 Room Service</h4>
+                <p>Round-the-clock room service for your convenience</p>
+              </div>
+            </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-cup-hot"></i></div>
-                    <h4>Tea/Coffee<br>(Maker in Room)</h4>
-                  </div>
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="400">
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="bi bi-geo-alt"></i>
                 </div>
+                <h4>Prime Location</h4>
+                <p>Centrally located with easy access to major attractions</p>
+              </div>
+            </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-bell"></i></div>
-                    <h4>Room Service</h4>
-                    <p>Service to your room</p>
-                  </div>
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="500">
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="bi bi-shield-check"></i>
                 </div>
+                <h4>Security</h4>
+                <p>24/7 security surveillance for your safety and peace of mind</p>
+              </div>
+            </div>
 
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-snow"></i></div>
-                    <h4>Air Condition</h4>
-                    <p>Secure storage for your valuables</p>
-                  </div>
+            <div class="col-lg-4 col-md-6" data-aos="zoom-in" data-aos-delay="600">
+              <div class="service-item">
+                <div class="service-icon">
+                  <i class="bi bi-telephone"></i>
                 </div>
-
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                  <div class="service-item">
-                    <div class="service-icon"><i class="bi bi-water"></i></div>
-                    <h4>Hot Water</h4>
-                    <p>24/7 hot water in rooms</p>
-                  </div>
-                </div>
-
+                <h4>Concierge Service</h4>
+                <p>Dedicated staff to assist with all your needs</p>
               </div>
             </div>
           </div>
@@ -221,8 +225,10 @@
 
       </div>
     </section><!-- /Amenities Section -->
+
   </main>
 
+  <!-- Footer -->
   <footer id="footer" class="footer position-relative dark-background">
     <div class="footer-top">
       <div class="container">
@@ -248,7 +254,13 @@
             </ul>
           </div>
 
-
+          <div class="col-lg-4 col-md-6 footer-links">
+            <h4>Follow Us</h4>
+            <div class="social-links mt-3">
+              <a href="https://instagram.com/gaurikeerthanaresidency_"><i class="bi bi-instagram"></i></a>
+              <a href="https://wa.me/919947792777"><i class="bi bi-whatsapp"></i></a>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -256,38 +268,35 @@
 
     <div class="copyright text-center">
       <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
-        <div class="d-flex flex-column align-items-center align-items-lg-start">
-          <div>© Copyright <strong><span>MyWebsite</span></strong>. All Rights Reserved</div>
-          <div class="credits">
-            Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
-          </div>
+        <div>
+          © Copyright <strong><span>MyWebsite</span></strong>. All Rights Reserved
         </div>
-        <div class="social-links order-first order-lg-last mb-3 mb-lg-0">
-          <a href="https://instagram.com/gaurikeerthanaresidency_"><i class="bi bi-instagram"></i></a>
-          <a href="https://wa.me/919947792777"><i class="bi bi-whatsapp"></i></a>
+        <div class="credits">
+          Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
-  <!-- Preloader -->
   <div id="preloader"></div>
 
-  <!-- Vendor JS Files -->
+  <!-- Vendor JS -->
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="assets/vendor/aos/aos.js"></script>
-  <script src="assets/vendor/purecounter/purecounter_vanilla.js"></script>
   <script src="assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
   <script src="assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
 
-  <!-- Main JS File -->
+  <!-- Main JS -->
   <script src="assets/js/main.js"></script>
-
+  
+  <!-- New Mobile Navigation JS -->
+  <script src="assets/js/mobile-nav-new.js"></script>
 </body>
+
 </html>
+

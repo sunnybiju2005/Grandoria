@@ -27,9 +27,41 @@
   
   <!-- Mobile Responsive CSS -->
   <link href="assets/css/mobile-responsive.css" rel="stylesheet">
+  <!-- New Mobile Navigation CSS -->
+  <link href="assets/css/mobile-nav-new.css" rel="stylesheet">
 </head>
 
 <body class="location-page">
+
+  <!-- New Mobile Navigation Overlay -->
+  <div class="mobile-nav-overlay-new"></div>
+  
+  <!-- New Mobile Navigation Sidebar -->
+  <nav class="mobile-nav-sidebar">
+    <div class="mobile-nav-header">
+      <h3>Menu</h3>
+      <button class="mobile-nav-close" aria-label="Close navigation menu">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+    <ul class="mobile-nav-menu">
+      <li><a href="amenities.html">Amenities</a></li>
+      <li><a href="location.html">Location</a></li>
+      <li class="mobile-nav-dropdown">
+        <a href="#">
+          <span>Pages</span>
+          <i class="bi bi-chevron-down mobile-nav-dropdown-icon"></i>
+        </a>
+        <ul class="mobile-nav-submenu">
+          <li><a href="room-details.html">Room Details</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="booking.html">Booking</a></li>
+          <li><a href="terms.html">Terms Page</a></li>
+        </ul>
+      </li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+  </nav>
 
   <!-- Mobile Navigation Overlay -->
   <div class="mobile-nav-overlay"></div>
@@ -61,8 +93,10 @@
           <h1 class="sitename">GAURIKEERTHANA</h1>
         </a>
 
-        <!-- Mobile Navigation Toggle Button -->
-        <i class="bi bi-list mobile-nav-toggle d-lg-none"></i>
+        <!-- New Mobile Navigation Button -->
+        <button class="mobile-nav-btn" aria-label="Toggle navigation menu">
+          <i class="bi bi-list"></i>
+        </button>
 
         <nav id="navmenu" class="navmenu">
           <ul>
@@ -343,5 +377,8 @@
 
   <!-- Main JS -->
   <script src="assets/js/main.js"></script>
+  
+  <!-- New Mobile Navigation JS -->
+  <script src="assets/js/mobile-nav-new.js"></script>
 </body>
 </html>

@@ -175,9 +175,9 @@
      MOBILE SIDEBAR NAVIGATION - MODERN & ACCESSIBLE
      ============================================ */
   
-  /* Hamburger Menu Button - Enhanced */
+  /* Old Hamburger Menu Button - HIDDEN (using new mobile-nav-btn) */
   .mobile-nav-toggle {
-    display: flex !important;
+    display: none !important;
     align-items: center;
     justify-content: center;
     color: #ffffff;
@@ -203,9 +203,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
   }
 
-  /* Mobile Navigation Overlay - Balanced for clarity */
+  /* Mobile Navigation Overlay - HIDDEN ON MOBILE */
   .mobile-nav-overlay {
-    display: none;
+    display: none !important;
     position: fixed;
     top: 0;
     left: 0;
@@ -219,12 +219,15 @@
   }
 
   .mobile-nav-active .mobile-nav-overlay {
-    display: block;
-    opacity: 1;
+    display: none !important;
+    opacity: 0 !important;
   }
 
-  /* Navigation Menu - Modern Design with Sharp Contrast */
+  /* Navigation Menu - HIDDEN ON MOBILE */
   .navmenu {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
     position: fixed !important;
     top: 0 !important;
     right: -100% !important;
@@ -247,10 +250,12 @@
     border-left: 3px solid var(--accent-color);
   }
 
-  /* Show sidebar when active - Smooth animation */
+  /* Show sidebar when active - DISABLED - Menu hidden on mobile */
   .mobile-nav-active .navmenu {
-    right: 0 !important;
-    animation: slideInRight 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
   }
 
   @keyframes slideInRight {
@@ -514,23 +519,10 @@
     color: #1a3d32;
   }
 
-  /* Close Button (X icon when menu is open) - Clear & Accessible */
+  /* Close Button (X icon when menu is open) - HIDDEN ON MOBILE */
   .mobile-nav-active .mobile-nav-toggle {
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
-    color: #ffffff !important;
-    background: #2f5d50 !important;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(47, 93, 80, 0.4) !important;
-    border-radius: 50% !important;
-    width: 46px !important;
-    height: 46px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 10000 !important;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    display: none !important;
+    visibility: hidden !important;
   }
 
   .mobile-nav-active .mobile-nav-toggle:hover,
@@ -560,38 +552,26 @@
   
   /* Override main.css mobile nav styles - COMPLETE OVERRIDE */
   @media (max-width: 1199px) {
-    /* Force override the rgba background from main.css */
+    /* Navigation menu - HIDDEN ON MOBILE */
     .mobile-nav-active .navmenu {
-      background: #ffffff !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      position: fixed !important;
-      top: 0 !important;
-      right: 0 !important;
-      width: 320px !important;
-      max-width: 90% !important;
-      height: 100vh !important;
-      inset: auto !important;
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
     
     .mobile-nav-active .navmenu > ul {
-      background: #ffffff !important;
-      opacity: 1 !important;
-      display: block !important;
-      visibility: visible !important;
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
     }
     
-    /* Ensure ALL nav elements are visible and clickable */
+    /* Hide ALL nav elements on mobile */
     .mobile-nav-active .navmenu * {
-      opacity: 1 !important;
-      visibility: visible !important;
-      pointer-events: auto !important;
-    }
-    
-    /* Force white background on all nav children */
-    .mobile-nav-active .navmenu li,
-    .mobile-nav-active .navmenu a {
-      background: #ffffff !important;
+      display: none !important;
+      visibility: hidden !important;
+      opacity: 0 !important;
+      pointer-events: none !important;
     }
   }
   

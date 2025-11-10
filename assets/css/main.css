@@ -370,16 +370,16 @@ h6 {
 
 /* Navmenu - Mobile */
 @media (max-width: 1199px) {
+  /* Mobile nav toggle - HIDDEN ON MOBILE */
   .mobile-nav-toggle {
-    color: var(--nav-color);
-    font-size: 28px;
-    line-height: 0;
-    margin-right: 10px;
-    cursor: pointer;
-    transition: color 0.3s;
+    display: none !important;
+    visibility: hidden !important;
   }
 
+  /* Navmenu - HIDDEN ON MOBILE */
   .navmenu {
+    display: none !important;
+    visibility: hidden !important;
     padding: 0;
     z-index: 9997;
   }
@@ -487,16 +487,16 @@ h6 {
     z-index: 9999;
   }
 
+  /* Navigation menu - HIDDEN ON MOBILE */
   .mobile-nav-active .navmenu {
-    position: fixed;
-    overflow: hidden;
-    inset: 0;
-    background: rgba(33, 37, 41, 0.8);
-    transition: 0.3s;
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
   }
 
   .mobile-nav-active .navmenu>ul {
-    display: block;
+    display: none !important;
+    visibility: hidden !important;
   }
 }
 
