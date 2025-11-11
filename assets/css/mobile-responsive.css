@@ -49,15 +49,9 @@
     gap: 10px;
   }
   
-  /* Show logo in topbar on mobile */
+  /* Hide logo in topbar on mobile - moved to branding section below */
   .topbar .logo-mobile {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 5px;
-    order: 1;
-    width: 100%;
+    display: none !important;
   }
   
   /* Hide mobile logo on desktop */
@@ -137,27 +131,68 @@
   
   .topbar .social-links {
     margin-top: 5px;
-    order: 3;
+    order: 1;
   }
   
   /* Adjust branding section on mobile */
   .branding {
     padding: 10px 0;
-    min-height: 50px;
+    min-height: 60px;
   }
   
-  /* Hide logo and name in branding section on mobile since we show it in topbar */
+  /* Show logo and name in branding section on mobile - moved from topbar */
   .branding .logo {
-    display: none !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    flex: 1;
+    gap: 8px;
+    margin: 0;
+    min-width: 0; /* Allows flex item to shrink */
+    overflow: visible;
+  }
+  
+  .branding .logo .logo-img {
+    height: 35px !important;
+    width: auto;
+    margin-right: 8px !important;
+    flex-shrink: 0;
   }
   
   .branding .logo .sitename {
-    display: none !important;
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    font-size: 0.95rem;
+    color: var(--heading-color, #1a3d32) !important;
+    margin: 0;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: visible;
+    text-overflow: clip;
+    letter-spacing: 0.5px;
   }
   
-  /* Keep hamburger button visible */
+  /* Adjust branding container for horizontal layout - logo left, nav right */
   .branding .container {
-    justify-content: flex-end;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    gap: 10px;
+  }
+  
+  /* Position hamburger button on right side - override fixed positioning */
+  .branding .mobile-nav-btn {
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    flex-shrink: 0;
+    margin-left: 8px;
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+    padding: 0;
   }
   
   .sitename {
@@ -1023,6 +1058,29 @@
   /* Contact Info - Hidden on small screens */
   .topbar .contact-info {
     display: none !important;
+  }
+  
+  /* Further optimize branding section for very small screens */
+  .branding .logo .logo-img {
+    height: 30px !important;
+    margin-right: 6px !important;
+  }
+  
+  .branding .logo .sitename {
+    font-size: 0.85rem;
+    letter-spacing: 0.3px;
+  }
+  
+  .branding .container {
+    padding: 6px 10px;
+    gap: 8px;
+  }
+  
+  .branding .mobile-nav-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    margin-left: 6px;
   }
   
   /* Mobile Navigation - Full Width on Small Screens */
