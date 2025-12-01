@@ -671,8 +671,15 @@
       try {
         // Try to load from Firebase first
         if (window.firebaseBookingService) {
-          allBookings = await window.firebaseBookingService.getAllBookings();
-          console.log('Bookings loaded from Firebase:', allBookings.length);
+          const allBookingsFromDB = await window.firebaseBookingService.getAllBookings();
+          // Filter out failed payments - only show confirmed bookings
+          allBookings = allBookingsFromDB.filter(booking => {
+            // Only show confirmed bookings (successful payments) and walk-in bookings
+            // Exclude payment_failed, pending_payment (unless walk-in), and cancelled bookings
+            return booking.status === 'confirmed' || 
+                   (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
+          });
+          console.log('Bookings loaded from Firebase:', allBookingsFromDB.length, '| Filtered (confirmed only):', allBookings.length);
         } else {
           // Fallback to localStorage
           allBookings = loadBookingsFromLocalStorage();
@@ -983,8 +990,15 @@
       try {
         // Reload bookings from database
         if (window.firebaseBookingService) {
-          allBookings = await window.firebaseBookingService.getAllBookings();
-          console.log('Bookings refreshed from Firebase:', allBookings.length);
+          const allBookingsFromDB = await window.firebaseBookingService.getAllBookings();
+          // Filter out failed payments - only show confirmed bookings
+          allBookings = allBookingsFromDB.filter(booking => {
+            // Only show confirmed bookings (successful payments) and walk-in bookings
+            // Exclude payment_failed, pending_payment (unless walk-in), and cancelled bookings
+            return booking.status === 'confirmed' || 
+                   (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
+          });
+          console.log('Bookings refreshed from Firebase:', allBookingsFromDB.length, '| Filtered (confirmed only):', allBookings.length);
         } else {
           allBookings = loadBookingsFromLocalStorage();
           console.log('Bookings refreshed from localStorage:', allBookings.length);

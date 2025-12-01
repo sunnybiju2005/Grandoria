@@ -780,7 +780,7 @@
           updatedAt: new Date()
         };
         
-        console.log('📝 Creating booking:', booking);
+        console.log('📝 Creating booking (will be saved only after successful payment):', booking);
         
         // Disable submit button
         const submitBtn = document.getElementById('submitBtn');
@@ -788,29 +788,23 @@
         submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
         
         try {
-          // Save booking to database
-          if (window.firebaseBookingService && window.firebaseInitialized) {
-            const bookingId = await window.firebaseBookingService.saveBooking(booking);
-            console.log('✅ Booking saved with ID:', bookingId);
-            
-            // Redirect to confirmation page with all booking data
-            const params = new URLSearchParams({
-              bookingId: bookingId,
-              primary_guest: guestName,
-              contact_email: guestEmail,
-              contact_phone: guestPhone,
-              arrival_date: checkIn,
-              departure_date: checkOut,
-              guest_count: adults + children,
-              room_count: this.selectedRoomCount,
-              room_type: this.selectedRoom.id
-            });
-            window.location.href = `booking-confirmation.html?${params.toString()}`;
-          } else {
-            throw new Error('Database not available');
-          }
+          // DO NOT save booking to database yet - only save after successful payment
+          // Redirect to confirmation page with all booking data
+          // Booking will be saved to Firebase only after successful Razorpay payment
+          const params = new URLSearchParams({
+            bookingId: booking.bookingId,
+            primary_guest: guestName,
+            contact_email: guestEmail,
+            contact_phone: guestPhone,
+            arrival_date: checkIn,
+            departure_date: checkOut,
+            guest_count: adults + children,
+            room_count: this.selectedRoomCount,
+            room_type: this.selectedRoom.id
+          });
+          window.location.href = `booking-confirmation.html?${params.toString()}`;
         } catch (error) {
-          console.error('❌ Error saving booking:', error);
+          console.error('❌ Error processing booking:', error);
           this.showAvailabilityStatus(`Booking failed: ${error.message}`, 'unavailable');
           
           // Re-enable submit button

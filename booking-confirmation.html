@@ -780,7 +780,7 @@
           description: 'Hotel Booking Payment - Booking ID: ' + bookingData.bookingId,
           image: 'https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png',
           // Note: order_id removed - Razorpay will create orders automatically
-          handler: function (response) {
+          handler: async function (response) {
             // Payment successful
             console.log('Razorpay payment successful:', response);
             
@@ -793,6 +793,20 @@
             bookingData.createdAt = new Date();
             bookingData.updatedAt = new Date();
             bookingData.bookingType = 'ONLINE';
+            
+            // Save to Firebase database ONLY after successful payment
+            try {
+              if (window.firebaseBookingService && window.firebaseInitialized) {
+                const firebaseBookingId = await window.firebaseBookingService.saveBooking(bookingData);
+                console.log('✅ Booking saved to Firebase after successful payment:', firebaseBookingId);
+                bookingData.firebaseId = firebaseBookingId;
+              } else {
+                console.warn('⚠️ Firebase not available - booking not saved to database');
+              }
+            } catch (error) {
+              console.error('❌ Error saving booking to Firebase:', error);
+              // Still show success to user, but log the error
+            }
             
             // Save confirmed booking locally for admin dashboard
             localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
@@ -836,6 +850,11 @@
           bookingData.failureReason = response.error ? (response.error.description || response.error.reason || 'Payment failed') : 'Payment failed';
           bookingData.razorpayError = response.error;
           
+          // DO NOT save failed bookings to Firebase database
+          // DO NOT save to localStorage - failed bookings should not appear anywhere
+          console.log('❌ Payment failed - booking NOT saved to database or localStorage');
+          
+          // Only store temporarily in localStorage for retry (will be cleared)
           localStorage.setItem('failedBooking', JSON.stringify(bookingData));
           localStorage.removeItem('currentBooking');
           
@@ -894,9 +913,18 @@
           bookingData.updatedAt = new Date();
           bookingData.bookingType = 'ONLINE'; // Ensure booking type is set
           
-          // Booking is already saved to Firebase from booking.html
-          // No need to save again here to prevent duplicates
-          console.log('Booking already saved to Firebase from booking page, skipping duplicate save');
+          // Save to Firebase database ONLY after successful payment
+          try {
+            if (window.firebaseBookingService && window.firebaseInitialized) {
+              const firebaseBookingId = await window.firebaseBookingService.saveBooking(bookingData);
+              console.log('✅ Booking saved to Firebase after successful payment:', firebaseBookingId);
+              bookingData.firebaseId = firebaseBookingId;
+            } else {
+              console.warn('⚠️ Firebase not available - booking not saved to database');
+            }
+          } catch (error) {
+            console.error('❌ Error saving booking to Firebase:', error);
+          }
           
           // Save confirmed booking locally for admin dashboard
           localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
@@ -913,10 +941,11 @@
           bookingData.paymentDate = new Date().toISOString();
           bookingData.failureReason = 'Payment gateway declined the transaction';
           
-          // DO NOT save failed bookings to database - only store temporarily for retry
-          console.log('Payment failed - booking not saved to database');
+          // DO NOT save failed bookings to Firebase database
+          // DO NOT save to localStorage - failed bookings should not appear anywhere
+          console.log('❌ Payment failed - booking NOT saved to database or localStorage');
           
-          // Save failed booking locally for retry (not in main database)
+          // Only store temporarily in localStorage for retry (will be cleared)
           localStorage.setItem('failedBooking', JSON.stringify(bookingData));
           
           // Clear temporary booking data
