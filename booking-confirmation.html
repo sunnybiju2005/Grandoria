@@ -729,21 +729,66 @@
 
         // Razorpay integration
         // Replace 'YOUR_KEY_ID' with your actual Razorpay Key ID from Razorpay Dashboard
-        const razorpayKey = 'rzp_test_YOUR_KEY_ID'; // Change this to your actual Razorpay Key
+        const razorpayKey = 'rzp_live_Rlq6Z5s3e7FVa3'; // Live Razorpay Key
         
+        // Validate Razorpay key format
+        if (!razorpayKey || !razorpayKey.startsWith('rzp_')) {
+          alert('Invalid Razorpay configuration. Please contact support.');
+          console.error('Invalid Razorpay key:', razorpayKey);
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+          return;
+        }
+        
+        // Validate amount
+        if (!bookingData.total || isNaN(bookingData.total) || bookingData.total <= 0) {
+          alert('Invalid payment amount. Please check your booking details.');
+          console.error('Invalid amount:', bookingData.total);
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+          return;
+        }
+        
+        const amountInPaise = Math.round(bookingData.total * 100);
+        if (amountInPaise < 100) {
+          alert('Minimum payment amount is ₹1.00');
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+          return;
+        }
+        
+        // Validate required fields
+        if (!bookingData.guestName || !bookingData.email || !bookingData.phone) {
+          alert('Please ensure all guest details are filled correctly.');
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+          return;
+        }
+        
+        console.log('Initializing Razorpay payment:', {
+          key: razorpayKey.substring(0, 10) + '...',
+          amount: amountInPaise,
+          currency: 'INR',
+          bookingId: bookingData.bookingId
+        });
+
         const options = {
           key: razorpayKey,
-          amount: bookingData.total * 100, // Amount in paise
+          amount: amountInPaise, // Amount in paise
           currency: 'INR',
           name: 'GAURIKEERTHANA RESIDENCY',
-          description: 'Hotel Booking Payment',
+          description: 'Hotel Booking Payment - Booking ID: ' + bookingData.bookingId,
           image: 'https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png',
-          order_id: bookingData.bookingId, // This should be created on your server
+          // Note: order_id removed - Razorpay will create orders automatically
           handler: function (response) {
             // Payment successful
+            console.log('Razorpay payment successful:', response);
+            
             bookingData.status = 'confirmed';
             bookingData.paymentStatus = 'success';
             bookingData.paymentId = response.razorpay_payment_id;
+            bookingData.razorpayOrderId = response.razorpay_order_id;
+            bookingData.razorpaySignature = response.razorpay_signature;
             bookingData.paymentDate = new Date().toISOString();
             bookingData.createdAt = new Date();
             bookingData.updatedAt = new Date();
@@ -780,20 +825,43 @@
         };
 
         const rzp = new Razorpay(options);
+        
         rzp.on('payment.failed', function (response) {
           // Payment failed
+          console.error('Razorpay payment failed:', response);
+          
           bookingData.status = 'payment_failed';
           bookingData.paymentStatus = 'failed';
           bookingData.paymentDate = new Date().toISOString();
-          bookingData.failureReason = response.error.description || 'Payment failed';
+          bookingData.failureReason = response.error ? (response.error.description || response.error.reason || 'Payment failed') : 'Payment failed';
+          bookingData.razorpayError = response.error;
           
           localStorage.setItem('failedBooking', JSON.stringify(bookingData));
           localStorage.removeItem('currentBooking');
           
+          // Reset payment button
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+          
           showPaymentFailure(bookingData);
         });
         
-        rzp.open();
+        // Handle Razorpay errors
+        rzp.on('payment.error', function (response) {
+          console.error('Razorpay error:', response);
+          alert('Payment Error: ' + (response.error ? response.error.description : 'An error occurred. Please try again.'));
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+        });
+        
+        try {
+          rzp.open();
+        } catch (error) {
+          console.error('Error opening Razorpay:', error);
+          alert('Error initializing payment gateway. Please check your internet connection and try again.');
+          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
+          document.getElementById('proceed-payment').disabled = false;
+        }
       }
 
       function createPaymentUrl(method, bookingData) {
@@ -925,7 +993,9 @@
                 <div class="booking-details">
                   <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
                   <p><strong>Amount:</strong> ₹${bookingData.total.toLocaleString()}</p>
-                  <p><strong>Failure Reason:</strong> ${bookingData.failureReason}</p>
+                  <p><strong>Failure Reason:</strong> ${bookingData.failureReason || 'Unknown error occurred'}</p>
+                  ${bookingData.razorpayError ? `<p class="text-muted small"><strong>Error Code:</strong> ${bookingData.razorpayError.code || 'N/A'}</p>` : ''}
+                  ${bookingData.razorpayError && bookingData.razorpayError.metadata ? `<p class="text-muted small"><strong>Details:</strong> ${JSON.stringify(bookingData.razorpayError.metadata)}</p>` : ''}
                   <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
                   <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
                 </div>
