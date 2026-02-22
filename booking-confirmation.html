@@ -783,11 +783,18 @@
             bookingData.bookingType = 'ONLINE';
 
             // 3. Save to Firebase
-            if (window.firebaseBookingService && window.firebaseInitialized) {
-              const docId = await window.firebaseBookingService.saveBooking(bookingData);
-              bookingData.firebaseId = docId;
+            console.log('Attempting to save to Firebase database...');
+            if (window.firebaseBookingService && (window.firebaseInitialized || window.firebaseDB)) {
+              try {
+                const docId = await window.firebaseBookingService.saveBooking(bookingData);
+                bookingData.firebaseId = docId;
+                console.log('✅ Booking successfully saved to Firebase with ID:', docId);
+              } catch (saveError) {
+                console.error('❌ Firestore save failed:', saveError);
+                alert('Database error: Booking saved locally but failed to sync online. Please contact support.');
+              }
             } else {
-              console.warn('Firebase not initialized, saving to local storage only');
+              console.warn('⚠️ Firebase not ready, saving to local storage only');
             }
 
             // Save confirmed booking locally for receipts
