@@ -15,7 +15,9 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Josefin+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -24,8 +26,8 @@
   <link href="assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
-  <!-- Razorpay SDK -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <!-- Firebase Storage SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
 
   <!-- Main CSS File -->
   <link href="assets/css/main.css" rel="stylesheet">
@@ -41,11 +43,11 @@
       cursor: pointer;
       transition: all 0.3s ease;
     }
-    
+
     .payment-option:hover {
       transform: translateY(-2px);
     }
-    
+
     .payment-card {
       border: 2px solid #e9ecef;
       border-radius: 10px;
@@ -54,35 +56,35 @@
       background: #fff;
       transition: all 0.3s ease;
     }
-    
+
     .payment-option:hover .payment-card {
       border-color: #007bff;
-      box-shadow: 0 4px 15px rgba(0,123,255,0.1);
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.1);
     }
-    
+
     .payment-card i {
       font-size: 2rem;
       margin-bottom: 10px;
     }
-    
+
     .payment-card h6 {
       margin-bottom: 5px;
       font-weight: 600;
     }
-    
+
     .payment-card p {
       margin: 0;
       color: #6c757d;
       font-size: 0.9rem;
     }
-    
+
     .booking-summary {
       background: #f8f9fa;
       padding: 15px;
       border-radius: 8px;
       border-left: 4px solid #007bff;
     }
-    
+
     .summary-item {
       display: flex;
       justify-content: space-between;
@@ -90,50 +92,68 @@
       padding: 10px 0;
       border-bottom: 1px solid #dee2e6;
     }
-    
+
     .summary-item:last-child {
       border-bottom: none;
     }
-    
+
     .success-icon {
       animation: bounce 0.6s ease-in-out;
     }
-    
+
     .failure-icon {
       animation: shake 0.6s ease-in-out;
     }
-    
+
     @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% {
+
+      0%,
+      20%,
+      50%,
+      80%,
+      100% {
         transform: translateY(0);
       }
+
       40% {
         transform: translateY(-10px);
       }
+
       60% {
         transform: translateY(-5px);
       }
     }
-    
+
     @keyframes shake {
-      0%, 100% {
+
+      0%,
+      100% {
         transform: translateX(0);
       }
-      10%, 30%, 50%, 70%, 90% {
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
         transform: translateX(-5px);
       }
-      20%, 40%, 60%, 80% {
+
+      20%,
+      40%,
+      60%,
+      80% {
         transform: translateX(5px);
       }
     }
-    
+
     .booking-details {
       background: #f8f9fa;
       padding: 15px;
       border-radius: 8px;
       margin: 15px 0;
     }
-    
+
     .booking-details p {
       margin: 5px 0;
       font-size: 0.9rem;
@@ -153,7 +173,7 @@
 
   <!-- New Mobile Navigation Overlay -->
   <div class="mobile-nav-overlay-new"></div>
-  
+
   <!-- New Mobile Navigation Sidebar -->
   <nav class="mobile-nav-sidebar">
     <div class="mobile-nav-header">
@@ -190,12 +210,15 @@
       <div class="container d-flex justify-content-center justify-content-md-between">
         <!-- Mobile Logo (shown only on mobile) -->
         <div class="logo-mobile d-md-none">
-          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png" alt="Gaurikeerthana Logo" class="logo-img">
+          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png"
+            alt="Gaurikeerthana Logo" class="logo-img">
           <h1 class="sitename">GAURIKEERTHANA</h1>
         </div>
         <div class="contact-info d-flex align-items-center">
           <a href="mailto:Gaurikeerthanagvyr@gmail.com">Gaurikeerthanagvyr@gmail.com</a>
-          <span class="ms-4"><a href="tel:+919947792777" style="color: inherit; text-decoration: none;">+91 994779277</a> , <a href="tel:+914872081979" style="color: inherit; text-decoration: none;">+91 4872081979</a></span>
+          <span class="ms-4"><a href="tel:+919947792777" style="color: inherit; text-decoration: none;">+91
+              994779277</a> , <a href="tel:+914872081979" style="color: inherit; text-decoration: none;">+91
+              4872081979</a></span>
         </div>
         <div class="social-links d-none d-md-flex align-items-center">
           <a href="https://instagram.com/gaurikeerthanaresidency_" class="instagram"><i class="bi bi-instagram"></i></a>
@@ -208,7 +231,8 @@
       <div class="container position-relative d-flex align-items-center justify-content-between">
         <a href="index.html" class="logo d-flex align-items-center">
           <!-- Uncomment the line below if you also wish to use an image logo -->
-          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png" alt="Gaurikeerthana Logo" class="logo-img" style="height: 50px; margin-right: 15px;">
+          <img src="https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png"
+            alt="Gaurikeerthana Logo" class="logo-img" style="height: 50px; margin-right: 15px;">
           <h1 class="sitename">GAURIKEERTHANA</h1>
         </a>
 
@@ -268,7 +292,8 @@
               <i class="bi bi-check-circle-fill text-success"></i>
             </div>
             <h2 class="text-primary">Booking Pending</h2>
-            <p class="lead text-muted">Thank you for choosing GAURIKEERTHANA RESIDENCY. Your booking has been successfully processed and we are delighted to welcome you to our hotel.</p>
+            <p class="lead text-muted">Thank you for choosing GAURIKEERTHANA RESIDENCY. Your booking has been
+              successfully processed and we are delighted to welcome you to our hotel.</p>
             <div class="confirmation-number">
               <small class="text-muted">Confirmation Reference:</small>
               <strong class="text-dark d-block" id="booking-reference">Loading...</strong>
@@ -342,19 +367,29 @@
                     <span class="label">Total Amount:</span>
                     <span class="value" id="total-amount">-</span>
                   </div>
+                  <!-- Advance Payment Section -->
+                  <div class="summary-item mt-2 text-success"
+                    style="border-top: 1px dashed #dee2e6; padding-top: 10px;">
+                    <span class="label"><strong>Advance Required:</strong></span>
+                    <span class="value" id="advance-amount">₹500</span>
+                  </div>
+                  <div class="summary-item text-danger">
+                    <span class="label">Balance Due at Hotel:</span>
+                    <span class="value" id="balance-amount">-</span>
+                  </div>
                 </div>
 
                 <div class="summary-actions">
-                  <button type="button" class="btn btn-primary btn-lg w-100" id="proceed-payment">
-                    <i class="bi bi-credit-card me-2"></i>
-                    Proceed to Payment Gateway
+                  <button type="button" class="btn btn-primary btn-lg w-100" id="show-payment-modal">
+                    <i class="bi bi-qr-code-scan me-2"></i>
+                    Pay Advance ₹500
                   </button>
                 </div>
 
                 <div class="payment-notice mt-3">
                   <small class="text-muted">
                     <i class="bi bi-info-circle me-1"></i>
-                    Payment will be processed through our secure payment gateway. You will be redirected to complete the transaction.
+                    To confirm your booking, please pay an advance of ₹500 via UPI.
                   </small>
                 </div>
               </div>
@@ -385,7 +420,7 @@
                   </ul>
                 </div>
               </div>
-              
+
             </div>
           </div>
 
@@ -408,9 +443,13 @@
             </a>
             <div class="footer-contact pt-3">
               <p>GAURIKEERTHANA RESIDENCY</p>
-              <p><a href="https://www.google.com/maps/search/?api=1&query=Gaurikeerthana+Residency+Guruvayur+Kerala" target="_blank" style="color: inherit; text-decoration: none;">Gaurikeerthana, Kerala, India</a></p>
-              <p class="mt-3"><strong>Phone:</strong> <span><a href="tel:+919947792777" style="color: inherit; text-decoration: none;">+91 994779277</a> , <a href="tel:+914872081979" style="color: inherit; text-decoration: none;">+91 4872081979</a></span></p>
-              <p><strong>Email:</strong> <span><a href="mailto:Gaurikeerthanagvyr@gmail.com" style="color: inherit; text-decoration: none;">Gaurikeerthanagvyr@gmail.com</a></span></p>
+              <p><a href="https://www.google.com/maps/search/?api=1&query=Gaurikeerthana+Residency+Guruvayur+Kerala"
+                  target="_blank" style="color: inherit; text-decoration: none;">Gaurikeerthana, Kerala, India</a></p>
+              <p class="mt-3"><strong>Phone:</strong> <span><a href="tel:+919947792777"
+                    style="color: inherit; text-decoration: none;">+91 994779277</a> , <a href="tel:+914872081979"
+                    style="color: inherit; text-decoration: none;">+91 4872081979</a></span></p>
+              <p><strong>Email:</strong> <span><a href="mailto:Gaurikeerthanagvyr@gmail.com"
+                    style="color: inherit; text-decoration: none;">Gaurikeerthanagvyr@gmail.com</a></span></p>
             </div>
           </div>
 
@@ -427,7 +466,8 @@
     </div>
 
     <div class="copyright text-center">
-      <div class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
+      <div
+        class="container d-flex flex-column flex-lg-row justify-content-center justify-content-lg-between align-items-center">
         <div class="d-flex flex-column align-items-center align-items-lg-start">
           <div>
             © Copyright <strong>Gaurikeerthana Residency</strong>. All Rights Reserved
@@ -446,7 +486,8 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -464,13 +505,13 @@
   <!-- Firebase CDN Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  
+
   <!-- Firebase Configuration -->
   <script src="firebase-service.js"></script>
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  
+
   <!-- New Mobile Navigation JS -->
   <script src="assets/js/mobile-nav-new.js"></script>
 
@@ -485,9 +526,9 @@
     }
 
     // Populate booking details from URL parameters
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       console.log('DOM Content Loaded - Starting booking confirmation script');
-      
+
       // Get form data from URL parameters
       const bookingId = getUrlParameter('bookingId');
       const guestName = getUrlParameter('primary_guest');
@@ -498,10 +539,10 @@
       const guestCount = getUrlParameter('guest_count');
       const roomCount = getUrlParameter('room_count');
       const roomType = getUrlParameter('room_type');
-      
+
       // Debug: Log retrieved values
       console.log('Retrieved URL parameters:', {
-        bookingId, guestName, guestEmail, guestPhone, arrivalDate, departureDate, 
+        bookingId, guestName, guestEmail, guestPhone, arrivalDate, departureDate,
         guestCount, roomCount, roomType
       });
 
@@ -524,8 +565,8 @@
       // Set room type and pricing
       let roomRate = 0;
       let roomTypeText = '';
-      
-      switch(roomType) {
+
+      switch (roomType) {
         case 'normal-non-ac':
           roomRate = 2500;
           roomTypeText = 'Normal Non-AC Room';
@@ -560,17 +601,20 @@
       }
 
       // Payment button functionality
-      console.log('Setting up payment button event listener');
-      const paymentButton = document.getElementById('proceed-payment');
-      console.log('Payment button found:', !!paymentButton);
-      
+      const paymentButton = document.getElementById('show-payment-modal');
+
       if (paymentButton) {
-        paymentButton.addEventListener('click', async function() {
+        console.log('Payment button found, attaching event listener');
+        paymentButton.addEventListener('click', function () {
           console.log('Payment button clicked');
-          console.log('Firebase service available:', !!window.firebaseBookingService);
-          console.log('LocalStorage fallback available:', !!window.localStorageFallback);
-          
-          // Calculate pricing (move calculation here)
+
+          if (!arrivalDate || !departureDate || !roomRate) {
+            console.error('Missing required booking data');
+            alert('Error: Missing booking details. Please try booking again from the home page.');
+            return;
+          }
+
+          // Calculate pricing
           const checkin = new Date(arrivalDate);
           const checkout = new Date(departureDate);
           const nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
@@ -578,78 +622,39 @@
           const subtotal = roomRate * nights * numberOfRooms;
           const gst = Math.round(subtotal * 0.05); // 5% GST
           const total = subtotal + gst;
-          
-          console.log('Calculated pricing:', { nights, numberOfRooms, subtotal, gst, total });
-          
-        // Create booking data (temporary for payment processing)
-        const bookingData = {
-          bookingId: generateBookingId(),
-          guestName: guestName,
-          email: guestEmail,
-          phone: guestPhone,
-          arrivalDate: arrivalDate,
-          departureDate: departureDate,
-          roomType: roomType,
-          roomTypeText: roomTypeText,
-          roomCount: roomCount,
-          roomRate: roomRate,
-          subtotal: subtotal,
-          gst: gst,
-          total: total,
-          timestamp: new Date().toISOString(),
-          status: 'pending_payment',
-          bookingType: 'ONLINE', // Mark as online booking
-          paymentMethod: '', // Will be set when payment method is selected
-          paymentDate: '', // Will be set when payment is successful
-          paymentStatus: 'pending' // Will be updated based on payment result
-        };
 
-        // Show loading state
-        this.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing...';
-        this.disabled = true;
 
-        try {
-          // Store booking data temporarily for payment processing only
+          const bookingData = {
+            bookingId: generateBookingId(),
+            guestName: guestName,
+            email: guestEmail,
+            phone: guestPhone,
+            arrivalDate: arrivalDate,
+            departureDate: departureDate,
+            roomType: roomType,
+            roomTypeText: roomTypeText,
+            roomCount: roomCount,
+            roomRate: roomRate,
+            subtotal: subtotal,
+            gst: gst,
+            total: total,
+            advanceAmount: 500,
+            balanceAmount: total - 500,
+            timestamp: new Date().toISOString(),
+            status: 'pending_payment',
+            bookingType: 'ONLINE',
+            paymentMethod: 'UPI_MANUAL',
+            paymentDate: '',
+            paymentStatus: 'pending'
+          };
+
+          // Store booking data temporarily
           localStorage.setItem('currentBooking', JSON.stringify(bookingData));
-          console.log('Booking data stored temporarily for payment processing');
-          
-          // Show payment options (booking will only be saved to database after successful payment)
-          showPaymentOptions(bookingData);
-          
-        } catch (error) {
-          console.error('Error processing booking:', error);
-          alert('Error processing your booking. Please try again.');
-        } finally {
-          // Reset button state
-          this.innerHTML = '<i class="bi bi-credit-card me-2"></i>Proceed to Payment Gateway';
-          this.disabled = false;
-        }
-      });
-      } else {
-        console.error('Payment button not found!');
-        // Try to find the button with a different selector
-        const altButton = document.querySelector('button[type="submit"]') || 
-                         document.querySelector('.btn-primary') || 
-                         document.querySelector('[onclick*="payment"]');
-        console.log('Alternative button found:', !!altButton);
-        if (altButton) {
-          console.log('Adding click handler to alternative button');
-          altButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            console.log('Alternative button clicked - showing payment options');
-            // Create a simple booking data object for testing
-            const testBookingData = {
-              bookingId: 'TEST-' + Date.now(),
-              guestName: 'Test User',
-              email: 'test@example.com',
-              total: 1000,
-              status: 'pending_payment'
-            };
-            showPaymentOptions(testBookingData);
-          });
-        }
-      }
 
+          // Show manual payment modal
+          showManualPaymentModal(bookingData);
+        });
+      }
 
       function generateBookingId() {
         const timestamp = Date.now();
@@ -657,8 +662,8 @@
         return `GR-${timestamp}-${random}`;
       }
 
-      function showPaymentOptions(bookingData) {
-        // Create payment options modal
+      function showManualPaymentModal(bookingData) {
+        // Create manual payment modal
         const paymentModal = document.createElement('div');
         paymentModal.className = 'modal fade';
         paymentModal.id = 'paymentModal';
@@ -666,26 +671,53 @@
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Choose Payment Method</h5>
+                <h5 class="modal-title">Complete Your Booking</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
               </div>
-              <div class="modal-body text-center">
-                <div class="row justify-content-center">
-                  <div class="col-md-8">
-                    <div class="payment-option" onclick="selectPaymentMethod('razorpay')">
-                      <div class="payment-card">
-                        <i class="bi bi-credit-card-fill text-primary"></i>
-                        <h6>Razorpay</h6>
-                        <p>Credit/Debit Cards, UPI, Net Banking, Wallets</p>
-                      </div>
+              <div class="modal-body">
+                <div class="row">
+                  <div class="col-md-6 text-center border-end">
+                    <h6 class="mb-3">Scan QR Code to Pay ₹500</h6>
+                    <div class="mb-3">
+                      <!-- Placeholder for QR Code -->
+                      <img src="assets/img/payment-qr.jpg" alt="Payment QR Code" class="img-fluid border p-2" style="max-width: 200px; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/200x200?text=QR+Code+Update+Required'">
+                    </div>
+                    <div class="alert alert-light border">
+                      <small class="text-muted d-block">UPI ID</small>
+                      <strong class="user-select-all">9947792777@okbizaxis</strong>
+                    </div>
+                    <div class="alert alert-info">
+                       <small>Open Google Pay, PhonePe, or Paytm and scan the QR code to pay the advance amount of ₹500.</small>
                     </div>
                   </div>
-                </div>
-                <div class="booking-summary mt-4">
-                  <h6>Booking Summary</h6>
-                  <div class="summary-item">
-                    <span>Total Amount:</span>
-                    <strong>₹${bookingData.total.toLocaleString()}</strong>
+                  <div class="col-md-6">
+                    <h6 class="mb-3">Confirm Payment</h6>
+                    <form id="payment-confirmation-form">
+                      <div class="mb-3">
+                        <label for="payment-screenshot" class="form-label">Upload Payment Screenshot <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="payment-screenshot" accept="image/*" required>
+                        <div class="form-text">Please upload the screenshot of the successful payment.</div>
+                      </div>
+                      
+                      <div class="booking-summary-mini bg-light p-3 rounded mb-3">
+                         <div class="d-flex justify-content-between mb-1">
+                           <span>Total Amount:</span>
+                           <span>₹${bookingData.total.toLocaleString()}</span>
+                         </div>
+                         <div class="d-flex justify-content-between mb-1 text-success">
+                           <span>Advance to Pay:</span>
+                           <span>₹500</span>
+                         </div>
+                         <div class="d-flex justify-content-between fw-bold border-top pt-1 mt-1">
+                           <span>Balance at Hotel:</span>
+                           <span>₹${(bookingData.total - 500).toLocaleString()}</span>
+                         </div>
+                      </div>
+
+                      <button type="submit" class="btn btn-success w-100 py-2" id="confirm-payment-btn">
+                        <i class="bi bi-check-circle me-2"></i>Payment Done - Confirm Booking
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -695,458 +727,142 @@
 
         // Add modal to page
         document.body.appendChild(paymentModal);
-        
+
         // Show modal
         const modal = new bootstrap.Modal(paymentModal);
         modal.show();
 
         // Remove modal when hidden
-        paymentModal.addEventListener('hidden.bs.modal', function() {
+        paymentModal.addEventListener('hidden.bs.modal', function () {
           document.body.removeChild(paymentModal);
         });
-      }
 
-      // Global function for payment method selection
-      window.selectPaymentMethod = function(method) {
-        const bookingData = JSON.parse(localStorage.getItem('currentBooking'));
-        
-        // Update booking with payment method
-        bookingData.paymentMethod = method;
-        localStorage.setItem('currentBooking', JSON.stringify(bookingData));
+        // Handle form submission
+        document.getElementById('payment-confirmation-form').addEventListener('submit', async function (e) {
+          e.preventDefault();
 
-        // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('paymentModal'));
-        modal.hide();
+          const fileInput = document.getElementById('payment-screenshot');
+          const file = fileInput.files[0];
 
-        // Redirect to payment gateway
-        redirectToPaymentGateway(method, bookingData);
-      };
+          if (!file) {
+            alert('Please upload the payment screenshot.');
+            return;
+          }
 
-      function redirectToPaymentGateway(method, bookingData) {
-        // Show loading message
-        document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Processing Payment...';
-        document.getElementById('proceed-payment').disabled = true;
+          const confirmBtn = document.getElementById('confirm-payment-btn');
+          confirmBtn.disabled = true;
+          confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Uploading & Confirming...';
 
-        // Razorpay integration
-        // Replace 'YOUR_KEY_ID' with your actual Razorpay Key ID from Razorpay Dashboard
-        const razorpayKey = 'rzp_live_Rlq6Z5s3e7FVa3'; // Live Razorpay Key
-        
-        // Validate Razorpay key format
-        if (!razorpayKey || !razorpayKey.startsWith('rzp_')) {
-          alert('Invalid Razorpay configuration. Please contact support.');
-          console.error('Invalid Razorpay key:', razorpayKey);
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-          return;
-        }
-        
-        // Validate amount
-        if (!bookingData.total || isNaN(bookingData.total) || bookingData.total <= 0) {
-          alert('Invalid payment amount. Please check your booking details.');
-          console.error('Invalid amount:', bookingData.total);
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-          return;
-        }
-        
-        const amountInPaise = Math.round(bookingData.total * 100);
-        if (amountInPaise < 100) {
-          alert('Minimum payment amount is ₹1.00');
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-          return;
-        }
-        
-        // Validate required fields
-        if (!bookingData.guestName || !bookingData.email || !bookingData.phone) {
-          alert('Please ensure all guest details are filled correctly.');
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-          return;
-        }
-        
-        console.log('Initializing Razorpay payment:', {
-          key: razorpayKey.substring(0, 10) + '...',
-          amount: amountInPaise,
-          currency: 'INR',
-          bookingId: bookingData.bookingId
-        });
-
-        const options = {
-          key: razorpayKey,
-          amount: amountInPaise, // Amount in paise
-          currency: 'INR',
-          name: 'GAURIKEERTHANA RESIDENCY',
-          description: 'Hotel Booking Payment - Booking ID: ' + bookingData.bookingId,
-          image: 'https://res.cloudinary.com/dqc1r8jtk/image/upload/v1758731402/loho_gk_-removebg-preview_yfera3.png',
-          // Note: order_id removed - Razorpay will create orders automatically
-          handler: async function (response) {
-            // Payment successful
-            console.log('Razorpay payment successful:', response);
-            
-            bookingData.status = 'confirmed';
-            bookingData.paymentStatus = 'success';
-            bookingData.paymentId = response.razorpay_payment_id;
-            bookingData.razorpayOrderId = response.razorpay_order_id;
-            bookingData.razorpaySignature = response.razorpay_signature;
-            bookingData.paymentDate = new Date().toISOString();
-            bookingData.createdAt = new Date();
-            bookingData.updatedAt = new Date();
-            bookingData.bookingType = 'ONLINE';
-            
-            // Save to Firebase database ONLY after successful payment
-            try {
-              if (window.firebaseBookingService && window.firebaseInitialized) {
-                const firebaseBookingId = await window.firebaseBookingService.saveBooking(bookingData);
-                console.log('✅ Booking saved to Firebase after successful payment:', firebaseBookingId);
-                bookingData.firebaseId = firebaseBookingId;
-              } else {
-                console.warn('⚠️ Firebase not available - booking not saved to database');
+          try {
+            // 1. Upload Screenshot
+            let screenshotUrl = '';
+            if (window.firebaseBookingService && window.firebaseBookingService.init()) {
+              try {
+                screenshotUrl = await window.firebaseBookingService.uploadPaymentScreenshot(file, bookingData.bookingId);
+              } catch (uploadError) {
+                console.error('Upload failed:', uploadError);
+                if (!confirm('Screenshot upload failed. Do you want to continue without it?')) {
+                  throw uploadError;
+                }
+                screenshotUrl = 'upload_failed';
               }
-            } catch (error) {
-              console.error('❌ Error saving booking to Firebase:', error);
-              // Still show success to user, but log the error
+            } else {
+              console.warn('Firebase Storage not available, proceeding without upload url');
+              screenshotUrl = 'storage_not_configured';
             }
-            
-            // Save confirmed booking locally for admin dashboard
+
+            // 2. Update Booking Data
+            bookingData.status = 'confirmed';
+            bookingData.paymentStatus = 'advance_paid';
+            bookingData.advancePaid = 500;
+            bookingData.balanceAmount = bookingData.total - 500;
+            bookingData.paymentScreenshot = screenshotUrl;
+            bookingData.paymentDate = new Date().toISOString();
+            bookingData.updatedAt = new Date();
+            bookingData.createdAt = new Date(); // Reset created at to now
+            bookingData.bookingType = 'ONLINE';
+
+            // 3. Save to Firebase
+            if (window.firebaseBookingService && window.firebaseInitialized) {
+              const docId = await window.firebaseBookingService.saveBooking(bookingData);
+              bookingData.firebaseId = docId;
+            } else {
+              console.warn('Firebase not initialized, saving to local storage only');
+            }
+
+            // Save confirmed booking locally for receipts
             localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
             localStorage.removeItem('currentBooking');
-            
-            // Show success message
-            showPaymentSuccess(bookingData);
-          },
-          prefill: {
-            name: bookingData.guestName,
-            email: bookingData.email,
-            contact: bookingData.phone
-          },
-          notes: {
-            booking_id: bookingData.bookingId,
-            check_in: bookingData.arrivalDate,
-            check_out: bookingData.departureDate
-          },
-          theme: {
-            color: '#007bff'
-          },
-          modal: {
-            ondismiss: function() {
-              // Payment modal closed
-              document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-              document.getElementById('proceed-payment').disabled = false;
-              alert('Payment cancelled. Please try again.');
+
+            // 4. Close Modal and Show Success
+            modal.hide();
+
+            // Show Success UI
+            const confirmationHeader = document.querySelector('.confirmation-header');
+            if (confirmationHeader) {
+              confirmationHeader.innerHTML = `
+                  <div class="success-icon mb-4">
+                    <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                  </div>
+                  <h2 class="text-success">Booking Confirmed!</h2>
+                  <p class="lead text-muted">Thank you! We have received your advance payment proof.</p>
+                  <p>Your booking reference: <strong>${bookingData.bookingId}</strong></p>
+                  <div class="alert alert-success mt-3 d-inline-block">
+                    Payment of ₹500 Recorded. Balance of ₹${bookingData.balanceAmount} to be paid at hotel.
+                  </div>
+                  <div class="mt-4">
+                    <button class="btn btn-primary me-2" onclick="downloadBookingReceipt()">
+                      <i class="bi bi-download me-1"></i>Download Receipt
+                    </button>
+                    <button class="btn btn-outline-primary" onclick="goToHome()">
+                      <i class="bi bi-house me-1"></i>Return to Home
+                    </button>
+                  </div>
+                `;
             }
-          }
-        };
 
-        const rzp = new Razorpay(options);
-        
-        rzp.on('payment.failed', function (response) {
-          // Payment failed
-          console.error('Razorpay payment failed:', response);
-          
-          bookingData.status = 'payment_failed';
-          bookingData.paymentStatus = 'failed';
-          bookingData.paymentDate = new Date().toISOString();
-          bookingData.failureReason = response.error ? (response.error.description || response.error.reason || 'Payment failed') : 'Payment failed';
-          bookingData.razorpayError = response.error;
-          
-          // DO NOT save failed bookings to Firebase database
-          // DO NOT save to localStorage - failed bookings should not appear anywhere
-          console.log('❌ Payment failed - booking NOT saved to database or localStorage');
-          
-          // Only store temporarily in localStorage for retry (will be cleared)
-          localStorage.setItem('failedBooking', JSON.stringify(bookingData));
-          localStorage.removeItem('currentBooking');
-          
-          // Reset payment button
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-          
-          showPaymentFailure(bookingData);
-        });
-        
-        // Handle Razorpay errors
-        rzp.on('payment.error', function (response) {
-          console.error('Razorpay error:', response);
-          alert('Payment Error: ' + (response.error ? response.error.description : 'An error occurred. Please try again.'));
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-        });
-        
-        try {
-          rzp.open();
-        } catch (error) {
-          console.error('Error opening Razorpay:', error);
-          alert('Error initializing payment gateway. Please check your internet connection and try again.');
-          document.getElementById('proceed-payment').innerHTML = '<i class="bi bi-lock me-2"></i>Proceed to Payment Gateway';
-          document.getElementById('proceed-payment').disabled = false;
-        }
-      }
+            // Hide action buttons
+            const summaryActions = document.querySelector('.summary-actions');
+            if (summaryActions) summaryActions.style.display = 'none';
 
-      function createPaymentUrl(method, bookingData) {
-        // This would be replaced with actual payment gateway URLs
-        const baseUrl = 'https://your-payment-gateway.com/pay';
-        const params = new URLSearchParams({
-          amount: bookingData.total,
-          currency: 'INR',
-          order_id: bookingData.bookingId,
-          customer_name: bookingData.guestName,
-          customer_email: bookingData.email,
-          customer_phone: bookingData.phone,
-          return_url: window.location.origin + '/payment-success.html',
-          cancel_url: window.location.origin + '/booking-confirmation.html'
-        });
-        
-        return `${baseUrl}?${params.toString()}`;
-      }
-
-      async function simulatePaymentSuccess(bookingData) {
-        // Simulate random payment success/failure (50% chance of each)
-        const isPaymentSuccessful = Math.random() > 0.5;
-        
-        if (isPaymentSuccessful) {
-          // Update booking status for successful payment - SAME FORMAT AS WALK-IN BOOKINGS
-          bookingData.status = 'confirmed';
-          bookingData.paymentStatus = 'success';
-          bookingData.paymentDate = new Date().toISOString();
-          bookingData.createdAt = new Date();
-          bookingData.updatedAt = new Date();
-          bookingData.bookingType = 'ONLINE'; // Ensure booking type is set
-          
-          // Save to Firebase database ONLY after successful payment
-          try {
-            if (window.firebaseBookingService && window.firebaseInitialized) {
-              const firebaseBookingId = await window.firebaseBookingService.saveBooking(bookingData);
-              console.log('✅ Booking saved to Firebase after successful payment:', firebaseBookingId);
-              bookingData.firebaseId = firebaseBookingId;
-            } else {
-              console.warn('⚠️ Firebase not available - booking not saved to database');
-            }
           } catch (error) {
-            console.error('❌ Error saving booking to Firebase:', error);
+            console.error('Error confirming booking:', error);
+            alert('Error confirming booking: ' + error.message);
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Payment Done - Confirm Booking';
           }
-          
-          // Save confirmed booking locally for admin dashboard
-          localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
-          
-          // Clear temporary booking data
-          localStorage.removeItem('currentBooking');
-          
-          // Show success message
-          showPaymentSuccess(bookingData);
-        } else {
-          // Update booking status for failed payment
-          bookingData.status = 'payment_failed';
-          bookingData.paymentStatus = 'failed';
-          bookingData.paymentDate = new Date().toISOString();
-          bookingData.failureReason = 'Payment gateway declined the transaction';
-          
-          // DO NOT save failed bookings to Firebase database
-          // DO NOT save to localStorage - failed bookings should not appear anywhere
-          console.log('❌ Payment failed - booking NOT saved to database or localStorage');
-          
-          // Only store temporarily in localStorage for retry (will be cleared)
-          localStorage.setItem('failedBooking', JSON.stringify(bookingData));
-          
-          // Clear temporary booking data
-          localStorage.removeItem('currentBooking');
-          
-          // Show failure message
-          showPaymentFailure(bookingData);
-        }
-      }
-
-      function showPaymentSuccess(bookingData) {
-        // Create success modal
-        const successModal = document.createElement('div');
-        successModal.className = 'modal fade';
-        successModal.id = 'successModal';
-        successModal.innerHTML = `
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-success text-white">
-                <h5 class="modal-title"><i class="bi bi-check-circle-fill me-2"></i>Payment Successful!</h5>
-              </div>
-              <div class="modal-body text-center">
-                <div class="success-icon mb-3">
-                  <i class="bi bi-check-circle-fill text-success" style="font-size: 3rem;"></i>
-                </div>
-                <h4 class="text-success mb-3">Booking Confirmed!</h4>
-                <p class="mb-3">Your payment has been processed successfully.</p>
-                <div class="booking-details">
-                  <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
-                  <p><strong>Total Paid:</strong> ₹${bookingData.total.toLocaleString()}</p>
-                  <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
-                  <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
-                </div>
-                <div class="mt-4">
-                  <button class="btn btn-primary me-2" onclick="downloadBookingReceipt()">
-                    <i class="bi bi-download me-1"></i>Download Receipt
-                  </button>
-                  <button class="btn btn-outline-primary" onclick="goToHome()">
-                    <i class="bi bi-house me-1"></i>Go to Home
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        document.body.appendChild(successModal);
-        const modal = new bootstrap.Modal(successModal);
-        modal.show();
-
-        // Remove modal when hidden
-        successModal.addEventListener('hidden.bs.modal', function() {
-          document.body.removeChild(successModal);
         });
       }
 
-      function showPaymentFailure(bookingData) {
-        // Create failure modal
-        const failureModal = document.createElement('div');
-        failureModal.className = 'modal fade';
-        failureModal.id = 'failureModal';
-        failureModal.innerHTML = `
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header bg-danger text-white">
-                <h5 class="modal-title"><i class="bi bi-x-circle-fill me-2"></i>Payment Failed!</h5>
-              </div>
-              <div class="modal-body text-center">
-                <div class="failure-icon mb-3">
-                  <i class="bi bi-x-circle-fill text-danger" style="font-size: 3rem;"></i>
-                </div>
-                <h4 class="text-danger mb-3">Payment Unsuccessful!</h4>
-                <p class="mb-3">Your payment could not be processed. Please try again.</p>
-                <div class="booking-details">
-                  <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
-                  <p><strong>Amount:</strong> ₹${bookingData.total.toLocaleString()}</p>
-                  <p><strong>Failure Reason:</strong> ${bookingData.failureReason || 'Unknown error occurred'}</p>
-                  ${bookingData.razorpayError ? `<p class="text-muted small"><strong>Error Code:</strong> ${bookingData.razorpayError.code || 'N/A'}</p>` : ''}
-                  ${bookingData.razorpayError && bookingData.razorpayError.metadata ? `<p class="text-muted small"><strong>Details:</strong> ${JSON.stringify(bookingData.razorpayError.metadata)}</p>` : ''}
-                  <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
-                  <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
-                </div>
-                <div class="mt-4">
-                  <button class="btn btn-danger me-2" onclick="retryPayment()">
-                    <i class="bi bi-arrow-clockwise me-1"></i>Retry Payment
-                  </button>
-                  <button class="btn btn-outline-secondary" onclick="goToHome()">
-                    <i class="bi bi-house me-1"></i>Go to Home
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
-
-        document.body.appendChild(failureModal);
-        const modal = new bootstrap.Modal(failureModal);
-        modal.show();
-
-        // Remove modal when hidden
-        failureModal.addEventListener('hidden.bs.modal', function() {
-          document.body.removeChild(failureModal);
-        });
-      }
-
-      // Global functions for success modal
-      window.downloadBookingReceipt = function() {
-        const bookingData = JSON.parse(localStorage.getItem('confirmedBooking'));
-        const receiptContent = generateReceiptContent(bookingData);
-        
-        // Create and download receipt
-        const blob = new Blob([receiptContent], { type: 'text/html' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `booking-receipt-${bookingData.bookingId}.html`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);
-      };
-
-      window.goToHome = function() {
+      // Global functions for success actions
+      window.goToHome = function () {
         window.location.href = 'index.html';
       };
 
-      window.retryPayment = function() {
-        // Get the failed booking data
-        const failedBooking = JSON.parse(localStorage.getItem('failedBooking'));
-        
-        if (failedBooking) {
-          // Reset payment status
-          failedBooking.status = 'pending_payment';
-          failedBooking.paymentStatus = 'pending';
-          delete failedBooking.failureReason;
-          
-          // Store as current booking for retry
-          localStorage.setItem('currentBooking', JSON.stringify(failedBooking));
-          
-          // Remove failed booking
-          localStorage.removeItem('failedBooking');
-          
-          // Show payment options again
-          showPaymentOptions(failedBooking);
+      window.downloadBookingReceipt = function () {
+        const bookingData = JSON.parse(localStorage.getItem('confirmedBooking'));
+        if (!bookingData) {
+          alert('No confirmed booking found to download receipt.');
+          return;
         }
-      };
 
-      function generateReceiptContent(bookingData) {
-        return `
+        const receiptContent = `
           <!DOCTYPE html>
           <html>
           <head>
             <title>Booking Receipt - ${bookingData.bookingId}</title>
             <style>
-              body { font-family: Arial, sans-serif; margin: 20px; }
-              .header { text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 20px; margin-bottom: 20px; }
-              .booking-details { background: #f8f9fa; padding: 20px; border-radius: 5px; }
-              .total { background: #007bff; color: white; padding: 15px; border-radius: 5px; text-align: center; }
+              body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
+              .header { text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }
+              .booking-info { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+              .payment-info { background: #e8daef; padding: 20px; border-radius: 10px; margin-bottom: 20px; color: #5b2c6f; }
+              .footer { text-align: center; margin-top: 40px; font-size: 0.9em; color: #666; }
+              .label { font-weight: bold; width: 150px; display: inline-block; }
             </style>
           </head>
           <body>
-
-  <!-- New Mobile Navigation Overlay -->
-  <div class="mobile-nav-overlay-new"></div>
-  
-  <!-- New Mobile Navigation Sidebar -->
-  <nav class="mobile-nav-sidebar">
-    <div class="mobile-nav-header">
-      <h3>Menu</h3>
-      <button class="mobile-nav-close" aria-label="Close navigation menu">
-        <i class="bi bi-x"></i>
-      </button>
-    </div>
-    <ul class="mobile-nav-menu">
-      <li><a href="amenities.html">Amenities</a></li>
-      <li><a href="location.html">Location</a></li>
-      <li class="mobile-nav-dropdown">
-        <a href="#">
-          <span>Pages</span>
-          <i class="bi bi-chevron-down mobile-nav-dropdown-icon"></i>
-        </a>
-        <ul class="mobile-nav-submenu">
-          <li><a href="room-details.html">Room Details</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="booking.html">Booking</a></li>
-          <li><a href="terms.html">Terms Page</a></li>
-        </ul>
-      </li>
-      <li><a href="contact.html">Contact</a></li>
-    </ul>
-  </nav>
             <div class="header">
               <h1>GAURIKEERTHANA RESIDENCY</h1>
-              <h2>Booking Receipt</h2>
-            </div>
-            <div class="booking-details">
-              <h3>Booking Information</h3>
-              <p><strong>Booking ID:</strong> ${bookingData.bookingId}</p>
-              <p><strong>Guest Name:</strong> ${bookingData.guestName}</p>
-              <p><strong>Email:</strong> ${bookingData.email}</p>
-              <p><strong>Phone:</strong> ${bookingData.phone}</p>
               <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
               <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
               <p><strong>Room Type:</strong> ${bookingData.roomTypeText}</p>
@@ -1168,12 +884,12 @@
     });
 
     // Admin access with Ctrl+A shortcut
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.key === 'a') {
         e.preventDefault();
         window.location.href = 'admin-login.html';
       }
-      
+
       // Walk-in customer booking with Ctrl+B shortcut
       if (e.ctrlKey && e.key === 'b') {
         e.preventDefault();
@@ -1393,36 +1109,36 @@
     // Authenticate walk-in booking access
     function authenticateWalkIn() {
       const password = document.getElementById('adminPassword').value;
-      
+
       if (password === 'admin') {
         // Show booking form and hide password section
         document.getElementById('passwordSection').style.display = 'none';
         document.getElementById('bookingSection').style.display = 'block';
-        
+
         // Initially disable confirm button until room count is selected
         const confirmButton = document.getElementById('confirmWalkInBooking');
         if (confirmButton) {
           confirmButton.disabled = true;
           confirmButton.style.display = 'none';
         }
-        
+
         // Update Firebase status
         updateFirebaseStatus();
-        
+
         console.log('Walk-in authentication successful');
       } else {
         alert('❌ Invalid password! Please enter the correct admin password.');
         document.getElementById('adminPassword').focus();
       }
     }
-    
+
     // Update Firebase connection status
     function updateFirebaseStatus() {
       const statusDiv = document.getElementById('firebaseStatus');
       const statusText = document.getElementById('firebaseStatusText');
-      
+
       if (!statusDiv || !statusText) return;
-      
+
       if (window.firebaseInitialized && window.firebaseBookingService) {
         statusDiv.className = 'alert alert-success';
         statusText.innerHTML = '<i class="bi bi-check-circle me-2"></i>✅ Firebase connected - Database access available';
@@ -1446,7 +1162,7 @@
 
       const availabilityDiv = document.getElementById('roomAvailabilityStatus');
       const messageSpan = document.getElementById('availabilityMessage');
-      
+
       availabilityDiv.style.display = 'block';
       messageSpan.innerHTML = `<i class="bi bi-hourglass-split me-2"></i>Checking availability for ${roomType}...`;
       availabilityDiv.className = 'mb-3 alert alert-info';
@@ -1454,24 +1170,24 @@
       try {
         // Check availability using Firebase (check for 1 room first to get total available)
         const result = await checkRoomAvailabilityAPI(roomType, checkIn, checkOut, 1);
-        
+
         if (result.available && result.availableRooms > 0) {
           messageSpan.innerHTML = `<i class="bi bi-check-circle me-2"></i>✅ ${result.availableRooms} ${roomType}(s) available! (${result.availableRooms}/${result.totalRooms} total available)`;
           availabilityDiv.className = 'mb-3 alert alert-success';
-          
+
           // Update room count options to only show available rooms
           updateRoomCountOptions(result.availableRooms);
         } else {
           let message = `<i class="bi bi-x-circle me-2"></i>❌ No ${roomType}(s) available for these dates. `;
-            message += `Please try different dates or room type.`;
-          
+          message += `Please try different dates or room type.`;
+
           if (result.conflictingBookings && result.conflictingBookings.length > 0) {
             message += `<br><small>Conflicting bookings found for these dates.</small>`;
           }
-          
+
           messageSpan.innerHTML = message;
           availabilityDiv.className = 'mb-3 alert alert-danger';
-          
+
           // Hide room count options
           updateRoomCountOptions(0);
         }
@@ -1479,21 +1195,21 @@
         console.error('Error checking availability:', error);
         messageSpan.innerHTML = '<i class="bi bi-exclamation-triangle me-2"></i>⚠️ Unable to check availability. Please try again.';
         availabilityDiv.className = 'mb-3 alert alert-warning';
-        
+
         // Hide room count options on error
         updateRoomCountOptions(0);
       }
     }
-    
+
     // Update room count options based on available rooms
     function updateRoomCountOptions(maxAvailable) {
       const roomCountSelect = document.getElementById('walkInRoomCount');
       const confirmButton = document.getElementById('confirmWalkInBooking');
       const currentValue = roomCountSelect.value;
-      
+
       // Clear existing options
       roomCountSelect.innerHTML = '<option value="">Select Rooms</option>';
-      
+
       if (maxAvailable > 0) {
         // Add options for available rooms (1 to max available)
         for (let i = 1; i <= maxAvailable; i++) {
@@ -1505,13 +1221,13 @@
           }
           roomCountSelect.appendChild(option);
         }
-        
+
         // Enable confirm button if rooms are available
         if (confirmButton) {
           confirmButton.disabled = false;
           confirmButton.style.display = 'inline-block';
         }
-        
+
         console.log(`Updated room count options: ${maxAvailable} rooms available`);
       } else {
         // No rooms available
@@ -1520,13 +1236,13 @@
         option.textContent = 'No rooms available';
         option.disabled = true;
         roomCountSelect.appendChild(option);
-        
+
         // Disable confirm button if no rooms available
         if (confirmButton) {
           confirmButton.disabled = true;
           confirmButton.style.display = 'none';
         }
-        
+
         console.log('No rooms available - room count options and confirm button disabled');
       }
     }
@@ -1540,61 +1256,61 @@
           'Normal AC Room': 'normal-ac',
           'Deluxe AC Room': 'deluxe-ac'
         };
-        
+
         const roomTypeId = roomTypeMap[roomType] || roomType;
-        
+
         // Check if Firebase is available
         if (window.firebaseBookingService && window.firebaseInitialized) {
           console.log('Using Firebase for room availability check');
           console.log(`Checking availability for: ${roomType} (${roomTypeId})`);
-          
+
           // Get all bookings from database
           const allBookings = await window.firebaseBookingService.getAllBookings();
           console.log(`Total bookings in database: ${allBookings.length}`);
-          
+
           // Room capacities
           const roomCapacities = {
             'normal-non-ac': 3,
             'normal-ac': 6,
             'deluxe-ac': 2
           };
-          
+
           const totalCapacity = roomCapacities[roomTypeId] || 1;
-          
+
           // Find conflicting bookings
           const conflictingBookings = allBookings.filter(booking => {
             const isCorrectRoomType = booking.roomType === roomTypeId;
             const isConfirmed = booking.status === 'confirmed';
             const hasDateOverlap = datesOverlap(checkIn, checkOut, booking.arrivalDate, booking.departureDate);
-            
+
             console.log(`  Checking booking: ${booking.guestName}`);
             console.log(`    Room type: ${booking.roomType} === ${roomTypeId} ? ${isCorrectRoomType}`);
             console.log(`    Status: ${booking.status} === 'confirmed' ? ${isConfirmed}`);
             console.log(`    Dates: ${booking.arrivalDate} to ${booking.departureDate} overlaps ${checkIn} to ${checkOut} ? ${hasDateOverlap}`);
             console.log(`    Result: ${isCorrectRoomType && isConfirmed && hasDateOverlap}`);
-            
+
             return isCorrectRoomType && isConfirmed && hasDateOverlap;
           });
-          
+
           // Calculate total booked rooms
           const totalBookedRooms = conflictingBookings.reduce((sum, booking) => {
             return sum + (booking.roomCount || 1);
           }, 0);
-          
+
           const availableRooms = Math.max(0, totalCapacity - totalBookedRooms);
           const isAvailable = availableRooms >= requestedRooms;
-          
+
           const result = {
             available: isAvailable,
             availableRooms: availableRooms,
             totalRooms: totalCapacity,
             requestedRooms: requestedRooms,
             conflictingBookings: conflictingBookings,
-            message: isAvailable 
+            message: isAvailable
               ? `${availableRooms} room(s) available for ${roomType}`
               : `Only ${availableRooms} room(s) available, but ${requestedRooms} requested`
           };
-          
+
           console.log('📊 AVAILABILITY CHECK RESULT:');
           console.log(`  Room Type: ${roomType} (${roomTypeId})`);
           console.log(`  Total Capacity: ${totalCapacity}`);
@@ -1611,10 +1327,10 @@
           const unavailableDates = [
             '2024-01-15', '2024-01-16', '2024-01-20', '2024-01-25'
           ];
-          
+
           const startDate = new Date(checkIn);
           const endDate = new Date(checkOut);
-          
+
           // Check if any date in the range is unavailable
           for (let d = new Date(startDate); d < endDate; d.setDate(d.getDate() + 1)) {
             const dateStr = d.toISOString().split('T')[0];
@@ -1627,7 +1343,7 @@
               };
             }
           }
-          
+
           return {
             available: true,
             availableRooms: 10,
@@ -1646,14 +1362,14 @@
         };
       }
     }
-    
+
     // Helper function to check if two date ranges overlap
     function datesOverlap(start1, end1, start2, end2) {
       const s1 = new Date(start1);
       const e1 = new Date(end1);
       const s2 = new Date(start2);
       const e2 = new Date(end2);
-      
+
       return s1 < e2 && s2 < e1;
     }
 
@@ -1661,7 +1377,7 @@
     function onRoomCountChange() {
       const roomCount = parseInt(document.getElementById('walkInRoomCount').value) || 0;
       const confirmButton = document.getElementById('confirmWalkInBooking');
-      
+
       // Enable/disable confirm button based on room count selection
       if (confirmButton) {
         if (roomCount > 0) {
@@ -1672,7 +1388,7 @@
           confirmButton.style.display = 'none';
         }
       }
-      
+
       // Calculate total when room count changes
       calculateWalkInTotal();
     }
@@ -1725,11 +1441,11 @@
     async function confirmWalkInBooking() {
       const form = document.getElementById('walkInBookingForm');
       const formData = new FormData(form);
-      
+
       // Validate required fields
       const requiredFields = ['walkInGuestName', 'walkInPhone', 'walkInAdults', 'walkInRoomType', 'walkInRoomCount', 'walkInCheckIn', 'walkInCheckOut'];
       const missingFields = [];
-      
+
       requiredFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
         if (!field.value.trim()) {
@@ -1749,19 +1465,19 @@
       const checkOut = document.getElementById('walkInCheckOut').value;
 
       console.log('🔍 FINAL VALIDATION: Checking availability before saving walk-in booking...');
-      
+
       try {
         const availabilityResult = await checkRoomAvailabilityAPI(roomType, checkIn, checkOut, roomCount);
-        
+
         console.log('🎯 Final availability check result:', availabilityResult);
-        
+
         if (!availabilityResult.available || availabilityResult.availableRooms < roomCount) {
           const errorMsg = `❌ OVERBOOKING PREVENTED!\n\nOnly ${availabilityResult.availableRooms} room(s) available, but trying to book ${roomCount} room(s).\n\nPlease select fewer rooms or try different dates.`;
           alert(errorMsg);
           console.error('❌ Walk-in booking blocked due to overbooking:', errorMsg);
           return;
         }
-        
+
         console.log('✅ Final validation passed - proceeding with walk-in booking');
       } catch (error) {
         console.error('❌ Error during final availability check:', error);
@@ -1771,14 +1487,14 @@
 
       // Get booking data
       const roomTypeDisplay = document.getElementById('walkInRoomType').value;
-      
+
       // Map room type display name to database ID (same as online bookings)
       const roomTypeMap = {
         'Normal Non-AC Room': 'normal-non-ac',
         'Normal AC Room': 'normal-ac',
         'Deluxe AC Room': 'deluxe-ac'
       };
-      
+
       const bookingData = {
         guestName: document.getElementById('walkInGuestName').value,
         phone: document.getElementById('walkInPhone').value,
@@ -1814,21 +1530,21 @@
     async function saveWalkInBooking(bookingData) {
       try {
         console.log('Saving walk-in booking to Firebase:', bookingData);
-        
+
         let bookingId;
-        
+
         // Always try to save to Firebase (same database as online bookings)
         if (window.firebaseBookingService && window.firebaseInitialized) {
           console.log('Using Firebase for walk-in booking save');
-          
+
           // Generate booking ID for walk-in
           bookingId = 'WI-' + Date.now();
           bookingData.bookingId = bookingId;
-          
+
           // Use the same saveBooking method as online bookings
           const result = await window.firebaseBookingService.saveBooking(bookingData);
           console.log('Walk-in booking saved to Firebase with ID:', result);
-          
+
         } else {
           console.error('Firebase not available - cannot save walk-in booking');
           alert('❌ Error: Cannot save walk-in booking. Firebase service not available. Please try again.');
@@ -1869,20 +1585,20 @@
   </script>
 
   <!-- Firebase scripts already loaded above -->
-  
+
   <!-- Initialize Firebase Service -->
   <script>
     // Initialize Firebase and create booking service
     // Initialize Firebase with delay to ensure CDN scripts are loaded
-    setTimeout(function() {
+    setTimeout(function () {
       console.log('Initializing Firebase for booking confirmation page...');
-      
+
       // Initialize Firebase
       if (initializeFirebase()) {
         // Create Firebase booking service
         window.firebaseBookingService = new FirebaseBookingService();
         const serviceInit = window.firebaseBookingService.init();
-        
+
         if (serviceInit) {
           window.firebaseInitialized = true; // Set this for walk-in booking checks
           console.log('✅ Firebase booking service initialized successfully');

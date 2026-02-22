@@ -13,7 +13,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase (will be available globally after CDN scripts load)
-let app, db;
+let app, db, storage;
 let firebaseInitialized = false;
 
 // Function to initialize Firebase
@@ -22,11 +22,13 @@ function initializeFirebase() {
     if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
       app = firebase.initializeApp(firebaseConfig);
       db = firebase.firestore();
+      storage = firebase.storage();
       firebaseInitialized = true;
       
       // Make available globally
       window.firebaseApp = app;
       window.firebaseDB = db;
+      window.firebaseStorage = storage;
       window.firebaseInitialized = firebaseInitialized;
       
       console.log('Firebase initialized successfully');
@@ -34,10 +36,12 @@ function initializeFirebase() {
     } else if (typeof firebase !== 'undefined') {
       app = firebase.app();
       db = firebase.firestore();
+      storage = firebase.storage();
       firebaseInitialized = true;
       
       window.firebaseApp = app;
       window.firebaseDB = db;
+      window.firebaseStorage = storage;
       window.firebaseInitialized = firebaseInitialized;
       
       console.log('Firebase already initialized');
@@ -56,6 +60,7 @@ function initializeFirebase() {
 class FirebaseBookingService {
   constructor() {
     this.db = null;
+    this.storage = null;
     this.collection = 'bookings';
   }
 
@@ -63,9 +68,35 @@ class FirebaseBookingService {
   init() {
     if (firebaseInitialized && db) {
       this.db = db;
+      this.storage = storage;
       return true;
     }
     return false;
+  }
+
+  // Upload payment screenshot
+  async uploadPaymentScreenshot(file, bookingId) {
+    if (!this.init()) {
+      throw new Error('Firebase not initialized');
+    }
+
+    try {
+      const storageRef = this.storage.ref();
+      // Create a unique filename
+      const timestamp = Date.now();
+      const fileName = `payment_screenshots/${bookingId}_${timestamp}_${file.name}`;
+      const fileRef = storageRef.child(fileName);
+      
+      console.log('Uploading file to:', fileName);
+      const snapshot = await fileRef.put(file);
+      const downloadURL = await snapshot.ref.getDownloadURL();
+      
+      console.log('File uploaded successfully. URL:', downloadURL);
+      return downloadURL;
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
   }
 
   // Save new booking
