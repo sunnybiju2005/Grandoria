@@ -854,31 +854,39 @@
             <style>
               body { font-family: Arial, sans-serif; margin: 40px; line-height: 1.6; }
               .header { text-align: center; border-bottom: 2px solid #007bff; padding-bottom: 20px; margin-bottom: 30px; }
-              .booking-info { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-              .payment-info { background: #e8daef; padding: 20px; border-radius: 10px; margin-bottom: 20px; color: #5b2c6f; }
               .footer { text-align: center; margin-top: 40px; font-size: 0.9em; color: #666; }
-              .label { font-weight: bold; width: 150px; display: inline-block; }
             </style>
           </head>
           <body>
             <div class="header">
               <h1>GAURIKEERTHANA RESIDENCY</h1>
+              <p>Receipt for Booking ID: ${bookingData.bookingId}</p>
+            </div>
+            <div class="booking-info">
+              <p><strong>Guest:</strong> ${bookingData.guestName}</p>
               <p><strong>Check-in:</strong> ${bookingData.arrivalDate}</p>
               <p><strong>Check-out:</strong> ${bookingData.departureDate}</p>
-              <p><strong>Room Type:</strong> ${bookingData.roomTypeText}</p>
-              <p><strong>Number of Rooms:</strong> ${bookingData.roomCount}</p>
-              <p><strong>Payment Method:</strong> ${bookingData.paymentMethod}</p>
-              <p><strong>Payment Date:</strong> ${new Date(bookingData.paymentDate).toLocaleString()}</p>
+              <p><strong>Room:</strong> ${bookingData.roomTypeText} (${bookingData.roomCount} room(s))</p>
+              <p><strong>Total Amount:</strong> ₹${bookingData.total.toLocaleString()}</p>
+              <p><strong>Advance Paid:</strong> ₹${bookingData.advancePaid.toLocaleString()}</p>
+              <p><strong>Balance to Pay:</strong> ₹${(bookingData.total - bookingData.advancePaid).toLocaleString()}</p>
             </div>
-            <div class="total">
-              <h3>Total Amount Paid: ₹${bookingData.total.toLocaleString()}</h3>
+            <div class="footer">
+              <p>Visit us again! Contact: +91 994779277</p>
             </div>
-            <p style="text-align: center; margin-top: 20px; color: #666;">
-              Thank you for choosing GAURIKEERTHANA RESIDENCY!
-            </p>
           </body>
           </html>
         `;
+
+        const blob = new Blob([receiptContent], { type: 'text/html' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `booking-receipt-${bookingData.bookingId}.html`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
       }
 
     });

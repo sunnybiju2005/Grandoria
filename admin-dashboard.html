@@ -13,7 +13,9 @@
   <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +29,7 @@
   <style>
     .admin-navbar {
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
       padding: 1rem 0;
     }
 
@@ -38,7 +40,7 @@
     }
 
     .admin-navbar .nav-link {
-      color: rgba(255,255,255,0.9) !important;
+      color: rgba(255, 255, 255, 0.9) !important;
       transition: color 0.3s ease;
       font-weight: 500;
     }
@@ -48,14 +50,14 @@
     }
 
     .logout-btn {
-      background: rgba(255,255,255,0.2);
-      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
       color: white;
       transition: all 0.3s ease;
     }
 
     .logout-btn:hover {
-      background: rgba(255,255,255,0.3);
+      background: rgba(255, 255, 255, 0.3);
       color: white;
     }
 
@@ -63,7 +65,7 @@
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
       transition: transform 0.3s ease;
       margin-bottom: 20px;
     }
@@ -99,14 +101,14 @@
     .booking-card {
       background: white;
       border-radius: 15px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
       margin-bottom: 20px;
       transition: all 0.3s ease;
       border-left: 4px solid #007bff;
     }
 
     .booking-card:hover {
-      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
     }
 
     .booking-card.confirmed {
@@ -133,16 +135,31 @@
       text-transform: uppercase;
     }
 
-    .status-confirmed { background: #d4edda; color: #155724; }
-    .status-pending { background: #fff3cd; color: #856404; }
-    .status-failed { background: #f8d7da; color: #721c24; }
-    .status-cancelled { background: #e2e3e5; color: #383d41; }
+    .status-confirmed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .status-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .status-failed {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .status-cancelled {
+      background: #e2e3e5;
+      color: #383d41;
+    }
 
     .room-availability {
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
       margin-bottom: 30px;
     }
 
@@ -172,7 +189,7 @@
       background: white;
       border-radius: 15px;
       padding: 25px;
-      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
       margin-bottom: 30px;
     }
 
@@ -265,11 +282,11 @@
       <a class="navbar-brand" href="#">
         <i class="bi bi-shield-lock me-2"></i>Admin Dashboard
       </a>
-      
+
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
         <span class="navbar-toggler-icon"></span>
       </button>
-      
+
       <div class="collapse navbar-collapse" id="adminNav">
         <ul class="navbar-nav me-auto">
           <li class="nav-item">
@@ -288,7 +305,7 @@
             </a>
           </li>
         </ul>
-        
+
         <div class="d-flex">
           <button class="btn btn-light me-2" onclick="refreshData()">
             <i class="bi bi-arrow-clockwise me-1"></i>Refresh
@@ -384,7 +401,8 @@
           <div class="col-md-4">
             <div class="mb-3">
               <label for="searchInput" class="form-label">Search Bookings</label>
-              <input type="text" class="form-control" id="searchInput" placeholder="Search by name, email, or booking ID...">
+              <input type="text" class="form-control" id="searchInput"
+                placeholder="Search by name, email, or booking ID...">
             </div>
           </div>
           <div class="col-md-3">
@@ -421,7 +439,7 @@
             </div>
           </div>
         </div>
-        
+
         <!-- Date Filter Row -->
         <div class="row">
           <div class="col-md-3">
@@ -477,7 +495,7 @@
     <div id="availability-section" style="display: none;">
       <div class="room-availability">
         <h5 class="mb-4"><i class="bi bi-house me-2"></i>Detailed Room Availability</h5>
-        
+
         <!-- Hotel Policy Information -->
         <div class="alert alert-info mb-4">
           <h6><i class="bi bi-clock me-2"></i>Hotel Policy</h6>
@@ -492,7 +510,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="row">
           <div class="col-md-4">
             <div class="availability-section">
@@ -517,7 +535,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="col-md-4">
             <div class="availability-section">
               <div class="d-flex justify-content-between align-items-center mb-3">
@@ -541,7 +559,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="col-md-4">
             <div class="availability-section">
               <div class="d-flex justify-content-between align-items-center mb-3">
@@ -573,7 +591,7 @@
   <!-- Firebase CDN Scripts -->
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-  
+
   <!-- Firebase Configuration -->
   <script src="firebase-service.js"></script>
 
@@ -586,14 +604,14 @@
     let filteredBookings = [];
 
     // Check admin authentication
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       if (!isAdminAuthenticated()) {
         window.location.href = 'admin-login.html';
         return;
       }
-      
+
       // Initialize Firebase service
-      setTimeout(function() {
+      setTimeout(function () {
         console.log('Initializing Firebase for admin dashboard...');
         if (initializeFirebase()) {
           window.firebaseBookingService = new FirebaseBookingService();
@@ -609,11 +627,11 @@
           window.firebaseInitialized = false;
           console.error('❌ Failed to initialize Firebase for admin dashboard');
         }
-        
+
         // Load bookings after Firebase initialization
         loadBookings();
       }, 1000);
-      
+
       // Set up event listeners
       document.getElementById('searchInput').addEventListener('input', applyFilters);
       document.getElementById('statusFilter').addEventListener('change', applyFilters);
@@ -625,16 +643,16 @@
     });
 
     // Cleanup when page is unloaded
-    window.addEventListener('beforeunload', function() {
+    window.addEventListener('beforeunload', function () {
       stopDatabaseSync();
     });
 
     function isAdminAuthenticated() {
       const loggedIn = sessionStorage.getItem('adminLoggedIn');
       const loginTime = sessionStorage.getItem('adminLoginTime');
-      
+
       if (!loggedIn || !loginTime) return false;
-      
+
       const hoursSinceLogin = (new Date() - new Date(loginTime)) / (1000 * 60 * 60);
       return hoursSinceLogin < 8; // 8 hour session
     }
@@ -650,14 +668,14 @@
       document.getElementById('overview-section').style.display = 'none';
       document.getElementById('bookings-section').style.display = 'none';
       document.getElementById('availability-section').style.display = 'none';
-      
+
       // Show selected section
       document.getElementById(sectionName + '-section').style.display = 'block';
-      
+
       // Update active nav link
       document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
       event.target.classList.add('active');
-      
+
       // Load data for availability section
       if (sectionName === 'availability') {
         updateRoomAvailability();
@@ -676,8 +694,8 @@
           allBookings = allBookingsFromDB.filter(booking => {
             // Only show confirmed bookings (successful payments) and walk-in bookings
             // Exclude payment_failed, pending_payment (unless walk-in), and cancelled bookings
-            return booking.status === 'confirmed' || 
-                   (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
+            return booking.status === 'confirmed' ||
+              (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
           });
           console.log('Bookings loaded from Firebase:', allBookingsFromDB.length, '| Filtered (confirmed only):', allBookings.length);
         } else {
@@ -702,7 +720,7 @@
 
     function loadBookingsFromLocalStorage() {
       const bookings = [];
-      
+
       // Only load confirmed bookings (successful transactions)
       const confirmedBooking = localStorage.getItem('confirmedBooking');
       if (confirmedBooking && confirmedBooking !== 'null') {
@@ -715,10 +733,10 @@
           console.error('Error parsing confirmed booking:', e);
         }
       }
-      
+
       // Note: Failed bookings and pending bookings are not stored in the main database 
       // or displayed in admin dashboard. They are only kept temporarily for retry purposes.
-      
+
       return bookings;
     }
 
@@ -737,40 +755,40 @@
         try {
           if (window.firebaseBookingService) {
             const currentBookings = await window.firebaseBookingService.getAllBookings();
-            
+
             // Check if booking count changed
             if (currentBookings.length !== lastBookingCount) {
               console.log(`Database sync: Booking count changed from ${lastBookingCount} to ${currentBookings.length}`);
-              
+
               // Update allBookings
               allBookings = currentBookings;
-              
+
               // Reapply current filters
               applyFilters();
-              
+
               // Update statistics
               updateStatistics();
               updateRoomAvailability();
-              
+
               lastBookingCount = currentBookings.length;
             }
-            
+
             // Check for individual booking changes (removals)
             const currentBookingIds = currentBookings.map(b => b.bookingId);
             const existingBookingIds = allBookings.map(b => b.bookingId);
-            
+
             // Find removed bookings
             const removedBookings = existingBookingIds.filter(id => !currentBookingIds.includes(id));
-            
+
             if (removedBookings.length > 0) {
               console.log('Database sync: Removed bookings detected:', removedBookings);
-              
+
               // Remove from allBookings
               allBookings = allBookings.filter(b => !removedBookings.includes(b.bookingId));
-              
+
               // Remove from filteredBookings
               filteredBookings = filteredBookings.filter(b => !removedBookings.includes(b.bookingId));
-              
+
               // Remove from UI
               removedBookings.forEach(bookingId => {
                 const bookingCard = document.getElementById(`booking-${bookingId}`);
@@ -784,11 +802,11 @@
                   }, 300);
                 }
               });
-              
+
               // Update statistics
               updateStatistics();
               updateRoomAvailability();
-              
+
               console.log('Database sync: UI updated after booking removals');
             }
           }
@@ -796,7 +814,7 @@
           console.error('Database sync error:', error);
         }
       }, 10000); // Sync every 10 seconds
-      
+
       lastBookingCount = allBookings.length;
       console.log('Database sync started - checking every 10 seconds');
     }
@@ -826,17 +844,17 @@
       // Calculate current overall room availability based on confirmed bookings
       // Since we only load confirmed bookings, all bookings are confirmed
       const confirmedBookings = allBookings;
-      
+
       // Get today's date for current availability calculation
       const today = new Date().toISOString().split('T')[0];
-      
+
       // STRICT ROOM CAPACITY LIMITS
       const roomCapacity = {
         'normal-non-ac': 3,
         'normal-ac': 6,
         'deluxe-ac': 2
       };
-      
+
       // Calculate availability for today (current occupancy)
       const todayNonAcBooked = getBookedRoomsForDate('normal-non-ac', today, confirmedBookings);
       const todayAcBooked = getBookedRoomsForDate('normal-ac', today, confirmedBookings);
@@ -885,7 +903,7 @@
       return bookings
         .filter(booking => {
           return booking.roomType === roomType &&
-                 isDateInRange(date, booking.arrivalDate, booking.departureDate);
+            isDateInRange(date, booking.arrivalDate, booking.departureDate);
         })
         .reduce((sum, booking) => sum + parseInt(booking.roomCount), 0);
     }
@@ -895,10 +913,10 @@
       const check = new Date(checkDate);
       const start = new Date(startDate);
       const end = new Date(endDate);
-      
+
       // Exclude the checkout date (departure date)
       end.setDate(end.getDate() - 1);
-      
+
       return check >= start && check <= end;
     }
 
@@ -921,31 +939,31 @@
       const dateTypeFilter = document.getElementById('dateTypeFilter').value;
 
       filteredBookings = allBookings.filter(booking => {
-        const matchesSearch = !searchTerm || 
+        const matchesSearch = !searchTerm ||
           booking.guestName.toLowerCase().includes(searchTerm) ||
           booking.email.toLowerCase().includes(searchTerm) ||
           booking.bookingId.toLowerCase().includes(searchTerm);
-        
+
         const matchesStatus = statusFilter === 'all' || booking.status === statusFilter;
-        
+
         const matchesRoomType = roomTypeFilter === 'all' || booking.roomType === roomTypeFilter;
-        
+
         const matchesBookingType = bookingTypeFilter === 'all' || booking.bookingType === bookingTypeFilter;
 
         // Date filtering
         let matchesDate = true;
         if (dateFromFilter || dateToFilter) {
           let bookingDate;
-          
+
           if (dateTypeFilter === 'arrival') {
             bookingDate = booking.arrivalDate;
           } else if (dateTypeFilter === 'departure') {
             bookingDate = booking.departureDate;
           } else if (dateTypeFilter === 'booking') {
-            bookingDate = booking.timestamp ? new Date(booking.timestamp).toISOString().split('T')[0] : 
-                         booking.createdAt ? new Date(booking.createdAt).toISOString().split('T')[0] : null;
+            bookingDate = booking.timestamp ? new Date(booking.timestamp).toISOString().split('T')[0] :
+              booking.createdAt ? new Date(booking.createdAt).toISOString().split('T')[0] : null;
           }
-          
+
           if (bookingDate) {
             if (dateFromFilter && bookingDate < dateFromFilter) {
               matchesDate = false;
@@ -973,7 +991,7 @@
       document.getElementById('dateFromFilter').value = '';
       document.getElementById('dateToFilter').value = '';
       document.getElementById('dateTypeFilter').value = 'arrival';
-      
+
       // Reset filtered bookings to show all
       filteredBookings = [...allBookings];
       displayBookings();
@@ -981,12 +999,12 @@
 
     async function refreshBookings() {
       console.log('Manual refresh triggered');
-      
+
       // Show loading state
       const container = document.getElementById('bookingsContainer');
       const originalContent = container.innerHTML;
       container.innerHTML = '<div class="loading"><i class="bi bi-arrow-clockwise me-2"></i>Refreshing bookings...</div>';
-      
+
       try {
         // Reload bookings from database
         if (window.firebaseBookingService) {
@@ -995,28 +1013,28 @@
           allBookings = allBookingsFromDB.filter(booking => {
             // Only show confirmed bookings (successful payments) and walk-in bookings
             // Exclude payment_failed, pending_payment (unless walk-in), and cancelled bookings
-            return booking.status === 'confirmed' || 
-                   (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
+            return booking.status === 'confirmed' ||
+              (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
           });
           console.log('Bookings refreshed from Firebase:', allBookingsFromDB.length, '| Filtered (confirmed only):', allBookings.length);
         } else {
           allBookings = loadBookingsFromLocalStorage();
           console.log('Bookings refreshed from localStorage:', allBookings.length);
         }
-        
+
         // Reapply current filters
         applyFilters();
-        
+
         // Update statistics
         updateStatistics();
         updateRoomAvailability();
-        
+
         console.log('Manual refresh completed successfully');
-        
+
       } catch (error) {
         console.error('Error refreshing bookings:', error);
         container.innerHTML = '<div class="error"><i class="bi bi-exclamation-triangle me-2"></i>Error refreshing bookings. Please try again.</div>';
-        
+
         // Restore original content after 3 seconds
         setTimeout(() => {
           container.innerHTML = originalContent;
@@ -1026,9 +1044,9 @@
 
     function displayBookings() {
       const container = document.getElementById('bookingsContainer');
-      
+
       console.log(`Displaying ${filteredBookings.length} bookings`);
-      
+
       if (filteredBookings.length === 0) {
         container.innerHTML = '<div class="no-bookings"><i class="bi bi-inbox me-2"></i>No bookings found matching your criteria.</div>';
         return;
@@ -1064,6 +1082,10 @@
                   <p class="mb-2"><strong>Room Type:</strong> ${booking.roomTypeText}</p>
                   <p class="mb-2"><strong>Rooms:</strong> ${booking.roomCount}</p>
                   <p class="mb-2"><strong>Total:</strong> ₹${booking.total.toLocaleString()}</p>
+                  ${booking.advancePaid ? `
+                    <p class="mb-2 text-success"><strong>Advance Paid:</strong> ₹${booking.advancePaid.toLocaleString()}</p>
+                    <p class="mb-2 text-danger"><strong>Balance Due:</strong> ₹${(booking.total - booking.advancePaid).toLocaleString()}</p>
+                  ` : ''}
                 </div>
               </div>
             </div>
@@ -1071,11 +1093,18 @@
               <div class="mb-3">
                 <small class="text-muted">
                   <i class="bi bi-calendar me-1"></i>
-                  ${new Date(booking.timestamp).toLocaleDateString()}
+                  ${new Date(booking.timestamp || booking.bookingDate || booking.createdAt?.toDate?.() || booking.createdAt || Date.now()).toLocaleDateString()}
                 </small>
               </div>
-              ${booking.paymentMethod ? `
+              ${booking.paymentScreenshot ? `
                 <div class="mb-3">
+                  <button class="btn btn-sm btn-outline-info w-100" onclick="viewPaymentProof('${booking.paymentScreenshot}')">
+                    <i class="bi bi-image me-1"></i>View Payment Proof
+                  </button>
+                </div>
+              ` : ''}
+              ${booking.paymentMethod ? `
+                <div class="mb-2">
                   <small class="text-muted">
                     <i class="bi bi-credit-card me-1"></i>
                     ${booking.paymentMethod}
@@ -1111,7 +1140,7 @@
     }
 
     function getStatusText(status) {
-      switch(status) {
+      switch (status) {
         case 'confirmed': return 'Confirmed';
         case 'pending_payment': return 'Pending Payment';
         case 'payment_failed': return 'Payment Failed';
@@ -1134,10 +1163,10 @@
 
       try {
         console.log(`Attempting to cancel booking: ${bookingId}`);
-        
+
         // Find the booking to cancel
         const bookingToCancel = allBookings.find(b => b.bookingId === bookingId);
-        
+
         if (!bookingToCancel) {
           alert('Booking not found!');
           if (cancelButton) {
@@ -1156,7 +1185,7 @@
             await window.firebaseBookingService.deleteBooking(bookingId);
             console.log('Booking deleted from Firebase instantly');
           }
-          
+
           // Clean up localStorage IMMEDIATELY
           const keysToCheck = ['confirmedBooking', 'failedBooking', 'currentBooking'];
           keysToCheck.forEach(key => {
@@ -1173,7 +1202,7 @@
               }
             }
           });
-          
+
           console.log('Database cleanup completed instantly');
         } catch (dbError) {
           console.error('Database removal error:', dbError);
@@ -1191,7 +1220,7 @@
           // Add fade-out effect
           bookingCard.style.transition = 'opacity 0.3s ease-out';
           bookingCard.style.opacity = '0';
-          
+
           setTimeout(() => {
             bookingCard.remove();
             console.log('Booking card removed from DOM');
@@ -1202,20 +1231,20 @@
         const initialCount = allBookings.length;
         allBookings = allBookings.filter(b => b.bookingId !== bookingId);
         filteredBookings = filteredBookings.filter(b => b.bookingId !== bookingId);
-        
+
         console.log(`Booking removed from arrays. Before: ${initialCount}, After: ${allBookings.length}`);
 
         // Update statistics and availability immediately
         updateStatistics();
         updateRoomAvailability();
-        
+
         // Show success message immediately
         alert(`Booking ${bookingId} has been cancelled and removed from database instantly!`);
-        
+
       } catch (error) {
         console.error('Error cancelling booking:', error);
         alert('Error cancelling booking. Please try again.');
-        
+
         // Re-enable button on error
         if (cancelButton) {
           cancelButton.disabled = false;
@@ -1238,10 +1267,10 @@
 
       try {
         console.log(`Attempting to check in booking: ${bookingId}`);
-        
+
         // Find the booking to check in
         const bookingToCheckIn = allBookings.find(b => b.bookingId === bookingId);
-        
+
         if (!bookingToCheckIn) {
           alert('Booking not found!');
           if (checkInButton) {
@@ -1260,7 +1289,7 @@
             await window.firebaseBookingService.deleteBooking(bookingId);
             console.log('Booking deleted from Firebase instantly after check-in');
           }
-          
+
           // Clean up localStorage IMMEDIATELY
           const keysToCheck = ['confirmedBooking', 'failedBooking', 'currentBooking'];
           keysToCheck.forEach(key => {
@@ -1277,7 +1306,7 @@
               }
             }
           });
-          
+
           console.log('Database cleanup completed instantly');
         } catch (dbError) {
           console.error('Database removal error:', dbError);
@@ -1295,7 +1324,7 @@
           // Add fade-out effect
           bookingCard.style.transition = 'opacity 0.3s ease-out';
           bookingCard.style.opacity = '0';
-          
+
           setTimeout(() => {
             bookingCard.remove();
             console.log('Booking card removed from DOM after check-in');
@@ -1306,20 +1335,20 @@
         const initialCount = allBookings.length;
         allBookings = allBookings.filter(b => b.bookingId !== bookingId);
         filteredBookings = filteredBookings.filter(b => b.bookingId !== bookingId);
-        
+
         console.log(`Booking removed from arrays after check-in. Before: ${initialCount}, After: ${allBookings.length}`);
 
         // Update statistics and availability immediately
         updateStatistics();
         updateRoomAvailability();
-        
+
         // Show success message immediately
         alert(`Guest ${bookingToCheckIn.guestName} has been checked in successfully! Booking removed from dashboard.`);
-        
+
       } catch (error) {
         console.error('Error checking in booking:', error);
         alert('Error checking in booking. Please try again.');
-        
+
         // Re-enable button on error
         if (checkInButton) {
           checkInButton.disabled = false;
@@ -1343,17 +1372,59 @@ Number of Rooms: ${booking.roomCount}
 Total Amount: ₹${booking.total.toLocaleString()}
 Payment Method: ${booking.paymentMethod || 'N/A'}
 Status: ${getStatusText(booking.status)}
-Booking Date: ${new Date(booking.timestamp).toLocaleString()}
+Booking Date: ${new Date(booking.timestamp || booking.bookingDate || booking.createdAt?.toDate?.() || booking.createdAt || Date.now()).toLocaleString()}
+${booking.paymentScreenshot ? `Payment Proof: ${booking.paymentScreenshot}` : ''}
         `;
         alert(details);
+
+        if (booking.paymentScreenshot && booking.paymentScreenshot !== 'upload_failed' && booking.paymentScreenshot !== 'storage_not_configured') {
+          if (confirm('Review payment screenshot now?')) {
+            viewPaymentProof(booking.paymentScreenshot);
+          }
+        }
       }
+    }
+
+    function viewPaymentProof(url) {
+      if (!url || url === 'upload_failed' || url === 'storage_not_configured') {
+        alert('No valid payment proof available for this booking.');
+        return;
+      }
+
+      // Create a temporary modal to show the image
+      const modalHtml = `
+        <div class="modal fade" id="screenshotModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Payment Proof</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body text-center">
+                <img src="${url}" class="img-fluid" alt="Payment Screenshot">
+              </div>
+              <div class="modal-footer">
+                <a href="${url}" target="_blank" class="btn btn-primary">Open in New Tab</a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const existingModal = document.getElementById('screenshotModal');
+      if (existingModal) existingModal.remove();
+
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+      const modal = new bootstrap.Modal(document.getElementById('screenshotModal'));
+      modal.show();
     }
 
     function downloadReceipt(bookingId) {
       const booking = allBookings.find(b => b.bookingId === bookingId);
       if (booking) {
         const receiptContent = generateReceiptContent(booking);
-        
+
         const blob = new Blob([receiptContent], { type: 'text/html' });
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
