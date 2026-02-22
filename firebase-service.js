@@ -16,34 +16,54 @@ const firebaseConfig = {
 let app, db, storage;
 let firebaseInitialized = false;
 
+// Cloudinary Configuration
+const CLOUDINARY_CONFIG = {
+  cloudName: 'sunnybiju',      // Put your Cloud Name here
+  upload_preset: 'grandoria_preset', // Put your Unsigned Preset name here
+  folder: 'grandoria_payments'
+};
+
 // Function to initialize Firebase
 function initializeFirebase() {
   try {
     if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
       app = firebase.initializeApp(firebaseConfig);
       db = firebase.firestore();
-      storage = firebase.storage();
+
+      // Initialize storage only if storage function exists
+      if (typeof firebase.storage === "function") {
+        storage = firebase.storage();
+        window.firebaseStorage = storage;
+        console.log('Firebase Storage initialized');
+      } else {
+        console.warn('Firebase Storage SDK not loaded - storage features will be unavailable');
+      }
+
       firebaseInitialized = true;
-      
+
       // Make available globally
       window.firebaseApp = app;
       window.firebaseDB = db;
-      window.firebaseStorage = storage;
       window.firebaseInitialized = firebaseInitialized;
-      
+
       console.log('Firebase initialized successfully');
       return true;
     } else if (typeof firebase !== 'undefined') {
       app = firebase.app();
       db = firebase.firestore();
-      storage = firebase.storage();
+
+      if (typeof firebase.storage === "function") {
+        storage = firebase.storage();
+        window.firebaseStorage = storage;
+        console.log('Firebase Storage re-initialized');
+      }
+
       firebaseInitialized = true;
-      
+
       window.firebaseApp = app;
       window.firebaseDB = db;
-      window.firebaseStorage = storage;
       window.firebaseInitialized = firebaseInitialized;
-      
+
       console.log('Firebase already initialized');
       return true;
     } else {
@@ -66,35 +86,54 @@ class FirebaseBookingService {
 
   // Initialize the service
   init() {
-    if (firebaseInitialized && db) {
-      this.db = db;
-      this.storage = storage;
+    // If local variables aren't set, try picking them from window
+    if (!this.db && window.firebaseDB) this.db = window.firebaseDB;
+    if (!this.storage && window.firebaseStorage) this.storage = window.firebaseStorage;
+
+    // We strictly need db for most operations
+    if (this.db) {
       return true;
     }
+
+    // If still not set, try one more time to initialize
+    if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+      this.db = firebase.firestore();
+      try {
+        if (typeof firebase.storage === "function") this.storage = firebase.storage();
+      } catch (e) { }
+      return true;
+    }
+
     return false;
   }
 
-  // Upload payment screenshot
+  // Create a unique filename and upload to Cloudinary
   async uploadPaymentScreenshot(file, bookingId) {
-    if (!this.init()) {
-      throw new Error('Firebase not initialized');
-    }
-
     try {
-      const storageRef = this.storage.ref();
-      // Create a unique filename
-      const timestamp = Date.now();
-      const fileName = `payment_screenshots/${bookingId}_${timestamp}_${file.name}`;
-      const fileRef = storageRef.child(fileName);
-      
-      console.log('Uploading file to:', fileName);
-      const snapshot = await fileRef.put(file);
-      const downloadURL = await snapshot.ref.getDownloadURL();
-      
-      console.log('File uploaded successfully. URL:', downloadURL);
-      return downloadURL;
+      const url = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CONFIG.cloudName}/image/upload`;
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', CLOUDINARY_CONFIG.upload_preset);
+      formData.append('folder', CLOUDINARY_CONFIG.folder);
+      formData.append('public_id', `${bookingId}_${Date.now()}`);
+
+      console.log('API Request: Uploading to Cloudinary...');
+      const response = await fetch(url, {
+        method: 'POST',
+        body: formData
+      });
+
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error?.message || 'Cloudinary upload failed');
+      }
+
+      const data = await response.json();
+      console.log('✅ API Response: Secure URL received');
+      return data.secure_url;
     } catch (error) {
-      console.error('Error uploading file:', error);
+      console.error('❌ Cloudinary API Error:', error);
       throw error;
     }
   }
@@ -108,15 +147,15 @@ class FirebaseBookingService {
     try {
       // Use Firebase Timestamp for consistency
       const now = firebase.firestore.Timestamp.now();
-      
-      const bookingRef = await db.collection(this.collection).add({
+
+      const bookingRef = await this.db.collection(this.collection).add({
         ...bookingData,
         createdAt: now,
         updatedAt: now,
         // Only set status to 'confirmed' if not already set
         status: bookingData.status || 'confirmed'
       });
-      
+
       console.log('Booking saved with ID: ', bookingRef.id);
       return bookingRef.id;
     } catch (error) {
@@ -132,11 +171,11 @@ class FirebaseBookingService {
     }
 
     try {
-      await db.collection(this.collection).doc(bookingId).set({
+      await this.db.collection(this.collection).doc(bookingId).set({
         ...updates,
         updatedAt: new Date()
       }, { merge: true });
-      
+
       console.log('Booking updated successfully');
       return true;
     } catch (error) {
@@ -152,8 +191,8 @@ class FirebaseBookingService {
     }
 
     try {
-      const bookingDoc = await db.collection(this.collection).doc(bookingId).get();
-      
+      const bookingDoc = await this.db.collection(this.collection).doc(bookingId).get();
+
       if (bookingDoc.exists) {
         return { id: bookingDoc.id, ...bookingDoc.data() };
       } else {
@@ -172,15 +211,15 @@ class FirebaseBookingService {
     }
 
     try {
-      const querySnapshot = await db.collection(this.collection)
+      const querySnapshot = await this.db.collection(this.collection)
         .orderBy('createdAt', 'desc')
         .get();
-      
+
       const bookings = [];
       querySnapshot.forEach((doc) => {
         bookings.push({ id: doc.id, ...doc.data() });
       });
-      
+
       return bookings;
     } catch (error) {
       console.error('Error getting all bookings: ', error);
@@ -195,15 +234,15 @@ class FirebaseBookingService {
     }
 
     try {
-      const querySnapshot = await db.collection(this.collection)
+      const querySnapshot = await this.db.collection(this.collection)
         .where('status', '==', status)
         .get();
-      
+
       const bookings = [];
       querySnapshot.forEach((doc) => {
         bookings.push({ id: doc.id, ...doc.data() });
       });
-      
+
       return bookings;
     } catch (error) {
       console.error('Error getting bookings by status: ', error);
@@ -218,16 +257,16 @@ class FirebaseBookingService {
     }
 
     try {
-      const querySnapshot = await db.collection(this.collection)
+      const querySnapshot = await this.db.collection(this.collection)
         .where('arrivalDate', '>=', startDate)
         .where('arrivalDate', '<=', endDate)
         .get();
-      
+
       const bookings = [];
       querySnapshot.forEach((doc) => {
         bookings.push({ id: doc.id, ...doc.data() });
       });
-      
+
       return bookings;
     } catch (error) {
       console.error('Error getting bookings by date range: ', error);
@@ -243,20 +282,20 @@ class FirebaseBookingService {
 
     try {
       // First, try to delete the specific document
-      await db.collection(this.collection).doc(bookingId).delete();
+      await this.db.collection(this.collection).doc(bookingId).delete();
       console.log(`Booking ${bookingId} deleted successfully from Firebase`);
-      
+
       // Also try to delete any bookings with matching bookingId in case of data inconsistency
-      const snapshot = await db.collection(this.collection).where('bookingId', '==', bookingId).get();
+      const snapshot = await this.db.collection(this.collection).where('bookingId', '==', bookingId).get();
       if (!snapshot.empty) {
-        const batch = db.batch();
+        const batch = this.db.batch();
         snapshot.docs.forEach(doc => {
           batch.delete(doc.ref);
         });
         await batch.commit();
         console.log(`Additional bookings with ID ${bookingId} deleted from Firebase`);
       }
-      
+
       return true;
     } catch (error) {
       console.error('Error deleting booking from Firebase: ', error);
@@ -274,14 +313,14 @@ window.localStorageFallback = {
     localStorage.setItem('currentBooking', JSON.stringify(bookingData));
     console.log('Booking saved to localStorage (Firebase fallback)');
   },
-  
+
   updateBookingStatus: (bookingId, updates) => {
     const bookingData = JSON.parse(localStorage.getItem('currentBooking') || '{}');
     const updatedData = { ...bookingData, ...updates };
     localStorage.setItem('currentBooking', JSON.stringify(updatedData));
     console.log('Booking updated in localStorage (Firebase fallback)');
   },
-  
+
   getBooking: (bookingId) => {
     const bookingData = JSON.parse(localStorage.getItem('currentBooking') || '{}');
     return bookingData;
@@ -291,7 +330,7 @@ window.localStorageFallback = {
     // More targeted removal based on booking ID
     const keysToCheck = ['confirmedBooking', 'failedBooking', 'currentBooking'];
     let removed = false;
-    
+
     keysToCheck.forEach(key => {
       const stored = localStorage.getItem(key);
       if (stored && stored !== 'null') {
@@ -307,17 +346,17 @@ window.localStorageFallback = {
         }
       }
     });
-    
+
     if (!removed) {
       console.log(`Booking ${bookingId} not found in localStorage`);
     }
-    
+
     return true;
   }
 };
 
 // Initialize Firebase when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   // Try to initialize Firebase
   if (initializeFirebase()) {
     console.log('Firebase ready for use');
