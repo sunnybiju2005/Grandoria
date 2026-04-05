@@ -679,45 +679,44 @@
                   <div class="col-md-6 text-center border-end">
                     <h6 class="mb-3">Scan QR Code to Pay ₹500</h6>
                     <div class="mb-3">
-                      <!-- Placeholder for QR Code -->
-                      <img src="assets/img/payment-qr.jpg" alt="Payment QR Code" class="img-fluid border p-2" style="max-width: 200px; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/200x200?text=QR+Code+Update+Required'">
-                    </div>
-                    <div class="alert alert-light border">
-                      <small class="text-muted d-block">UPI ID</small>
-                      <strong class="user-select-all">9947792777@okbizaxis</strong>
+                      <img src="https://res.cloudinary.com/sunnybiju/image/upload/q_auto/f_auto/v1775383420/payment_qr_offhw5.png" alt="Payment QR Code" class="img-fluid border p-2" style="max-width: 200px; border-radius: 10px;" onerror="this.src='https://via.placeholder.com/200x200?text=QR+Code+Update+Required'">
+                      <h4 class="mt-3 text-primary"><strong>Pay 500</strong></h4>
+                      <a href="https://res.cloudinary.com/sunnybiju/image/upload/q_auto/f_auto/v1775383420/payment_qr_offhw5.png" download="Gaurikeerthana-Payment-QR.png" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+                        <i class="bi bi-download me-1"></i>Download QR
+                      </a>
                     </div>
                     <div class="alert alert-info">
                        <small>Open Google Pay, PhonePe, or Paytm and scan the QR code to pay the advance amount of ₹500.</small>
                     </div>
                   </div>
                   <div class="col-md-6">
-                    <h6 class="mb-3">Confirm Payment</h6>
-                    <form id="payment-confirmation-form">
-                      <div class="mb-3">
-                        <label for="payment-screenshot" class="form-label">Upload Payment Screenshot <span class="text-danger">*</span></label>
-                        <input type="file" class="form-control" id="payment-screenshot" accept="image/*" required>
-                        <div class="form-text">Please upload the screenshot of the successful payment.</div>
+                    <h6 class="mb-3 font-weight-bold">Confirm Payment</h6>
+                    <div class="whatsapp-instruction mb-4">
+                      <p>After successful payment, click the button below to share your payment screenshot on WhatsApp to confirm your booking.</p>
+                      <div class="alert alert-success border-0 bg-success bg-opacity-10 text-success py-2 d-flex align-items-center">
+                        <i class="bi bi-whatsapp me-2 fs-5"></i>
+                        Confirm & Send Screenshot
                       </div>
-                      
-                      <div class="booking-summary-mini bg-light p-3 rounded mb-3">
-                         <div class="d-flex justify-content-between mb-1">
-                           <span>Total Amount:</span>
-                           <span>₹${bookingData.total.toLocaleString()}</span>
-                         </div>
-                         <div class="d-flex justify-content-between mb-1 text-success">
-                           <span>Advance to Pay:</span>
-                           <span>₹500</span>
-                         </div>
-                         <div class="d-flex justify-content-between fw-bold border-top pt-1 mt-1">
-                           <span>Balance at Hotel:</span>
-                           <span>₹${(bookingData.total - 500).toLocaleString()}</span>
-                         </div>
-                      </div>
+                    </div>
+                    
+                    <div class="booking-summary-mini bg-light p-3 rounded mb-4">
+                       <div class="d-flex justify-content-between mb-1">
+                         <span>Total Amount:</span>
+                         <span>₹${bookingData.total.toLocaleString()}</span>
+                       </div>
+                       <div class="d-flex justify-content-between mb-1 text-success">
+                         <span>Advance to Pay:</span>
+                         <span class="fw-bold">₹500</span>
+                       </div>
+                       <div class="d-flex justify-content-between fw-bold border-top pt-1 mt-1">
+                         <span>Balance at Hotel:</span>
+                         <span>₹${(bookingData.total - 500).toLocaleString()}</span>
+                       </div>
+                    </div>
 
-                      <button type="submit" class="btn btn-success w-100 py-2" id="confirm-payment-btn">
-                        <i class="bi bi-check-circle me-2"></i>Payment Done - Confirm Booking
-                      </button>
-                    </form>
+                    <button type="button" class="btn btn-success btn-lg w-100 py-3" id="confirm-via-whatsapp-btn">
+                      <i class="bi bi-whatsapp me-2"></i>Send Screenshot on WhatsApp
+                    </button>
                   </div>
                 </div>
               </div>
@@ -737,85 +736,50 @@
           document.body.removeChild(paymentModal);
         });
 
-        // Handle form submission
-        document.getElementById('payment-confirmation-form').addEventListener('submit', async function (e) {
-          e.preventDefault();
-
-          const fileInput = document.getElementById('payment-screenshot');
-          const file = fileInput.files[0];
-
-          if (!file) {
-            alert('Please upload the payment screenshot.');
-            return;
-          }
-
-          const confirmBtn = document.getElementById('confirm-payment-btn');
+        // Handle WhatsApp confirmation button click
+        document.getElementById('confirm-via-whatsapp-btn').addEventListener('click', async function () {
+          const confirmBtn = this;
           confirmBtn.disabled = true;
-          confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Uploading & Confirming...';
+          confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirming Booking...';
 
           try {
-            // 1. Preparation & Metadata (Optimized)
-            confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirming Booking...';
-
-            bookingData.status = 'confirmed';
-            bookingData.paymentStatus = 'advance_paid';
-            bookingData.advancePaid = 500;
+            // Update booking status
+            bookingData.status = 'awaiting_confirmation';
+            bookingData.paymentStatus = 'screenshot_to_be_sent';
+            bookingData.advanceAmount = 500;
             bookingData.balanceAmount = bookingData.total - 500;
             bookingData.paymentDate = new Date().toISOString();
             bookingData.updatedAt = new Date();
             bookingData.createdAt = new Date();
             bookingData.bookingType = 'ONLINE';
 
-            // 2. Image Optimization & Upload (Makes the Admin Panel work better)
-            confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Optimizing Image...';
-
-            const compressImage = (imgFile) => {
-              return new Promise((resolve) => {
-                const timer = setTimeout(() => resolve(imgFile), 4000);
-                const reader = new FileReader();
-                reader.onload = (re) => {
-                  const img = new Image();
-                  img.onload = () => {
-                    const canvas = document.createElement('canvas');
-                    const max = 1000;
-                    let w = img.width, h = img.height;
-                    if (w > h && w > max) { h *= max / w; w = max; }
-                    else if (h > max) { w *= max / h; h = max; }
-                    canvas.width = w; canvas.height = h;
-                    canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                    canvas.toBlob((b) => { clearTimeout(timer); resolve(b || imgFile); }, 'image/jpeg', 0.6);
-                  };
-                  img.src = re.target.result;
-                };
-                reader.readAsDataURL(imgFile);
-              });
-            };
-
-            const optimizedFile = file.size > 200000 ? await compressImage(file) : file;
-
-            confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Uploading Proof...';
-            let screenshotUrl = 'upload_failed';
-            try {
-              if (window.firebaseBookingService && window.firebaseBookingService.init()) {
-                screenshotUrl = await window.firebaseBookingService.uploadPaymentScreenshot(optimizedFile, bookingData.bookingId);
-              }
-            } catch (uErr) { console.error('Upload Error:', uErr); }
-
-            bookingData.paymentScreenshot = screenshotUrl;
-
-            // 3. Final Save to Firestore
-            confirmBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Saving Booking...';
+            // 1. Save to Firebase/Firestore
             if (window.firebaseBookingService && (window.firebaseInitialized || window.firebaseDB)) {
               try {
                 window.firebaseBookingService.init();
                 const docId = await window.firebaseBookingService.saveBooking(bookingData);
                 bookingData.firebaseId = docId;
               } catch (dbError) {
-                console.error('Final Save error:', dbError);
+                console.error('Save to Firebase failed:', dbError);
               }
             }
 
-            // 3. SHOW SUCCESS UI IMMEDIATELY
+            // 2. Prepare WhatsApp Message
+            const message = `*NEW BOOKING PAYMENT*\n\n` +
+              `Hi, I have paid the advance of ₹500 for my booking.\n\n` +
+              `*Booking ID:* ${bookingData.bookingId}\n` +
+              `*Name:* ${bookingData.guestName}\n` +
+              `*Room:* ${bookingData.roomTypeText}\n` +
+              `*Arrival:* ${new Date(bookingData.arrivalDate).toLocaleDateString()}\n` +
+              `*Departure:* ${new Date(bookingData.departureDate).toLocaleDateString()}\n\n` +
+              `Please find my payment screenshot attached below.`;
+
+            const whatsappUrl = `https://wa.me/919947792777?text=${encodeURIComponent(message)}`;
+
+            // 3. Open WhatsApp in new tab
+            window.open(whatsappUrl, '_blank');
+
+            // 4. Update Success UI in Background
             localStorage.setItem('confirmedBooking', JSON.stringify(bookingData));
             localStorage.removeItem('currentBooking');
             modal.hide();
@@ -826,15 +790,12 @@
                 <div class="success-icon mb-4">
                   <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
                 </div>
-                <h2 class="text-success">Booking Confirmed!</h2>
-                <p class="lead text-muted">Thank you! Your booking reference is <strong>${bookingData.bookingId}</strong>.</p>
-                <div class="alert alert-success mt-3 d-inline-block">
-                  Advance payment recorded. Balance of ₹${bookingData.balanceAmount} due at check-in.
+                <h2 class="text-success">Booking Submitted!</h2>
+                <p class="lead text-muted">Your booking reference is <strong>${bookingData.bookingId}</strong>.</p>
+                <div class="alert alert-info mt-3 d-inline-block">
+                  <i class="bi bi-whatsapp me-2"></i> Please send the payment screenshot on WhatsApp to confirm.
                 </div>
                 <div class="mt-4">
-                  <button class="btn btn-primary me-2" onclick="downloadBookingReceipt()">
-                    <i class="bi bi-download me-1"></i>Download Receipt
-                  </button>
                   <button class="btn btn-outline-primary" onclick="goToHome()">
                     <i class="bi bi-house me-1"></i>Return to Home
                   </button>
@@ -844,14 +805,11 @@
             const summaryActions = document.querySelector('.summary-actions');
             if (summaryActions) summaryActions.style.display = 'none';
 
-
-
-
           } catch (error) {
-            console.error('Error confirming booking:', error);
-            alert('Error confirming booking: ' + error.message);
+            console.error('Error in confirmation flow:', error);
+            alert('There was an error processing your request. Please contact us directly.');
             confirmBtn.disabled = false;
-            confirmBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>Payment Done - Confirm Booking';
+            confirmBtn.innerHTML = '<i class="bi bi-whatsapp me-2"></i>Send Screenshot on WhatsApp';
           }
         });
       }
