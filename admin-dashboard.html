@@ -150,6 +150,12 @@
       color: #721c24;
     }
 
+    .status-awaiting_confirmation {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeeba;
+    }
+
     .status-cancelled {
       background: #e2e3e5;
       color: #383d41;
@@ -411,6 +417,7 @@
               <select class="form-select" id="statusFilter">
                 <option value="all">All Status</option>
                 <option value="confirmed">Confirmed</option>
+                <option value="awaiting_confirmation">Awaiting WhatsApp Confirmation</option>
                 <option value="pending_payment">Pending Payment</option>
                 <option value="payment_failed">Payment Failed</option>
                 <option value="cancelled">Cancelled</option>
@@ -696,6 +703,9 @@
             // Only show confirmed bookings (successful payments) and walk-in bookings
             // Exclude payment_failed, pending_payment (unless walk-in), and cancelled bookings
             return booking.status === 'confirmed' ||
+              booking.status === 'awaiting_confirmation' ||
+              booking.status === 'pending_payment' ||
+              booking.status === 'payment_failed' ||
               (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
           });
           console.log('Bookings loaded from Firebase:', allBookingsFromDB.length, '| Filtered (confirmed only):', allBookings.length);
@@ -831,9 +841,9 @@
     function updateStatistics() {
       // Since we only load confirmed bookings, all bookings are confirmed
       const total = allBookings.length;
-      const confirmed = allBookings.length; // All bookings are confirmed
-      const pending = 0; // No pending bookings stored in database
-      const failed = 0; // No failed bookings stored in database
+      const confirmed = allBookings.filter(b => b.status === 'confirmed').length;
+      const pending = allBookings.filter(b => b.status === 'awaiting_confirmation').length;
+      const failed = allBookings.filter(b => b.status === 'payment_failed').length;
 
       document.getElementById('totalBookings').textContent = total;
       document.getElementById('confirmedBookings').textContent = confirmed;
@@ -1015,6 +1025,9 @@
             // Only show confirmed bookings (successful payments) and walk-in bookings
             // Exclude payment_failed, pending_payment (unless walk-in), and cancelled bookings
             return booking.status === 'confirmed' ||
+              booking.status === 'awaiting_confirmation' ||
+              booking.status === 'pending_payment' ||
+              booking.status === 'payment_failed' ||
               (booking.bookingType === 'WALK_IN' && booking.status !== 'cancelled');
           });
           console.log('Bookings refreshed from Firebase:', allBookingsFromDB.length, '| Filtered (confirmed only):', allBookings.length);
@@ -1126,9 +1139,14 @@
                   <button class="btn btn-action btn-confirm" onclick="downloadReceipt('${booking.bookingId}')">
                     <i class="bi bi-download me-1"></i>Download Receipt
                   </button>
-                ` : booking.status === 'pending_payment' ? `
+                ` : (booking.status === 'awaiting_confirmation' || booking.status === 'pending_payment' || booking.status === 'payment_failed') ? `
+                  ${booking.status === 'awaiting_confirmation' ? `
+                  <button class="btn btn-action btn-confirm mb-1" onclick="acceptBooking('${booking.bookingId}')" id="accept-btn-${booking.bookingId}">
+                    <i class="bi bi-check-circle me-1"></i>Confirm & Accept
+                  </button>
+                  ` : ''}
                   <button class="btn btn-action btn-cancel" onclick="cancelBooking('${booking.bookingId}')" id="cancel-btn-${booking.bookingId}">
-                    <i class="bi bi-x-circle me-1"></i>Cancel Booking
+                    <i class="bi bi-trash me-1"></i>Reject & Remove
                   </button>
                 ` : ''}
               </div>
@@ -1143,10 +1161,67 @@
     function getStatusText(status) {
       switch (status) {
         case 'confirmed': return 'Confirmed';
+        case 'awaiting_confirmation': return 'Awaiting WhatsApp';
         case 'pending_payment': return 'Pending Payment';
         case 'payment_failed': return 'Payment Failed';
         case 'cancelled': return 'Cancelled';
         default: return status;
+      }
+    }
+
+    async function acceptBooking(bookingId) {
+      if (!confirm('Confirm payment received and accept this booking?')) {
+        return;
+      }
+
+      const acceptBtn = document.getElementById(`accept-btn-${bookingId}`);
+      if (acceptBtn) {
+        acceptBtn.disabled = true;
+        acceptBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span>Accepting...';
+      }
+
+      try {
+        console.log(`Accepting booking: ${bookingId}`);
+
+        // Find the record to get its Firebase document ID
+        const booking = allBookings.find(b => b.bookingId === bookingId);
+        const docId = booking ? booking.id || bookingId : bookingId;
+
+        if (window.firebaseBookingService) {
+          // Update status in Firebase
+          await window.firebaseBookingService.updateBookingStatus(docId, {
+            status: 'confirmed',
+            paymentStatus: 'advance_paid',
+            advancePaid: 500,
+            updatedAt: new Date()
+          });
+
+          console.log('Booking status updated in Firebase');
+
+          // Local update
+          const bookingIndex = allBookings.findIndex(b => b.bookingId === bookingId);
+          if (bookingIndex !== -1) {
+            allBookings[bookingIndex].status = 'confirmed';
+            allBookings[bookingIndex].paymentStatus = 'advance_paid';
+            allBookings[bookingIndex].advancePaid = 500;
+          }
+
+          // Refresh UI
+          applyFilters();
+          updateStatistics();
+          updateRoomAvailability();
+
+          alert(`Booking ${bookingId} has been accepted and confirmed!`);
+        } else {
+          alert('Firebase service not available. Change applied locally only.');
+        }
+      } catch (error) {
+        console.error('Error accepting booking:', error);
+        alert('Error accepting booking. Please try again.');
+        if (acceptBtn) {
+          acceptBtn.disabled = false;
+          acceptBtn.innerHTML = '<i class="bi bi-check-circle me-1"></i>Confirm & Accept';
+        }
       }
     }
 
