@@ -153,7 +153,7 @@ GET /api/bookings/abc123
 - `roomType`
 - `total`
 
-**Response:**
+**Response (Success):**
 ```json
 {
   "success": true,
@@ -163,6 +163,16 @@ GET /api/bookings/abc123
     "id": "xyz789",
     // ... all booking fields
   }
+}
+```
+
+**Response (Error - Overbooked):**
+```json
+{
+  "success": false,
+  "error": "Overbooking prevented. Requested room type is fully booked for these dates.",
+  "availableRooms": 0,
+  "requestedRooms": 1
 }
 ```
 
@@ -180,7 +190,7 @@ GET /api/bookings/abc123
 }
 ```
 
-**Response:**
+**Response (Success):**
 ```json
 {
   "success": true,
@@ -188,6 +198,16 @@ GET /api/bookings/abc123
   "booking": {
     // ... updated booking data
   }
+}
+```
+
+**Response (Error - Overbooked):**
+```json
+{
+  "success": false,
+  "error": "Update failed: Selected dates/room type would cause overbooking.",
+  "availableRooms": 0,
+  "requestedRooms": 1
 }
 ```
 
