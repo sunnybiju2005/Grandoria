@@ -11,34 +11,41 @@
 }
 
 @media (max-width: 991px) {
+  /* Hide cluttered topbar on mobile - keep header clean */
+  .topbar {
+    display: none !important;
+  }
+
   .mobile-nav-btn {
     display: flex !important;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    width: 50px;
-    height: 50px;
+    /* Inline inside branding bar - no fixed positioning */
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: 44px;
+    height: 44px;
     background: linear-gradient(135deg, #2f5d50 0%, #1a3d32 100%);
     color: #ffffff;
     border: none;
-    border-radius: 12px;
-    font-size: 24px;
+    border-radius: 10px;
+    font-size: 22px;
     cursor: pointer;
-    z-index: 10002;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+    z-index: 100;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0;
     margin: 0;
     line-height: 1;
+    flex-shrink: 0;
   }
 
   .mobile-nav-btn:hover,
   .mobile-nav-btn:active {
     background: linear-gradient(135deg, #1a3d32 0%, #0d1f1a 100%);
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.35);
   }
 
   .mobile-nav-btn:focus {
@@ -330,11 +337,13 @@
   }
 
   .mobile-nav-btn {
-    top: 15px;
-    right: 15px;
-    width: 45px;
-    height: 45px;
-    font-size: 22px;
+    /* Keep inline on small screens too */
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
   }
 }
 
