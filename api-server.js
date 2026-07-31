@@ -27,6 +27,79 @@ try {
   process.exit(1);
 }
 
+// ==========================================
+// CONFIGURATION & CONSTANTS
+// ==========================================
+
+// Room capacities (Total rooms available for each type)
+const ROOM_CAPACITIES = {
+  'normal-non-ac': 3,
+  'normal-ac': 6,
+  'deluxe-ac': 2
+};
+
+// Map descriptive names to canonical keys
+const ROOM_TYPE_MAP = {
+  'normal-non-ac': 'normal-non-ac',
+  'Normal Non-AC Room': 'normal-non-ac',
+  'normal-ac': 'normal-ac',
+  'Normal AC Room': 'normal-ac',
+  'deluxe-ac': 'deluxe-ac',
+  'Deluxe AC Room': 'deluxe-ac'
+};
+
+/**
+ * Internal helper to check room availability
+ * @param {string} roomType - Descriptive or canonical room type
+ * @param {string} startDate - YYYY-MM-DD
+ * @param {string} endDate - YYYY-MM-DD
+ * @param {string} excludeBookingId - Optional ID to exclude (useful for updates)
+ * @returns {Promise<Object>} Availability status
+ */
+async function checkRoomAvailability(roomType, startDate, endDate, excludeBookingId = null) {
+  const canonicalType = ROOM_TYPE_MAP[roomType] || roomType.toLowerCase().replace(/\s+/g, '-');
+  const totalCapacity = ROOM_CAPACITIES[canonicalType] || 0;
+
+  if (totalCapacity === 0) {
+    throw new Error(`Invalid or unknown room type: ${roomType}`);
+  }
+
+  // Find confirmed bookings for this room type
+  let query = db.collection('bookings')
+    .where('roomType', '==', canonicalType)
+    .where('status', '==', 'confirmed');
+
+  const snapshot = await query.get();
+  
+  let totalBookedRooms = 0;
+  const queryStart = new Date(startDate);
+  const queryEnd = new Date(endDate);
+
+  snapshot.docs.forEach(doc => {
+    // Skip if it's the booking we're currently updating
+    if (excludeBookingId && doc.id === excludeBookingId) return;
+
+    const booking = doc.data();
+    const bookingStart = new Date(booking.arrivalDate);
+    const bookingEnd = new Date(booking.departureDate);
+
+    // Overlap check logic: (StartA < EndB) and (EndA > StartB)
+    if (bookingStart < queryEnd && bookingEnd > queryStart) {
+      totalBookedRooms += (parseInt(booking.roomCount) || 1);
+    }
+  });
+
+  const availableRooms = Math.max(0, totalCapacity - totalBookedRooms);
+
+  return {
+    roomType: canonicalType,
+    totalCapacity,
+    bookedRooms: totalBookedRooms,
+    availableRooms,
+    isAvailable: availableRooms > 0
+  };
+}
+
 // API Authentication Middleware
 const authenticateAPI = (req, res, next) => {
   const apiKey = req.headers['x-api-key'];
@@ -193,16 +266,35 @@ app.post('/api/bookings', authenticateAPI, async (req, res) => {
       });
     }
 
-    // Prepare booking data
+    // 1. Check Availability before booking
+    const availability = await checkRoomAvailability(
+      bookingData.roomType, 
+      bookingData.arrivalDate, 
+      bookingData.departureDate
+    );
+
+    const requestedRooms = parseInt(bookingData.roomCount) || 1;
+
+    if (availability.availableRooms < requestedRooms) {
+      return res.status(400).json({
+        success: false,
+        error: 'Overbooking prevented. Requested room type is fully booked for these dates.',
+        availableRooms: availability.availableRooms,
+        requestedRooms: requestedRooms
+      });
+    }
+
+    // 2. Prepare booking data (using canonical type)
     const newBooking = {
       ...bookingData,
+      roomType: availability.roomType, // Store canonical version
       bookingType: bookingData.bookingType || 'EXTERNAL',
       status: bookingData.status || 'confirmed',
       createdAt: admin.firestore.FieldValue.serverTimestamp(),
       updatedAt: admin.firestore.FieldValue.serverTimestamp()
     };
 
-    // Save to Firebase
+    // 3. Save to Firebase
     const docRef = await db.collection('bookings').add(newBooking);
 
     console.log('✅ Booking created:', docRef.id);
@@ -248,6 +340,35 @@ app.put('/api/bookings/:id', authenticateAPI, async (req, res) => {
         success: false,
         error: 'Booking not found'
       });
+    }
+
+    // If dates or roomType are changing, check availability
+    if (updates.arrivalDate || updates.departureDate || updates.roomType || updates.roomCount) {
+      // Get current data to fill in gaps for availability check
+      const currentData = doc.data();
+      const checkType = updates.roomType || currentData.roomType;
+      const checkStart = updates.arrivalDate || currentData.arrivalDate;
+      const checkEnd = updates.departureDate || currentData.departureDate;
+      const checkCount = parseInt(updates.roomCount || currentData.roomCount || 1);
+
+      const availability = await checkRoomAvailability(
+        checkType,
+        checkStart,
+        checkEnd,
+        bookingId
+      );
+
+      if (availability.availableRooms < checkCount) {
+        return res.status(400).json({
+          success: false,
+          error: 'Update failed: Selected dates/room type would cause overbooking.',
+          availableRooms: availability.availableRooms,
+          requestedRooms: checkCount
+        });
+      }
+      
+      // Update with canonical room type if provided
+      if (updates.roomType) updates.roomType = availability.roomType;
     }
 
     // Add update timestamp
@@ -563,60 +684,18 @@ app.get('/api/availability', authenticateAPI, async (req, res) => {
       });
     }
 
-    // Room capacities
-    const roomCapacities = {
-      'normal-non-ac': 3,
-      'Normal Non-AC Room': 3,
-      'normal-ac': 6,
-      'Normal AC Room': 6,
-      'deluxe-ac': 2,
-      'Deluxe AC Room': 2
-    };
-
-    const totalCapacity = roomCapacities[roomType] || 0;
-
-    if (totalCapacity === 0) {
-      return res.status(400).json({
-        success: false,
-        error: 'Invalid room type'
-      });
-    }
-
-    // Find conflicting bookings
-    const conflictingBookings = await db.collection('bookings')
-      .where('roomType', '==', roomType.toLowerCase().replace(/\s+/g, '-'))
-      .where('status', '==', 'confirmed')
-      .get();
-
-    let totalBookedRooms = 0;
-    conflictingBookings.docs.forEach(doc => {
-      const booking = doc.data();
-      const bookingStart = new Date(booking.arrivalDate);
-      const bookingEnd = new Date(booking.departureDate);
-      const queryStart = new Date(startDate);
-      const queryEnd = new Date(endDate);
-
-      // Check if dates overlap
-      if (bookingStart < queryEnd && bookingEnd > queryStart) {
-        totalBookedRooms += (booking.roomCount || 1);
-      }
-    });
-
-    const availableRooms = Math.max(0, totalCapacity - totalBookedRooms);
+    const availability = await checkRoomAvailability(roomType, startDate, endDate);
 
     res.json({
       success: true,
-      roomType: roomType,
-      totalCapacity: totalCapacity,
-      bookedRooms: totalBookedRooms,
-      availableRooms: availableRooms,
+      ...availability,
       startDate: startDate,
       endDate: endDate
     });
 
   } catch (error) {
     console.error('Error checking availability:', error);
-    res.status(500).json({
+    res.status(400).json({ // Using 400 for invalid room types/errors
       success: false,
       error: error.message
     });
